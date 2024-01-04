@@ -52,3 +52,7 @@ urllib3==2.1.0
 user-agents==2.2.0
 virtualenv==20.25.0
 zipp==3.17.0
+pdf2image==1.16.3
+dateutils==0.6.12
+ebooklib==0.18.0
+django-import-export==3.3.5
