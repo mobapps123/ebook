@@ -6,3 +6,8 @@ services:
     build: .
     ports:
       - "8004:8004" 
+    networks:
+      - ebooks
+networks:
+    ebooks:
+        driver: bridge
