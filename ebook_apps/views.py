@@ -149,14 +149,18 @@ def per_week_average_time_spent():
         # Calculate the total number of weeks (assuming 7 days per week)
         total_weeks = total_duration.days // 7 if total_duration.days else 1
 
-        # Calculate the overall average time spent per week by all users
-        overall_average_time_per_week = total_duration / total_weeks
+        # Check if total_weeks is zero before attempting division
+        if total_weeks > 0:
+            # Calculate the overall average time spent per week by all users
+            overall_average_time_per_week = total_duration / total_weeks
 
-        # Convert the overall average time to a human-readable format (optional)
-        overall_average_hours, remainder = divmod(overall_average_time_per_week.seconds, 3600)
-        overall_average_minutes = remainder // 60
+            # Convert the overall average time to a human-readable format (optional)
+            overall_average_hours, remainder = divmod(overall_average_time_per_week.seconds, 3600)
+            overall_average_minutes = remainder // 60
 
-        return overall_average_hours, overall_average_minutes
+            return overall_average_hours, overall_average_minutes
+
+    # Return a default value if there are no sessions
     return 0, 0
 def reading_time():
     total_duration = BookVisit.objects.filter().aggregate(
@@ -202,7 +206,7 @@ def dashboard(request):
     )
     user_growth_rate = 0
     if active_users > 0:
-        user_growth_rate = round(((new_users_last_month - 0) / active_users) * 100, 2)
+        user_growth_rate = round(((new_users_last_month - 0) / active_users) * 100)
     total_user = users.count()
     total_contactus = ContactUs.objects.all().count()
     total_book = Books.objects.filter(is_active=True).count()
@@ -297,21 +301,30 @@ def dashboard(request):
 
         
     }
-
-    return render(request, 'dashboard.html', {**context})
+    if request.user.is_authenticated:
+        if request.user.is_superuser:
+            return render(request, 'dashboard.html', {**context})
+        elif hasattr(request.user, 'is_organization') and request.user.is_organization:
+            return redirect('Dashboardorgani')
 
 
 ######### login views start here ########
 def login(request):
+    if request.user.is_authenticated:
+        if request.user.is_superuser:
+            return redirect('dashboard')
+        elif hasattr(request.user, 'is_organization') and request.user.is_organization:
+            return redirect('Dashboardorgani')
+
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
         user = authenticate(request=request, email=email, password=password)
         if user is not None:
-            if User.objects.filter(email=email, is_superuser=True):
+            if hasattr(user, 'is_superuser') and user.is_superuser:
                 dj_login(request, user)
                 return redirect('dashboard')
-            elif User.objects.filter(email=email, is_organization=True):
+            elif hasattr(user, 'is_organization') and user.is_organization:
                 login_time = datetime.now().strftime('%H:%M:%S')
                 ManageLoginTime.objects.create(users=user, login_start_time=login_time)
                 dj_login(request, user)
@@ -320,8 +333,8 @@ def login(request):
                 messages.error(request, 'You Are Not Admin User')
         else:
             messages.error(request, 'Invalid Email or Password')
-    return render(request, 'admin_login.html')
 
+    return render(request, 'admin_login.html')
 
 
 
@@ -3188,10 +3201,11 @@ def average_time_spent_admin_dashboard():
         return overall_average_hours, overall_average_minutes
     return 0, 0 
 
-
-
 class OrganizationsDashboard(View):
     def get(self, request):
+        if request.user.is_authenticated:
+            if request.user.is_superuser:
+                return redirect('dashboard')
         if request.user.is_organization:
             user_id = request.user.id       
             institute = request.user.institute     
