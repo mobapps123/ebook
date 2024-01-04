@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'ebook_apps',
     'accounts',
     'django_cleanup.apps.CleanupConfig',
+    'import_export'
   
 
 ]

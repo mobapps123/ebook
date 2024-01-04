@@ -8,12 +8,12 @@ RUN apt-get update && apt-get install -y tzdata libpython3-dev gcc
 
 # Upgrade pip and setuptools
 RUN pip install --upgrade pip setuptools
-RUN pip install import_export
+
 # Copy requirements and install dependencies
 COPY requirements.txt .
 # RUN pip install poetry
 # RUN pip install django_cleanup
-
+RUN pip install import_export
 RUN pip install -r requirements.txt
 
 # Copy the rest of the application files
