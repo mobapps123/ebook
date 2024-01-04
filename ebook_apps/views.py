@@ -301,8 +301,11 @@ def dashboard(request):
 
         
     }
-
-    return render(request, 'dashboard.html', {**context})
+    if request.user.is_authenticated:
+        if request.user.is_superuser:
+            return render(request, 'dashboard.html', {**context})
+        elif hasattr(request.user, 'is_organization') and request.user.is_organization:
+            return redirect('Dashboardorgani')
 
 
 ######### login views start here ########
@@ -3198,10 +3201,11 @@ def average_time_spent_admin_dashboard():
         return overall_average_hours, overall_average_minutes
     return 0, 0 
 
-
-
 class OrganizationsDashboard(View):
     def get(self, request):
+        if request.user.is_authenticated:
+            if request.user.is_superuser:
+                return redirect('dashboard')
         if request.user.is_organization:
             user_id = request.user.id       
             institute = request.user.institute     
