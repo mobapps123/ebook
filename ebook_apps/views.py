@@ -3165,7 +3165,6 @@ def average_time_spent():
 
         return overall_average_hours, overall_average_minutes
     return 0, 0 
-
 def average_time_spent_admin_dashboard():
     # Get all user sessions
     all_login_times = ManageLoginTime.objects.filter(
