@@ -1,0 +1,384 @@
+{% include 'NormalUser/sidebar.html' %}
+
+
+{% load static %}
+
+
+<style>
+    div#content-wrapper {
+        margin-left: 18%;
+    }
+
+    .heart {
+        color: rgb(46, 45, 45);
+        cursor: pointer;
+        font-size: 25px;
+    }
+
+    .heart.favorited {
+        color: rgb(244, 26, 63);
+    }
+
+    #results-container {
+        display: none;
+    }
+
+    #no-results {
+        color: red;
+    }
+
+
+    .active13 {
+        color: #000000 !important;
+    }
+
+    .avatar.avatar-online img {
+        height: 36px !important;
+        width: 36px !important;
+    }
+
+    .searchSideCus input {
+
+        padding: 4px 20px;
+        border-radius: 5px;
+        border: 2px solid #a9394d;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        width: 195px;
+    }
+
+    .searchSideCus input:focus {
+        outline: none;
+    }
+
+    span.app-brand-logo.demo img {
+        width: 150px;
+    }
+
+    #search-container {
+        display: flex;
+        border: 2px solid #a9394d;
+        justify-content: center;
+        border-radius: 5px;
+    }
+
+    #search-bar {
+        width: 500px;
+        padding: 5px 10px 5px 0;
+        border: none;
+        border-radius: 5px;
+    }
+
+    #search-bar:focus {
+        border: none;
+        outline: none;
+    }
+
+    .odysseyimg img {
+        height: 200px;
+        object-fit: cover;
+        /* border-radius: 7px; */
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        width: 200px;
+    }
+
+    .odysseyimg {
+        height: 200px;
+        width: 200px;
+        border-radius: 7px;
+    }
+
+    .History {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .profile_img img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .nav-item ul.dropdown-menu.dropdown-menu-end.text-center.show {
+        width: 300px;
+    }
+
+    .manage_account {
+        color: #3163aa;
+    }
+
+    .sign_outbtn {
+        color: #a9394d;
+        font-weight: 700;
+        margin: 10px 0;
+    }
+
+    .nav-item a:hover {
+        color: #000;
+    }
+
+    .sign_outbtn iconify-icon {
+        vertical-align: middle;
+    }
+
+    .customerAnchr a {
+        color: #677a8c;
+    }
+
+    .customerAnchr {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        width: 200px;
+    }
+
+    .bookSection {
+        width: 80%;
+        margin: 0 0 0 auto;
+        position: absolute;
+        right: 0;
+        top: 73px;
+    }
+
+    #results-container {
+        display: none;
+    }
+
+    #no-results {
+        color: red;
+    }
+
+
+
+    .active13 {
+        color: #000000 !important;
+    }
+
+    .avatar.avatar-online img {
+        height: 36px !important;
+        width: 36px !important;
+    }
+
+    .searchSideCus input {
+
+        padding: 4px 20px;
+        border-radius: 5px;
+        border: 2px solid #a9394d;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        width: 195px;
+    }
+
+    .searchSideCus input:focus {
+        outline: none;
+    }
+
+    span.app-brand-logo.demo img {
+        width: 150px;
+    }
+
+    #search-container {
+        display: flex;
+        border: 2px solid #a9394d;
+        justify-content: center;
+        border-radius: 5px;
+    }
+
+    #search-bar {
+        width: 500px;
+        padding: 5px 10px 5px 0;
+        border: none;
+        border-radius: 5px;
+    }
+
+    #search-bar:focus {
+        border: none;
+        outline: none;
+    }
+
+    .odysseyimg img {
+        height: 200px;
+        object-fit: cover;
+        /* border-radius: 7px; */
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        width: 200px;
+    }
+
+    .odysseyimg {
+        height: 200px;
+        width: 200px;
+        border-radius: 7px;
+    }
+
+    .History {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+
+    .open_side {
+        margin-left: 218px;
+    }
+</style>
+<div id="content-wrapper">
+    <div id="content">
+
+        <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+            id="layout-navbar">
+
+            <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none " id="open_side">
+                <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                    <i class="bx bx-menu bx-sm"></i>
+                </a>
+            </div>
+
+            <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+
+                <!-- Search -->
+                <div class="navbar-nav align-items-center">
+                    <div class="nav-item navbar-search-wrapper mb-0">
+                        <a class="nav-item nav-link search-toggler px-0" href="javascript:void(0);">
+                            {% comment %} <form method="GET" id="search-form">
+                                <div id="search-container">
+                                    <span><i class="fa fa-search" aria-hidden="true"></i></span>
+                                    <input type="text" id="search-bar" name="searchname" placeholder="Search...">
+                                </div>
+                            </form> {% endcomment %}
+
+
+                        </a>
+                    </div>
+
+                </div>
+                <!-- /Search -->
+
+                <ul class="navbar-nav flex-row align-items-center ms-auto">
+
+                    <!-- Notification -->
+
+
+                    <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                        <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
+                            data-bs-toggle="dropdown">
+                            <div class="avatar avatar-online">
+
+                                {% if user.profile_pic %}
+                                <div class="profile_img">
+                                    <img src="{{ user.profile_pic.url }}" alt="" class="w-px-40 h-auto rounded-circle">
+                                </div>
+                                {% else %}
+                                <div class="profile_img">
+                                    <img src="{% static 'images/logoLaw.png' %}" alt=""
+                                        class="w-px-40 h-auto rounded-circle">
+                                </div>
+                                {% endif %}
+                            </div>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-end text-center">
+                            {% if user.profile_pic %}
+                            <div class="profile_img">
+                                <img src="{{ user.profile_pic.url }}" alt="">
+                            </div>
+                            {% else %}
+                            <div class="profile_img">
+                                <img src="{% static 'images/logoLaw.png' %}" alt="">
+                            </div>
+                            {% endif %}
+                    </li>
+
+                    <li>
+                        <h6 class="mb-1">{{user.first_name}}</h6>
+                    </li>
+                    <li class="mb-3">{{user.email}}</li>
+                    <li>
+                        <div class="dropdown-divider"></div>
+                    </li>
+                    <li class="sign_outbtn"><a href="{% url 'user_logout' %}"><iconify-icon
+                                icon="gridicons:sign-out"></iconify-icon> Sign out</a></li>
+
+
+                </ul>
+                </li>
+                <!--/ User -->
+                </ul>
+            </div>
+            <!-- Search Small Screens -->
+            <div class="navbar-search-wrapper search-input-wrapper  d-none">
+                <input type="text" class="form-control search-input container-xxl border-0" placeholder="Search..."
+                    aria-label="Search...">
+                <i class="bx bx-x bx-sm search-toggler cursor-pointer"></i>
+            </div>
+
+        </nav>
+    </div>
+</div>
+
+<section class="container-fluid bookSection">
+    <div class="History">
+        {% for data in fav_books %}
+        <div class="p-3">
+            <h5 class="pt-3">{{ data.fav_book.category.book_category }}</h5>
+            <div class="customerAnchr">
+                <a href="{% url 'BookLists' data.fav_book.id %}">
+                    <div class="odysseyimg">
+                        <img src="{{data.fav_book.image.url}}" alt="">
+                    </div>
+                </a>
+                <div class="d-flex justify-content-between align-items-center p-2">
+                    <div>
+                        <p class="my-2">{{data.fav_book.title|truncatewords:2}}</p>
+                    </div>
+
+                </div>
+
+                <!-- <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <span></span>
+                    <p>ePub</p>
+                </div>
+                <div>
+                    <span><i class="fa fa-ellipsis-v" aria-hidden="true"></i></span>
+                </div>
+            </div> -->
+            </div>
+        </div>
+
+        {% endfor %}
+    </div>
+</section>
+
+<script src="{% static 'js/jquery.js' %}"> </script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"> </script>
+<script src="{% static 'js/menu.js' %}"> </script>
+<script src="{% static 'js/main.js' %}"> </script>
+<script src="{% static 'js/dashboards-analytics.js' %}"> </script>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#open_side").click(function () {
+            side_bar();
+        });
+
+        function side_bar() {
+            var menulayout = $("#layout-menu");
+            var menubtn = $("#open_side");
+            if (menulayout.css("display") === "none") {
+                menulayout.css("display", "block");
+                menubtn.addClass("open_side");
+            } else {
+                menulayout.css("display", "none");
+                menubtn.removeClass("open_side");
+            }
+        }
+    });
+</script>
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>

@@ -1,0 +1,218 @@
+
+
+
+{% include 'lowafrecia/header.html' %}
+{% load static %}
+
+
+<style>
+  section.notification-list-detail-info {
+    margin-top: 75px;
+    padding-bottom: 417px;
+}
+.footerContent2 {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+</style>
+
+<!-- <section class="faqBanner"style="background-image:url({% static 'images/notification.png' %});">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Notification</h1>
+                <h5>Find answers to some frequently asked questions here.</h5>
+                <div class="aboutBannerBtn">
+                    <a href="#"> <button>Read More</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>  -->
+
+
+<!-- banner end -->
+<section class="notification-list-detail-info">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        {% for data in notifications %}
+        <div class="notification-list-detail-area">
+          <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="heading{{data.id}}">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{data.id}}" aria-expanded="false" aria-controls="collapse{{data.id}}" data-accordion-button="{{data.id}}">
+                  <div class="notification-detail-info-acrdn">
+                    <div class="notification-sender-img-info">
+                      <img src="{{user.profile_pic.url}}">
+                    </div>
+                    <div class="notification-sender-heading-date">
+                      <h4>{{user.email}}</h4>
+                      <p>{{data.create_at}}</p>
+                    </div>
+                  </div>
+                </button>
+              </h2>
+              <div id="collapse{{data.id}}" class="accordion-collapse collapse" aria-labelledby="heading{{data.id}}" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                  <div class="accordian-detail-info">
+                    {% if data.title %}
+                      <h3>E-book Invitation</h3>
+                      <p>Title: {{data.title}}</p>
+                      <p>Book: {{data.book.title}}</p>
+                    {% else %}
+                      <h3> E-book Notification</h3>
+                      <p>Subject: {{data.subject}}</p>
+                      <p>Message: {{data.message}}</p>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<footer class="">
+  <div class="footerContent footerContent2">
+      <div class="container">
+          <div class="row borderFotter">
+              <div class="col-lg-4 col-sm-6">
+                  <div class="footerLogoContent">
+                      <div class="footerLogo">
+                          {% for data in footer|slice:":1" %}
+                          <img src="{{data.logo.url}}" alt="">
+                      </div>
+                      <p>{{data.description}}</p>
+                      <ul class="footerIconSocial">
+                          <li><a href="{{data.facebook}}"><i class="fa fa-facebook"></i></a></li>
+                          <li><a href="{{data.twitter}}"><i class="fa fa-twitter"></i></a></li>
+                          <li><a href="{{data.instagram}}"><i class="fa fa-instagram"></i></a></li>
+                      </ul>
+                      {% endfor %}
+                  </div>
+              </div>
+              <div class="col-lg-3 col-sm-6">
+                  <div class="cateforiesContent">
+                      <h5>Categories</h5>
+                      <ul>
+                          {% for data in book_category|slice:":7"%}
+                          <li><a href="#">{{data.category__book_category}}</a></li>
+                          {% endfor %}
+                      </ul>
+                  </div>
+              </div>
+              <div class="col-lg-2 col-sm-6">
+                  <div class="cateforiesContent">
+                      <h5>Useful Link</h5>
+                      <ul>
+                          <li><a href="{% url 'home' %}">Home</a></li>
+                          <li><a href="{% url 'digitalpublishing' %}">Digital Publishing</a></li>
+                          <li><a href="{% url 'ebookstore' %}">Ebook Store</a></li>
+                          <li><a href="{% url 'indybot' %}">Indybot</a></li>
+                          {% if request.user.is_authenticated %}
+                          {% if request.user.is_student %}
+                              <li><a href="{% url 'Customer_dashboard' %}">Ebook Reader</a></li>
+                          {% else %}
+                              <li><a href="{% url 'NormalDashboard' %}">Ebook Reader</a></li>
+                          {% endif %}
+                          {% else %}
+                          <li><a href="{% url 'ebookReader' %}">Ebook Reader</a></li>
+                          {% endif %}
+                          <li><a href="{% url 'Blogs' %}">Blogs</a></li>
+                          <li><a href="{% url 'contact_us' %}">Contact Us</a></li>
+                      </ul>
+                  </div>
+              </div>
+
+              <div class="col-lg-3 col-sm-6">
+                  <div class="cateforiesContent">
+                      <h5>Newsletter</h5>
+                      <p>Get exclusive deals by signing up to our Newsletter.</p>
+                      {% if not request.user.is_authenticated %}
+                      <div class="formFooter">
+                          <div class="footerFormButton">
+                              <button onclick="window.location.href='#'" data-bs-toggle="modal"
+                              data-bs-target="#exampleModal1">SIGN UP</button>
+                          </div>
+                      </div>
+                      {% endif %}
+                  </div>
+              </div>
+          </div>
+
+          <div class="row mt-3">
+              <div class="col-md-6">
+                  <p class="copyPara">Copyright © 2023, All rights reserved. Powered by lawAfrica.</p>
+              </div>
+              <div class="col-md-6">
+                  <div class="listCopy">
+                      <ul>
+                          <li><a href="{% url 'TermConditions' %}">Terms & Conditions
+                              </a></li>
+                          <li><a href="{% url 'PrivacyPolicys' %}">Privacy Policy</a></li>
+                          <!-- <li><a href="#">Cookie Policy</a></li> -->
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</footer>
+
+
+<script src="{% static 'lowAferica/js/jquery.min.js' %}">
+</script>
+<script src="{% static 'lowAferica/js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'lowAferica/js/bootstrap.bundle.min.js' %}"> </script>
+<script src="{% static 'lowAferica/js/custom.js' %}"> </script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+      var closeButton = document.querySelector("#message-popup .close");
+
+      closeButton.addEventListener("click", function () {
+          $('#message-popup').modal('hide');
+      });
+  });
+</script>
+
+
+
+
+
+
+<script>
+  const accordionButtons = document.querySelectorAll('[data-accordion-button]');
+  accordionButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const targetId = button.getAttribute('data-accordion-button');
+      const targetCollapse = document.getElementById(`collapse${targetId}`);
+      accordionButtons.forEach(otherButton => {
+        if (otherButton.getAttribute('data-accordion-button') !== targetId) {
+          const otherTargetId = otherButton.getAttribute('data-accordion-button');
+          const otherTargetCollapse = document.getElementById(`collapse${otherTargetId}`);
+          otherTargetCollapse.classList.remove('show');
+          otherButton.setAttribute('aria-expanded', 'false');
+        }
+      });
+      if (targetCollapse.classList.contains('show')) {
+        targetCollapse.classList.remove('show');
+        button.setAttribute('aria-expanded', 'false');
+      } else {
+        targetCollapse.classList.add('show');
+        button.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+</script>
+
+

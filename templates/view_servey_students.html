@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    .card-footer.profileBtnEmp {
+        text-align: center;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .card-footer.profileBtnEmp a {
+        background: #b13b50;
+        border: unset;
+        color: white;
+        font-size: 17px;
+        font-weight: 500;
+        padding: 7px 20px;
+        border-radius: 5px;
+    }
+
+    .profileFormEmployee input {
+        border: 0px solid #d3c6c8;
+        
+    }
+
+    .row.profileFormEmployee label {
+        color: black;
+    }
+
+    .form-group.imgprofile img {
+        height: 200px;
+        width: 200px;
+        border-radius: 50%;
+    }
+
+    .user-admin-profile-img {
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+    }
+
+    span.readBookkView {
+
+        padding: 4px 4px;
+
+    }
+    .question_font{
+        font-weight: 700;
+    }
+</style>
+
+
+
+
+
+<section class="mt-5 mainPage">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab"
+                        tabindex="0">
+                        <!-- <form method="post" enctype="multipart/form-data" id="surveyForm">
+                            {% csrf_token %}
+                            <div class="row">
+                                {% for data in data %}
+                                <div class="col-md-8">
+                                    <div class="user-detail-input-box">
+                                        <div class="row profileFormEmployee">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Question & Answer</label>
+                                                    <input type="text" class="form-control" id="exampleInputEmail1"
+                                                        name="question" value="{{data.question}}" required=""
+                                                        readonly><br>
+
+                                                    <input type="text" class="form-control" id="exampleInputEmail1"
+                                                        name="answer1" value="{{data.answer1}}" required="" readonly>
+
+                                                    <input type="text" class="form-control" id="exampleInputEmail1"
+                                                        name="answer2" value="{{data.answer2}}" required="" readonly>
+
+                                                    <input type="text" class="form-control" id="exampleInputEmail1"
+                                                        name="answer3" value="{{data.answer3}}" required="" readonly>
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </form> -->
+
+
+
+                        <form method="post" enctype="multipart/form-data" id="surveyForm">
+                            {% csrf_token %}
+                            <div class="row">
+                                {% for data in data %}
+                                <div class="col-md-8">
+                                    <div class="user-detail-input-box">
+                                        <div class="row profileFormEmployee">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <!-- <label for="exampleInputEmail1">Question & Answer</label> -->
+                                                    <input type="text" class="form-control question_font" id="exampleInputEmail1"
+                                                        name="question" value="Q- {{data.question}}" required="" readonly><br>
+                        
+                                                    {% if data.answer1 %}
+                                                    <input type="text" class="form-control" id="exampleInputEmail1"
+                                                        name="answer1" value="A- {{data.answer1}}" required="" readonly>
+                                                    {% endif %}
+                        
+                                                    {% if data.answer2 %}
+                                                    <input type="text" class="form-control" id="exampleInputEmail1"
+                                                        name="answer2" value="A- {{data.answer2}}" required="" readonly>
+                                                    {% endif %}
+                        
+                                                    {% if data.answer3 %}
+                                                    <input type="text" class="form-control" id="exampleInputEmail1"
+                                                        name="answer3" value="A- {{data.answer3}}" required="" readonly>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </form>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var questionInput = document.querySelector('[name="question"]');
+        var answer1Input = document.querySelector('[name="answer1"]');
+        var answer2Input = document.querySelector('[name="answer2"]');
+        var answer3Input = document.querySelector('[name="answer3"]');
+
+        questionInput.addEventListener('change', function () {
+            // Check the selected answer and hide/show corresponding input fields
+            if (questionInput.value === '{{data.answer1}}') {
+                answer2Input.style.display = 'none';
+                answer3Input.style.display = 'none';
+            } else if (questionInput.value === '{{data.answer2}}') {
+                answer1Input.style.display = 'none';
+                answer3Input.style.display = 'none';
+            } else if (questionInput.value === '{{data.answer3}}') {
+                answer1Input.style.display = 'none';
+                answer2Input.style.display = 'none';
+            } else {
+                // Show all answer fields if no specific option is selected
+                answer1Input.style.display = 'block';
+                answer2Input.style.display = 'block';
+                answer3Input.style.display = 'block';
+            }
+        });
+    });
+</script>

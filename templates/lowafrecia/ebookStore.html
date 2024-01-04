@@ -1,0 +1,194 @@
+
+
+
+
+{% extends 'lowafrecia/base.html' %}
+{% load static %}
+{% block content %}
+
+
+{% for data in book_banner|slice:":1"%}
+<section class="aboutSecBanner" style="background-image: url({{data.banner_image.url}})">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{{data.heading}}</h1>
+                <h5>{{data.description}}</h5>
+                <!-- <div class="aboutBannerBtn">
+                    <a href="#"> <button>Read More</button></a>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</section>
+{% endfor %}
+
+
+
+<!-- banner end -->
+<section class="textbookPlatformSec">
+    <div class="container">
+        <div class="row colorGrad">
+            <div class="col-lg-6 col-md-6">
+                <div class="textBookPlatformText">
+                    <h5>lawAfrica: A proven high scale digital textbook platform</h5>
+                    <small>More than 1 Million eBooks delivere</small>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="seeachplatformBook">
+                        <div class="requestDemo">
+                            <a href="{% url 'contact_us' %}"> Request a Demo</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+<section class="aboutbookSec">
+    <div class="container">
+        <div class="row">
+            {% for data in easy_inte|slice:":1"%}
+            <div class="col-lg-6">
+                <div class="aboutContent pr30">
+                    <h1> <span class="theBook">{{data.heading}}</span>{{data.title}}</h1>
+                    <p> <span class="paraTextMid">{{data.span}}</span>{{data.description}}</p>
+                    <div class="FounBtn">
+                        <a href="{% url 'contact_us' %}">
+                            <button>Request a Demo <span><i class="fa fa-long-arrow-right"></i></span></button></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="caterVarious">
+                    <img src="{{data.image.url}}" alt="">
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+
+{% for data in fully_responsive %}
+<section id="call-to-action" class="call-to-action" style="    background: linear-gradient(rgba(27, 47, 69, 0.8), rgba(27, 47, 69, 0.8)), url({{data.image.url}}) center center;">
+    <div class="container aos-init aos-animate" data-aos="fade-up">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 text-center">
+                <h3>{{data.heading}}</h3>
+                <p>{{data.description}}</p>
+                <div class="FounBtn">
+                    <a href="{% url 'contact_us' %}">
+                        <button>Request a Demo <span><i class="fa fa-long-arrow-right"></i></span></button></a>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</section>
+{% endfor %}
+
+
+<section class="aboutbookSec">
+    <div class="container">
+        <div class="row">
+            {% for data in social_network|slice:":1"%}
+            <div class="col-lg-6">
+                <div class="aboutContent pr30">
+                    <h1>{{data.heading}}<span class="theBook">{{data.title}}</span></h1>
+                    <p> <span class="paraTextMid">{{data.span}}</span> {{data.description1}}</p>
+                    <p class="mt-2">{{data.description2}}</p>
+                    <div class="FounBtn">
+                        <a href="{% url 'contact_us' %}">
+                            <button>Request a Demo <span><i class="fa fa-long-arrow-right"></i></span></button></a>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-lg-6">
+                <div class="caterVarious">
+                    <img src="{{data.image.url}}" alt="">
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ************************************************ -->
+{% if not request.user.is_authenticated %}
+{% for data in learn|slice:":1"%}
+{% if data.image %}
+<section class="homeCompare" style="background-image:url('{{data.image.url}}')">
+{% endif %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h1>{{data.heading}}</h1>
+                <p>{{data.description}}</p>
+                <div class="SeecourseBtnParent">
+                    <div class="seeCoursebtn mr-3">
+                        <a href="" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal1">See All Books</a>
+                    </div>
+                    <div class="seeCoursebtn">
+                        <a href="{% url 'contact_us' %}">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endfor %}
+{% endif %}
+
+
+
+
+
+{% if not request.user.is_authenticated %}
+<section class="faqSec">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                {% for data in faq|slice:":1"%}
+                <h2 class="mb-4">{{data.heading}}</h2>
+                <!-- <h5 class="lead mb-5">{{data.description}}</h5> -->
+                {% endfor %}
+                <div class="accordion" id="faqAccordion">
+                    {% for data in faq %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading{{data.id}}">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{data.id}}" aria-expanded="false" aria-controls="collapse{{data.id}}">
+                                {{data.question}}
+                            </button>
+                        </h2>
+                        <div id="collapse{{data.id}}" class="accordion-collapse collapse" aria-labelledby="heading{{data.id}}" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">{{data.ans}}</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-lg-5">
+                {% for data in faq|slice:":1"%}
+                <div class="faqImg">
+                    <img src="{{data.image.url}}" alt="">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% endblock %}

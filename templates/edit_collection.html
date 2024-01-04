@@ -1,0 +1,130 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+    body {
+        font-family: Arial;
+    }
+
+   
+    .tab {
+        overflow: hidden;
+        border: 1px solid #ccc;
+        background-color: #f1f1f1;
+    }
+
+   
+    .tab button {
+        background-color: inherit;
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        transition: 0.3s;
+        font-size: 17px;
+    }
+
+    
+    .tab button:hover {
+        background-color: #ddd;
+    }
+
+  
+    .tab button.active {
+        background-color: #ccc;
+    }
+
+   
+    .tabcontent {
+        display: none;
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+        border-top: none;
+    }
+
+    h2.create {
+        color: white;
+        font-family: auto;
+        background-color: #382250fa;
+        width: 125px;
+    }
+    .profilebg{
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 20px;
+    }
+</style>
+
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<div class="tab-content mainPage">
+    <div id="menu1" class="container profilebg tab-pane active"><br>
+        <h3> Book Collection Details</h3>
+        <form class="row" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="col-md-6 form-group">
+                <label for="name">Collection:</label>
+                <input type="text" class="form-control" id="name" placeholder="Enter Name" name="name" value='{{ data.name }}'>
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label for="image">Cover Image</label>
+                <input type="file" class="form-control" id="image" name="image">
+            </div>
+
+            <div class="container-fluid">
+                <div class="card shadow mb-4">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="example">
+                                <thead>
+                                    <tr>
+                                        <th>Sr No</th>
+                                        <th>Collection</th>
+                                        <th>Title</th>
+                                        <th>Authors</th>
+                                        <th>Price</th>
+                                        <th>Pub Date</th>
+                                        <th>Category</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for book in book %}
+
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>
+                                            <input type="checkbox" name="books" value="{{ book.id }}">
+                                        </td>
+                                        <td>{{ book.title }}</td>
+                                        <td>{{ book.author }}</td>
+                                        <td>{{ book.price }}</td>
+                                        <td>{{ book.publication_date }}</td>
+                                        <td>{{ book.category.book_category }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 form-group align-right">
+                <button type="submit" class="btn btn-primary mt-0">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

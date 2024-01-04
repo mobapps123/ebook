@@ -1,0 +1,46 @@
+
+{% extends 'lowafrecia/base.html' %}
+{% load static %}
+{% block content %}
+
+
+<section class="bookCollection pb-50">
+    <div class="container">
+        <div class="row ">
+            <div class="col-lg-12 ">
+                <div class="borderBottom">
+                    <p>My Book Collection</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            {% for data in collection_all %}
+            <div class="col-lg-4">
+                <div class="pt50">
+                    <div class="bookCollectionCard">
+                        <a href="{% url 'collections' data.id %}">
+                            <div class="BookCollectionImg">
+                                {% if data.image %}
+                                <img src="{{data.image.url}}" alt="">
+                                {% endif %}
+                            </div>
+                            <div class="underNeglligence">
+                                <h4>{{data.name}}</h4>
+                            </div>
+                            <div class="timeCollection">
+                                <div>
+                                    <p>{{data.created_at}}</p>
+                                </div>
+                                <div>
+                                    <p>1 <span class="text-muted">step</span></p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

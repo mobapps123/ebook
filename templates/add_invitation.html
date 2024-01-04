@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<style>
+    .invitationFormRow {
+        display: flex;
+        justify-content: center;
+    }
+    .row.invitationFormRow label {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 17px;
+        font-weight: 500;
+    }
+
+    .row.invitationFormRow select {
+        padding: 10px;
+        font-size: 17px;
+        border: 2px solid #c50707;
+        margin-bottom: 10px;
+        width: 350px;
+        background: white;
+    }
+
+    .row.invitationFormRow input {
+        padding: 10px;
+        font-size: 17px;
+        border: 2px solid #c50707;
+        margin-bottom: 10px;
+        width: 350px;
+        background: white;
+    }
+
+    .row.invitationFormRow button {
+        background: #ab0000;
+        border: unset;
+        margin-top: 17px;
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+        padding: 10px 25px;
+        border-radius: 5px;
+    }
+</style>
+
+<div class="container-fluid mainPage">
+    <div class="container rounded bg-white mt-2 mb-2">
+        <div class="row">
+            <div class="col-md-12 border-right">
+                <div class="p-3 py-5">
+                    <div class="card-header d-flex justify-content-between py-3">
+                        <h1 style="text-align: center;">Send Book Invitation</h1>
+                    </div>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="btn-group">
+                            <button type="button" class="dropbook dropdown-toggle carsSelect" data-bs-toggle="dropdown" aria-expanded="false">
+                                Select User
+                            </button>
+                            <ul class="dropdown-menu">
+                                {% for user in user %}
+                                    <li class="px-3">
+                                        <input type="checkbox" name="invited_user" value="{{ user.email }}">
+                                        <label class="mb-0" for="user{{ user.id }}">{{ user.email }}</label>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div><br><br>
+
+                        <div class="form-group">
+                            <button type="button" class="dropbook dropdown-toggle carsSelect" data-bs-toggle="dropdown" aria-expanded="false">
+                                Select Book
+                            </button>
+                            <ul class="dropdown-menu">
+                                {% for book in book %}
+                                    <li class="px-3">
+                                        <input type="checkbox" name="book" value="{{book.title}}">
+                                        <label class="mb-0" for="book{{ book.id }}">{{book.title}}</label>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputUsername1">Message:</label>
+                            <input type="text" class="form-control" name="title" placeholder="Message" required="">
+                        </div>
+
+                        <div class="row" style="text-align: center;">
+                            <button type="submit" class="btn btn-primary mr-2">Send Invitation</button>
+                        </div>
+                    </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- <div class="container-fluid" style="height:100%; display:flex; justify-content:center;align-items: center;">
+    <div class="container rounded bg-white mt-2 mb-2">
+        <div class="row invitationFormRow">
+            <div class="col-md-6 border-right">
+                <div class="p-3 py-5">
+                    <div class="card-header d-flex justify-content-between py-3">
+                        <h1 style="text-align: center;"> Send Book Invitation</h1>
+                    </div>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="form-group">
+                            <label for="invited_user">Invited User:</label>
+                            <select name="invited_user" id="invited_user" required>
+                                <option value="" selected disabled>Select User</option>
+                                {% for user in user %}
+                                <option value="{{ user.email }}">{{ user.email }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cars">Book Name:</label>
+                            <select name="book" id="cars">
+                                <option value="">Select Book</option>
+                                {% for book in book %}
+                                <option value="{{book.title}}">{{book.title}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputUsername1">Message:</label>
+                            <input type="text" class="form-control" name="title" placeholder="Message" required="">
+                        </div>
+
+                        <div class="row" style="text-align: center;">
+                            <button type="submit" class="btn btn-primary mr-2">Send Invitation</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+{% endblock %}

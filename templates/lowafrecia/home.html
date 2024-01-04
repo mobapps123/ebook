@@ -1,0 +1,518 @@
+{% extends 'lowafrecia/base.html' %}
+{% load static %}
+{% block content %}
+<style>
+    .modal-dialog {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .m50 {
+        margin-top: 50px;
+    }
+
+    .icon-wrapper {
+        text-align: center;
+    }
+
+    .icon-wrapper span i {
+        font-size: 40px;
+        color: #fff;
+    }
+
+    .underNeglligence h5 {
+        color: #3a3939;
+    }
+
+    .trusted {
+        text-align: center;
+        color: #88122b;
+        font-family: 'FontAwesome';
+        font-size: 30px;
+    }
+
+    section.bookCollection.pb50 {
+        padding-top: 50px;
+    }
+    .signup a{
+        border: 1px solid var(--maroon);
+        border-radius: 5px;
+        background: var(--maroon);
+        padding: 5px 20px;
+        color: #fff;
+        margin: 0 10px;
+    }
+</style>
+<!-- navbar end here -->
+
+
+
+<div id="message-popup" class="modal fade " tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {% if messages %}
+                <ul class="messages ps-0">
+                    {% for message in messages %}
+                    <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                <!-- <div class="d-flex justify-content-center signup">
+                    <a href="{% url 'login' %}">Corporate Login</a>
+                    <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal">User Login</a>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</div>
+{% for data in home_banner %}
+<section id="hero" class="d-flex align-items-center ">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 d-flex flex-column justify-content-center pt-4 pt-lg-0 order-2 order-lg-1 "
+                data-aos="fade-up" data-aos-delay="200">
+                <h1>{{data.heading}}</h1>
+                <h2>{{data.description}}</h2>
+                {% if not request.user.is_authenticated %}
+                <div class="d-flex justify-content-center justify-content-lg-start mb-4">
+                    <a href="#about" class="btn-get-started scrollto buttonBannerHome" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal1">Get Started</a>
+                </div>
+                {% endif %}
+            </div>
+            <div class="col-lg-6 order-1 order-lg-2 hero-img  ">
+                <div class="bannerHome">
+                    <img src="{{data.image.url}}" class="img-fluid animated" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endfor %}
+<!-- banner end-->
+
+<!-- data collection -->
+
+
+<section class="bookCollection ">
+    <div class="container">
+        <div class="row ">
+            <div class="col-lg-12 ">
+                <div class="borderBottom">
+                    <h4>Most popular books</h4>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            {% for data in popular_books %}
+            <div class="col-lg-4">
+                <div class="pt50">
+                    <div class="bookCollectionCard">
+                        <a href="{{ data.book_url }}">
+
+                            <div class="BookCollectionImg">
+                                <img src="http://69.49.235.253:8060/media/{{data.books__image}}" alt="Image Alt Text">
+                            </div>
+                            <div class="underNeglligence">
+                                <h5>{{ data.books__category__book_category }}</h5>
+                                <p>{{ data.books__title|truncatewords:10|safe }}</p>
+                            </div>
+                            <div class="timeCollection">
+                                <p>
+                                    {% if data.books__created_at == data.books__updated_at %}
+                                        Created: {{ data.books.created_at }}
+                                    {% else %}
+                                        Updated: {{ data.books__updated_at }}
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<section class="bookCollection ">
+    <div class="container">
+        <div class="row ">
+            <div class="col-lg-12 ">
+                <div class="borderBottom">
+                    <h4>Book Categories</h4>
+                    <div class="collectionView">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            {% for data in books_category %}
+            <div class="col-lg-4">
+                <div class="pt50">
+                    <div class="bookCollectionCard">
+                        <a href="{% url 'BookDetail' data.books.id %}">
+                            <div class="BookCollectionImg">
+                                {% if data.books.image %}
+                                <img src="http://69.49.235.253:8060/media/{{data.books.image}}"
+                                    alt="Image">
+                                {% endif %}
+                            </div>
+                            <div class="underNeglligence">
+                                <h5>{{ data.books.category.book_category }}</h5>
+                                <p>{{ data.books.title|truncatewords:10|safe }}</p>
+                            </div>
+                            <div class="timeCollection">
+                                <div>
+                                    <p>
+                                        {% if data.books.created_at == data.books.updated_at %}
+                                            Created: {{ data.books.created_at }}
+                                        {% else %}
+                                            Updated: {{ data.books.updated_at }}
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- <div>
+                                <p>{{ data.total_visits }}<span class="text-muted"> Visit</span></p>
+                            </div> -->
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="collectionView">
+            <a href="{% url 'StudentsLibrary' %}">View All</a>
+        </div>
+    </div>
+</section>
+
+
+
+
+<!-- 
+<section class="bookCollection pb50">
+    <div class="container">
+        <div class="row ">
+            <div class="col-lg-12 ">
+                <div class="borderBottom">
+                    <h4>Newest Books</h4>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            {% for data in newest_books%}
+            <div class="col-lg-4">
+                <div class="pt50">
+                    <div class="bookCollectionCard">
+                        <a href="{% url 'BookDetail' data.id %}">
+                            <div class="BookCollectionImg">
+                                {% if data.image %}
+                                <img src="{{data.image.url}}" alt="">
+                                {% endif %}
+                            </div>
+                            <div class="underNeglligence">
+                                <h5>{{data.category.book_category}}</h5>
+                                <p>{{data.description|truncatewords:10|safe}}</p>
+                            </div>
+                            <div class="timeCollection">
+                                <div>
+                                    <p>{{data.created_at}}</p>
+                                </div>
+                                <div>
+                                    <p>{{user_visit}}<span class="text-muted"> Visit</span></p>
+                                </div> 
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="collectionView">
+            <a href="{% url 'ebookReader' %}">View All</a>
+        </div>
+    </div>
+    </div>
+</section> -->
+
+
+
+
+
+<section class="kitabooHelp">
+    <div class="container">
+        <div class="row text-center">
+            {% for data in how_does|slice:":1"%}
+            <h2 class="pb-4">{{data.top_heading}}</h2>
+            {% endfor %}
+        </div>
+        <div class="row pt-50">
+            {% for data in how_does %}
+            <div class="col-lg-4 col-md-4 col-sm-6 col-12 m50">
+                <div class="bookHelpCard">
+                    <div class="helpcard">
+                        {% if data.image %}
+                        <img src="{{data.image.url}}" alt="">
+                        {% endif %}
+                    </div>
+                    <h2>{{data.heading}}</h2>
+                    <p>{{data.description}}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="textbookPlatformSec">
+    <div class="container">
+        <div class="row colorGrad">
+            <div class="col-lg-6 col-md-6">
+                <div class="textBookPlatformText">
+                    <h5>lawAfrica: A proven high scale digital textbook platform</h5>
+                    <small>More than 1 Million eBooks delivere</small>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="seeachplatformBook">
+                        {% comment %} <div class="searchInputPlatform">
+                            <input type="email" placeholder="Enter your business email" name="email" required="">
+                        </div> {% endcomment %}
+                        <div class="requestDemo">
+                            <a href="{% url 'contact_us' %}"> Request a Demo</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="eBookExpSec">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5">
+                {% for data in ebook_exp|slice:":1"%}
+                <p class="eBookExp">{{data.heading}}</p>
+                <p class="readList">{{data.title}}</p>
+                <p>{{data.description|truncatewords:15}}</p>
+                {% endfor %}
+
+                <div class="row">
+                    {% for data in ebook_exp %}
+                    <div class="col-lg-6">
+                        <div class="parentCreate mt-3">
+                            <div class="create">
+                                {% if data.icon %}
+                                <img src="{{data.icon.url}}" alt="">
+                                {% endif %}
+                            </div>
+                            <div>
+                                <p>{{data.sub_title}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+            {% for data in ebook_exp|slice:":1"%}
+            <div class="col-lg-7">
+                <div class="img1">
+                    {% if data.image1 %}
+                    <img src="{{data.image1.url}}" alt="">
+                    {% endif %}
+                </div>
+                <div class="img2">
+                    {% if data.image2 %}
+                    <img src="{{data.image2.url}}" alt="">
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    </div>
+</section>
+
+
+{% for data in our_service|slice:":1" %}
+{% if data.background_image %}
+<div class="site-section" style="background-image: url({{data.background_image.url}});">
+    {% endif %}
+    <div class="container">
+        <div class="row mb-5 justify-content-center text-center">
+            <div class="col-lg-4">
+                <span class="caption">{{data.top_heading}}</span>
+                <h2 class="title-with-line text-center mb-5">{{data.heading}}</h2>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row">
+            {% for data in our_service %}
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-1">
+                    <div class="icon-wrapper ">
+                        <span><i class="{{data.icon}}"></i></span>
+                    </div>
+                    <div class="feature-1-content">
+                        <h1>
+                        </h1>
+                        <h2>{{data.sub_heading|truncatewords:1}}</h2>
+                        <p>{{data.description|truncatewords:5}}</p>
+                        <p><a href="#" class="btn btn-primary px-4 ">Learn More</a></p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+<section class="owlSec pt-80 pb-80">
+    <div class="container">
+        <div class="row">
+            <h3 class="trusted"> Trusted by Leading Publishers</h3>
+            <div class="owl-carousel">
+                {% for data in our_partner %}
+                <div>
+                    <div class="owlHome">
+                        <img src="{{data.image.url}}" alt="">
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+</section>
+
+
+<section class="eBookExpSec" style="background: #e6e5e738;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7">
+
+                {% for data in studio|slice:":1"%}
+                <div class="img1">
+                    <img src="{{data.image1.url}}" alt="">
+                </div>
+                <div class="img3">
+                    <img src="{{data.image2.url}}" alt="">
+                </div>
+            </div>
+            <div class="col-md-5">
+                <p class="eBookExp">{{data.heading}}</p>
+                <p class="readList">{{data.title}}</p>
+                <p>{{data.description}}</p>
+                {% endfor %}
+                <div class="row">
+                    {% for data in studio %}
+                    <div class="col-lg-6">
+                        <div class="parentCreate mt-3">
+                            <div class="create">
+                                {% if data.icon %}
+                                <img src="{{data.icon.url}}" alt="">
+                                {% endif %}
+                            </div>
+                            <div>
+                                <p>{{data.icon_title}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% if not request.user.is_authenticated %}
+{% for data in learn|slice:":1"%}
+{% if data.image %}
+<section class="homeCompare" style="background-image:url('{{data.image.url}}')">
+    {% endif %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h1>{{data.heading}}</h1>
+                <p>{{data.description}}</p>
+                <div class="SeecourseBtnParent">
+                    <div class="seeCoursebtn mr-3">
+                        <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal1">See All Books</a>
+                    </div>
+                    <div class="seeCoursebtn">
+                        <a href="{% url 'contact_us' %}">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endfor %}
+{% endif %}
+
+<!-- faq section start here -->
+{% if not request.user.is_authenticated %}
+<section class="faqSec">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                {% for data in faq|slice:":1"%}
+                <h2 class="mb-4">{{data.heading}}</h2>
+                <!-- <h5 class="lead mb-5">{{data.description}}</h5> -->
+                {% endfor %}
+                <div class="accordion" id="faqAccordion">
+                    {% for data in faq %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading{{data.id}}">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse{{data.id}}" aria-expanded="false"
+                                aria-controls="collapse{{data.id}}">
+                                {{data.question}}
+                            </button>
+                        </h2>
+                        <div id="collapse{{data.id}}" class="accordion-collapse collapse"
+                            aria-labelledby="heading{{data.id}}" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">{{data.ans}}</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-lg-5">
+                {% for data in faq|slice:":1"%}
+                <div class="faqImg">
+                    <img src="{{data.image.url}}" alt="">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+<!-- faq section end here -->
+
+<script>
+    $(document).ready(function () {
+        // Check if there are messages to display
+        if ($('.messages li').length > 0) {
+            $('#message-popup').modal('show');
+        }
+    });
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,212 @@
+{% extends 'base.html' %} 
+{% block content %}
+{% load static %}
+<style>
+div#example1_filter {
+    padding-left: 273px !important;
+}
+ul.pagination {
+    padding-left: 371px !important;
+}
+
+  .active-switch {
+	position: relative;
+	display: block;
+	width: 87px;
+	height: 30px;
+	padding: 3px;
+	margin: 0 10px 10px 0;
+	background: linear-gradient(to bottom, #eeeeee, #FFFFFF 25px);
+	background-image:  -webkit-linear-gradient(top, #eeeeee, #FFFFFF 25px);
+	border-radius: 18px;
+	box-shadow: inset 0 -1px white, inset 0 1px 1px rgba(0, 0, 0, 0.05);
+	cursor: pointer;
+	box-sizing:content-box;
+}
+.active-switch-input {
+	position: absolute;
+	top: 0;
+	left: 0;
+	opacity: 0;
+	box-sizing:content-box;
+}
+.active-switch-label {
+	position: relative;
+	display: block;
+	height: inherit;
+	font-size: 10px;
+	text-transform: uppercase;
+	background: #265ec9;
+	border-radius: inherit;
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.15);
+	box-sizing:content-box;
+}
+.active-switch-label:before, .active-switch-label:after {
+	position: absolute;
+	top: 50%;
+	margin-top: -.5em;
+	line-height: 1;
+	-webkit-transition: inherit;
+	-moz-transition: inherit;
+	-o-transition: inherit;
+	transition: inherit;
+	box-sizing:content-box;
+}
+.active-switch-label:before {
+	content: attr(data-off);
+	right: 11px;
+	color: #aaaaaa;
+	text-shadow: 0 1px rgba(255, 255, 255, 0.5);
+}
+.active-switch-label:after {
+	content: attr(data-on);
+	left: 11px;
+	color: #FFFFFF;
+	text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+	opacity: 0;
+}
+.active-switch-input:checked ~ .active-switch-label {
+	background: #4691ce;
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
+}
+.active-switch-input:checked ~ .active-switch-label:before {
+	opacity: 0;
+}
+.active-switch-input:checked ~ .active-switch-label:after {
+	opacity: 1;
+}
+.active-switch-handle {
+	position: absolute;
+	top: 4px;
+	left: 4px;
+	width: 28px;
+	height: 28px;
+	background: linear-gradient(to bottom, #FFFFFF 40%, #f0f0f0);
+	background-image: -webkit-linear-gradient(top, #FFFFFF 40%, #f0f0f0);
+	border-radius: 100%;
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+.active-switch-handle:before {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -6px 0 0 -6px;
+	width: 12px;
+	height: 12px;
+	background: linear-gradient(to bottom, #eeeeee, #FFFFFF);
+	background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF);
+	border-radius: 6px;
+	box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
+}
+.active-switch-input:checked ~ .active-switch-handle {
+	left: 61px;
+	box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+ 
+/* Transition
+========================== */
+.active-switch-label, .active-switch-handle {
+	transition: All 0.3s ease;
+	-webkit-transition: All 0.3s ease;
+	-moz-transition: All 0.3s ease;
+	-o-transition: All 0.3s ease;
+}
+.btnImport a {
+  margin-left: 74px;
+  /* margin-top: 46px; */
+  position: relative;
+  top: 26px;
+  background: #6c061a;
+  color: #ffffff !important;
+  font-size: 15px;
+  padding: 5px 10px;
+  z-index: 999999;
+}
+.btnImport a:hover{
+  text-decoration: none;
+}
+</style>
+                <!-- Begin Page Content -->
+                <div class="container-fluid mainPage">
+                <div class="card shadow mb-4">
+                    <div class="card-header d-flex justify-content-between py-3">
+                        <h6 class="m-0 font-weight-bold text-primary"> Enduser List</h6>
+                        <!-- <a href="{% url 'organization' %}"><button type="button" class="btn btn-primary">Add Organization</button></a> -->
+                    </div>
+            
+                    <div class="card-body">
+                      
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="example1">
+                                <thead>
+                                    <tr>
+                                        <th>Sr No</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Email</th>
+                                        <th>Message</th>
+                                        <!-- <th>Created at</th> -->
+                                        <th>Action</th>
+                                        <!-- <th>Status</th> -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for org_data in data %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ org_data.first_name }}</td>
+                                        <td>{{ org_data.last_name }}</td>
+                                        <td>{{ org_data.business_email }}</td>
+                                        <td>{{ org_data.message }}</td>
+                                        <!-- <td>{{ org_data.created_at }}</td> -->
+                                        <td>
+                                            <div class="d-flex">
+                                              
+                                                <div class="edit-child">
+                                                    <a href="{% url 'Demo_delete' org_data.id %}" onclick="return confirm('Are You Sure')"><i class="icon-edit fas fa-trash"></i></a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <!-- <td>
+                                            <label class="active-switch">
+                                                <input class="active-switch-input" type="checkbox" {% if org_data.is_active %} checked {% endif %} id="status{{ org_data.id }}" onclick="Userstatus('{{ org_data.id }}')"/>
+                                                <span class="active-switch-label" data-on="Active" data-off="Inactive"></span>
+                                                <span class="active-switch-handle"></span>
+                                            </label>
+                                        </td> -->
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    <!-- End of Page Wrapper -->
+    <script>
+    function Userstatus(id)
+     {
+      if ($("#status" + id).is(":checked")) {
+        Userstatus = "True";
+      } else {
+        Userstatus = "False";
+      }
+      $.ajax({
+        type : 'POST',
+        url : '/Admin/Active-Inactive/',
+        data : {
+          id : id,
+          Userstatus:Userstatus,
+          csrfmiddlewaretoken:'{{ csrf_token }}'
+        },
+        success : function(data) {
+          location.reload();
+        }
+      });
+    }
+    </script>
+{% endblock %}
+
+

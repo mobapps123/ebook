@@ -1,0 +1,209 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lawAfrica</title>
+    <!-- <link rel="icon" type="image/x-icon" href="{% static 'images/logo.jpeg' %}"> -->
+    <!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
+    <!-- Add Bootstrap CSS -->
+
+
+    <!-- Add Bootstrap JavaScript and jQuery (optional) -->
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Include Bootstrap CSS and JavaScript -->
+
+
+
+
+
+    <link href="{% static 'lowAferica/css/bootstrap-icons.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'lowAferica/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'lowAferica/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'lowAferica/css/responsive.css' %}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'lowAferica/css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'lowAferica/css/owl.theme.default.min.css' %}">
+    <script src="https://cdn.ckeditor.com/ckeditor5/12.0.0/classic/ckeditor.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
+    <style>
+        .active12 {
+            color: #9d122a !important;
+        }
+    </style>
+
+</head>
+
+<body>
+    <!-- {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %} -->
+
+    <!-- navbar start here -->
+    <header id="header" class="fixed-top">
+        <div class="container d-flex align-items-center justify-content-between">
+
+            <!-- <a href="{% url 'home' %}"><img height="60" src="{% static 'images/logoLaw.png' %}"
+                    alt=""></a> -->
+                    
+            {% if request.user.is_authenticated %}
+            {% if request.user.is_enduser %}
+                <a href="{% url 'NormalDashboard' %}" class="app-brand-link">
+                    <span class="app-brand-logo demo">
+                        <img height="60" src="{% static 'images/logoLaw.png' %}" alt="">
+                    </span>
+                </a>
+            {% elif request.user.is_student %}
+                <a href="{% url 'Customer_dashboard' %}" class="app-brand-link">
+                    <span class="app-brand-logo demo">
+                        <img height="60" src="{% static 'images/logoLaw.png' %}" alt="">
+                    </span>
+                </a>
+            {% else %}
+            {% endif %}
+        {% else %}
+            <a href="{% url 'home' %}">
+                <img height="60" src="{% static 'images/logoLaw.png' %}" alt="">
+            </a>
+        {% endif %}
+            <!-- Uncomment below if you prefer to use an image logo -->
+            <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <!-- <li><a class="nav-link scrollto {{active}}" href="{% url 'home' %}">Home</a></li> -->
+                    <!-- <li><a class="nav-link scrollto" href="AboutUs.html">About Us</a></li> -->
+                    <!-- <li><a class="nav-link scrollto {{active1}}" href="{% url 'digitalpublishing' %}">Digital Publishing</a></li>
+                    <li class="dropdown"><a href="{% url 'ebookstore' %}"><span class="{{active6}}">Ebook Store</span> </a>
+                    </li>
+                    
+                    <li><a class="nav-link scrollto {{active2}}" href="{% url 'indybot' %}">IndyBot</a></li>
+                    <li><a class="nav-link scrollto {{active3}}" href="{% url 'ebookReader' %}">Ebook Reader</a></li>
+                   
+                    <li class="dropdown {{active4}}"><a href="#"><span>Tools</span> <i class="bi bi-chevron-down"></i></a>
+                        <ul>
+                            <li><a href="{% url 'Blogs' %}">Blog</a></li>
+                         </ul>
+                    </li>
+
+                    <li><a class="nav-link scrollto {{active5}}" href="{% url 'contact_us' %}">Contact Us</a></li> -->
+                    {% if not request.user.is_authenticated %}
+                    <li><a type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                            class="getstarted scrollto" href="#">Login</a></li>
+                    <!-- Button trigger modal -->
+                    <li><a type="button" data-bs-toggle="modal" data-bs-target="#exampleModal1"
+                            class="getstarted scrollto" href="#">Signup</a></li>
+
+                    {% endif %}
+
+                    {% if request.user.is_authenticated %}
+                    <!-- <li> <a id="IconNotification" type=" " class="notificationBell" href="{% url 'notification' %}"><i
+                                class="fa fa-bell" aria-hidden="true"></i> {{book_invitations}}
+                        </a></li> -->
+
+                    <li><a id="myButton" type="button" class="getstarted scrollto"
+                            href="{% url 'profile' %}">Profile</a></li>
+                    <li><a id="myButtonLoginOut" type="button" class="getstarted scrollto"
+                            href="{% url 'user_logout' %}">Logout</a></li>
+                    {% endif %}
+                </ul>
+                <i class="bi mobile-nav-toggle bi-list"></i>
+            </nav><!-- .navbar -->
+
+        </div>
+    </header>
+    <!-- modal login -->
+
+
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+
+    <div class="modal fade loginModalLaw" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Login</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="modalLogin">
+                        <form action="{% url 'enduser-login' %}" method="post">
+                            {% csrf_token %}
+                            <input class="form-control" type="text" placeholder="Email" name="email" required="">
+                            <input class="form-control" type="password" placeholder="Password" name="password"
+                                required="">
+                            <a class="forgot" href="{% url 'password_reset' %}">Forgot password?</a>
+                            <div class="loginBtn">
+                                <button type="submit" class="submitbtn">Submit</button>
+                            </div>
+                            <div class="rememberBtn">
+                                <p><span><a href="" data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal1">Signup</a></span></p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- modal login end -->
+
+    <!-- registor modal -->
+    <div class="modal fade loginModalLaw" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Signup</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="modalLogin">
+                        <form action="{% url 'enduser-register' %}" method="post">
+                            {% csrf_token %}
+                            <input class="form-control" type="text" placeholder="First Name" name='first_name'
+                                required="">
+                            <input class="form-control" type="text" placeholder="last Name" name="last_name"
+                                required="">
+                            <input class="form-control" type="tel" placeholder="Phone Number" name="phone_number"
+                                required="">
+                            
+                            <input class="form-control" type="text" placeholder="Institute/College" name="institute"
+                                required="">
+
+                            <input class="form-control" type="email" placeholder="Email" name="email" required="">
+                            <input class="form-control" type="password" placeholder="Password" name='password'
+                                required="">
+                            <div class="loginBtn">
+                                <button type="submit" class="submitbtn">Submit</button>
+                            </div>
+                            <div class="rememberBtn">
+                                <p><span><a href="" data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal">Login</a></span></p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- registor modal end -->

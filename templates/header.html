@@ -1,0 +1,448 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>E-Book</title>
+    <!-- <link rel="icon" type="image/x-icon" href="{% static 'images/logo.jpeg' %}"> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css"
+        rel="stylesheet">
+    <!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="{% static 'css/sb-admin-2.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css">
+
+
+    <link href="{% static 'css\responsive.css' %}" rel="stylesheet">
+    <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+    <link rel='stylesheet'
+        href='https://cdn-uicons.flaticon.com/2.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel='stylesheet'
+        href='https://cdn-uicons.flaticon.com/2.0.0/uicons-solid-straight/css/uicons-solid-straight.css'>
+    <link rel='stylesheet'
+        href='https://cdn-uicons.flaticon.com/2.0.0/uicons-bold-straight/css/uicons-bold-straight.css'>
+    <link rel='stylesheet'
+        href='https://cdn-uicons.flaticon.com/2.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+
+
+    <script src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+    <script src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
+
+</head>
+
+<style>
+    #wrapper{
+        background-color: #f8f9fc !important
+       }
+        .active12 {
+            color: #9d122a !important;
+        }
+    .scrollSide {
+        height: 555px;
+        overflow-y: scroll;
+        width: 238px;
+        padding-top: 20px;
+    }
+
+    .scrollSide a {
+        width: unset !important;
+        padding: 8px 20px !important;
+    }
+
+    .scrollSide::-webkit-scrollbar {
+        display: none;
+    }
+
+
+
+    .topbar .nav-item .nav-link .badge-counter {
+        right: 1px;
+        margin-top: -10px;
+        width: 24px;
+        height: 24px;
+    }
+
+    .sideDash a.nav-link {
+        color: #3d3d3d;
+        opacity: 1 !important;
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+
+    .sideDash {
+        position: fixed;
+        background: transparent;
+        width: 20%;
+    }
+
+    button.dt-button.buttons-excel.buttons-html5 {
+        background: #797075;
+        color: red !important;
+        font-size: 16px;
+        padding: 3px 10px;
+        border: none;
+
+    }
+    .bg_grey{
+        background-color: #e6e6e6;
+    }
+</style>
+
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar">
+            <div class="sideDash">
+             
+                <a href="{% url 'dashboard' %}">
+                <div class="text-center pt-4">
+                    <img height="50" src="{% static 'images\logoLaw.png'%}" alt="">
+                </div></a>
+                <div class="scrollSide">
+                    {% if 'dashboard' in context.selected_permissions and context.is_staff %}
+                    <li class="nav-item">
+                        <a class="nav-link {{active21}}" href="{% url 'dashboard' %} ">
+                            <i class="fas fa-fw fa-tachometer-alt"></i>
+                            <span>Dashboard</span></a>
+                    </li>
+                    {% elif request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a class="nav-link {{active21}}" href="{% url 'dashboard' %}">
+                            <i class="fas fa-fw fa-tachometer-alt"></i>
+                            <span>Dashboard</span></a>
+                    </li>
+                    {% endif %}
+
+                    {% if 'Detail_organizations' in context.selected_permissions and context.is_staff %}
+                    <li class="nav-item">
+                        <a class="nav-link {{active23}}" href="{% url 'Detail_organizations' %}">
+                            <i class="fi fi-sr-id-card-clip-alt"></i>
+                            <span>Manage Corporates</span></a>
+                    </li>
+                    {% elif request.user.is_superuser %}
+
+                    <li class="nav-item">
+                        <a class="nav-link {{active23}}" href="{% url 'Detail_organizations' %}">
+                            <i class="fi fi-sr-id-card-clip-alt"></i>
+                            <span>Manage Corporates</span></a>
+                    </li>
+                    {% endif %}
+
+                    {% if 'manage_category' in context.selected_permissions and context.is_staff %}
+                    <li class="nav-item">
+                        <a class="nav-link {{active24}}" href="{% url 'category_details' %}">
+                            <i class="fas fa-cog"></i>
+                            <span>Manage Categories</span></a>
+                    </li>
+                    {% elif request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a class="nav-link {{active24}}" href="{% url 'category_details' %}">
+                            <i class="fas fa-cog"></i>
+                            <span>Manage Categories</span></a>
+                    </li>
+                    {% endif %}
+
+                    {% if 'manage_collection' in context.selected_permissions and context.is_staff %}
+                    <li class="nav-item">
+                        <a class="nav-link {{active25}}" href="{% url 'collection_details' %}">
+                            <i class="fi fi-ss-apps-sort"></i>
+                            <span> Manage Book Collections</span></a>
+                    </li>
+                    {% elif request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a class="nav-link {{active25}}" href="{% url 'collection_details' %}">
+                            <i class="fi fi-ss-apps-sort"></i>
+                            <span> Manage Book Collections</span></a>
+                    </li>
+                    {% endif %}
+
+                    {% if 'details_book' in context.selected_permissions and context.is_staff %}
+                    <li class="nav-item">
+                        <a class="nav-link {{active26}}" href="{% url 'details_book' %}">
+                            <i class="fi fi-rr-book-circle-arrow-right"></i>
+                            <span>Manage Books </span></a>
+                    </li>
+                    {% elif request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a class="nav-link {{active26}}" href="{% url 'details_book' %}">
+                            <i class="fi fi-rr-book-circle-arrow-right"></i>
+                            <span>Manage Books </span></a>
+                    </li>
+                    {% endif %}
+
+{% comment %} 
+                    {% if 'book_invitation' in context.selected_permissions and context.is_staff %}
+                    <li class="nav-item">
+                        <a class="nav-link  {{active31}}" href="{% url 'book_invitation' %}">
+                            <i class="fi fi-sr-book-bookmark"></i>
+                            <span>Book Invitations</span></a>
+                    </li>
+                    {% elif request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a class="nav-link {{active31}}" href="{% url 'book_invitation' %}">
+                            <i class="fi fi-sr-book-bookmark"></i>
+                            <span>Book Invitations</span></a>
+                    </li>
+                    {% endif %} {% endcomment %}
+
+
+                    {% if 'user_details' in context.selected_permissions and context.is_staff %}
+                    <li class="nav-item">
+                        <a class="nav-link {{active22}}" href="{% url 'user_details' %}">
+                            <i class="fi fi-ss-user-gear"></i>
+                            <span>Manage Users</span></a>
+                    </li>
+                    {% elif request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a class="nav-link {{active22}}" href="{% url 'user_details' %}">
+                            <i class="fi fi-ss-user-gear"></i>
+                            <span>Manage Users</span></a>
+                    </li>
+                    {% endif %}
+
+
+                    {% if 'manage_staff' in context.selected_permissions and context.is_staff %}
+                    <li class="nav-item">.
+                        <a class="nav-link {{active27}}" href="{% url 'details_staff' %}">
+                            <i class="fi fi-bs-users-gear"></i>
+                            <span>Manage Sub Admin </span></a>
+                    </li>
+                    {% elif request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a class="nav-link {{active27}}" href="{% url 'details_staff' %}">
+                            <i class="fi fi-bs-users-gear"></i>
+                            <span>Manage Sub Admin </span></a>
+                    </li>
+                    {% endif %}
+
+
+                    {% if 'notifications' in context.selected_permissions and context.is_staff %}
+                    <li class="nav-item">
+                        <a class="nav-link {{active28}}" href="{% url 'detailsnotification' %}">
+                            <i class="fi fi-ss-envelope-dot"></i>
+                            <span>Manage Notification</span></a>
+                    </li>
+
+                    {% elif request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a class="nav-link {{active28}}" href="{% url 'detailsnotification' %}">
+                            <i class="fi fi-ss-envelope-dot"></i>
+                            <span>Manage Notifications</span></a>
+                    </li>
+                    {% endif %}
+
+
+                    {% if 'updateprofile' in context.selected_permissions and context.is_staff %}
+                    <li class="nav-item">
+                        <a class="nav-link {{active30}}" href="{% url 'updateprofile' %}">
+                            <i class="fas fa-cog"></i>
+                            <span> Profile Settings</span></a>
+                    </li>
+                    {% elif request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a class="nav-link {{active30}}" href="{% url 'updateprofile' %}">
+                            <i class="fas fa-cog"></i>
+                            <span> Profile Settings</span></a>
+                    </li>
+                    {% endif %}
+
+                    {% if 'survey' in context.selected_permissions and context.is_staff %}
+                    <li class="nav-item">
+                        <a class="nav-link {{active29}}" href="{% url 'survey' %}">
+                            <i class="fi fi-sr-id-card-clip-alt"></i>
+                            <span>Manage Surveys</span></a>
+                    </li>
+                    {% elif request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a class="nav-link {{active29}}" href="{% url 'survey' %}">
+                            <i class="fi fi-sr-id-card-clip-alt"></i>
+                            <span>Manage Surveys</span></a>
+                    </li>
+                    {% endif %}
+
+                    {% comment %}
+                    <!-- Nav Item - add new Book -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'detailshome' %}">
+                            <i class="fas fa-book"></i>
+                            <span>Manage Books</span></a>
+                    </li> {% endcomment %}
+                    {% comment %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'contactDetails' %}">
+                            <i class="fas fa-address-card"></i>
+                            <span>Contact Us</span></a>
+                    </li> {% endcomment %}
+                    {% if 'manage_cms' in context.selected_permissions and context.is_staff %}
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEight"
+                            aria-expanded="true" aria-controls="collapseEight">
+                            <i class="fi fi-sr-move-to-folder"></i>
+                            <span>Manage Content</span>
+                        </a>
+                        <div id="collapseEight mx-1" class="collapse" aria-labelledby="collapseEight"
+                            data-parent="#accordionSidebar">
+                            <div class=" py-2 collapse-inner rounded bg_grey">
+                                <a class="collapse-item" href="{% url 'manage_home' %}">Manage Home</a>
+                                <a class="collapse-item" href="{% url 'blogs' %}">Manage Blogs</a>
+                                <a class="collapse-item" href="{% url 'digital_publishing' %}">Manage Digital Publishing</a>
+                                <a class="collapse-item" href="{% url 'ebook_store' %}">Manage E-book Store </a>
+                                <a class="collapse-item" href="{% url 'manage_indybot' %}">Manage Indybot</a>
+                                <a class="collapse-item" href="{% url 'contactus' %}">Manage Contact Us</a>
+                                <!-- <a class="collapse-item" href="{% url 'book_invitation' %}">Manage Books Invitations</a> -->
+                                {% comment %} <a class="collapse-item" href="{% url 'Demo_request' %}">Demo A Request
+                                    </a> {% endcomment %}
+                                <a class="collapse-item" href="{% url 'footer_details' %}">Footer</a>
+                                <a class="collapse-item" href="{% url 'TermCondition_details' %}">Terms & Conditions</a>
+                                <a class="collapse-item" href="{% url 'Privacy_details' %}">Privacy & Policy</a>
+                                <a class="collapse-item" href="{% url 'Faq_details' %}">FAQ</a>
+
+                            </div>
+                        </div>
+                    </li>
+                    {% elif request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEight"
+                            aria-expanded="true" aria-controls="collapseEight">
+                            <i class="fi fi-sr-move-to-folder"></i>
+                            <span>Manage Content </span>
+                        </a>
+                        <div id="collapseEight" class="collapse" aria-labelledby="collapseEight"
+                            data-parent="#accordionSidebar">
+                            <div class=" py-2 collapse-inner rounded bg_grey">
+                                <a class="collapse-item" href="{% url 'manage_home' %}">Manage Home</a>
+                                <a class="collapse-item" href="{% url 'blogs' %}">Manage Blogs</a>
+                                <a class="collapse-item" href="{% url 'digital_publishing' %}">Manage Digital
+                                    Publishing</a>
+                                <a class="collapse-item" href="{% url 'ebook_store' %}">Manage E-book Store </a>
+                                <a class="collapse-item" href="{% url 'manage_indybot' %}">Manage Indybot</a>
+                                <a class="collapse-item" href="{% url 'contactus' %}">Manage Contact Us</a>
+                                <!-- <a class="collapse-item" href="{% url 'book_invitation' %}">Manage Books Invitations</a> -->
+                                {% comment %} <a class="collapse-item" href="{% url 'Demo_request' %}">Demo A
+                                    Request</a> {% endcomment %}
+                                <a class="collapse-item" href="{% url 'footer_details' %}">Footer</a>
+                                <a class="collapse-item" href="{% url 'TermCondition_details' %}">Terms & Conditions</a>
+                                <a class="collapse-item" href="{% url 'Privacy_details' %}">Privacy & Policy</a>
+                                <a class="collapse-item" href="{% url 'Faq_details' %}">FAQ</a>
+                            </div>
+                        </div>
+                    </li>
+                    {% endif %}
+                </div>
+            </div>
+        </ul>
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light topbar mb-4 static-top">
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <ul class="navbar-nav ml-auto">
+                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            <!-- Dropdown - Messages -->
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                                aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small"
+                                            placeholder="Search for..." aria-label="Search"
+                                            aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+                        <div class="topbar-divider d-none d-sm-block"></div>
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{user.first_name}}
+                                    {{user.last_name}}</span>
+
+                                {% if user.profile_pic %}
+                                <div class="imgProfileNav">
+                                    <img src="{{ user.profile_pic.url }}" alt=""
+                                        style="height: 30px; width: 30px; border-radius: 50%; margin-top: -6px;">
+                                </div>
+                                {% else %}
+                                <div class="imgProfileNav">
+                                    <img src="{% static 'images/logoLaw.png' %}" alt=""
+                                        style="height: 30px; width: 30px; border-radius: 50%; margin-top: -6px;">
+                                </div>
+                                {% endif %}
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+
+                                <a class="dropdown-item" href="{% url 'updateprofile' %}">
+                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile Settings
+                                </a>
+
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+   <!-- Logout Modal-->
+            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">Select "Logout" below if you are ready to end your current session.
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                            <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+</body>
+
+</html>

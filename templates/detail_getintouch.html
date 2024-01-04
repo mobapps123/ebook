@@ -1,0 +1,78 @@
+
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<style>
+div#example1_filter {
+    padding-left: 273px !important;
+}
+ul.pagination {
+    padding-left: 371px !important;
+}
+</style>
+                <!-- Begin Page Content -->
+             <div class="container-fluid mainPage">
+                    <div class="card shadow mb-4">
+                        <div class="card-header d-flex justify-content-between py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Get In Touch Details</h6>
+                           <a href="{% url 'addGetintouch' %}"> <button type="button" class="btn btn-primary">Add Get In Touch</button></a>
+                        </div>
+
+                        <div class="card-body">
+                        <div class="table-responsive">
+                       <table class="table table-striped" id="example">
+                        <thead>
+                    <tr>
+                        <th>Sr No</th>
+                        <th>Heading</th>
+                        <th>Address</th>
+                        <th>Email</th>
+                        <th>Contact Number</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                      
+                    
+              </tr> 
+                {% for data in data %}
+            </thead>
+            <tbody>
+                <td>
+                    {{forloop.counter}}</a>
+                    </td>
+                   {% comment %} <td>
+                    {% if data.image %}
+                  <img src="{{data.image.url}}" style="height: .6in; width:2cm;"  alt=""> 
+                  {% endif %}
+                 </td>   {% endcomment %}
+                    <td>{{data.heading}}</td>
+                    <td>{{data.address}}</td>
+                    <td>{{data.email}}</td>
+                    <td>{{data.call}}</td>
+                    <td>{{data.description|truncatewords:5}}</td>
+                 </td>
+                <td>
+                  <div class=" d-flex" >
+                    <div class="edit-cild mr-3">
+                      <a href="{% url 'Getintouch_edit' data.id %}"><i class="icon-edit fas fa-edit"></i> </a>
+                    </div> 
+                    <div class="edit-child">
+                      <a href="{% url 'Getintouch_delete' data.id %}"onclick="return confirm('Are You Sure')"><i class="icon-edit fas fa-trash"></i></a>
+                    </div>
+                    {% comment %} <td>
+                    <input type="checkbox" checked data-toggle="toggle" data-on="active"
+                                                    data-off="Inactive" data-onstyle="success" data-offstyle="danger">
+                    </td> {% endcomment %}
+                  </div>
+                </td>
+               </tr>
+                {% endfor %}
+            </tbody>
+
+          </table>
+        </div>
+        </div>
+        </div>
+    </div>
+
+{% endblock %}

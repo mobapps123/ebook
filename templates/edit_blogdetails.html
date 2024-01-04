@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<!-- Begin Page Content -->
+<div class="container-fluid mainPage">
+    <div class="container rounded bg-white mt-2 mb-2">
+        <div class="row">
+            <div class="col-md-12 border-right">
+                <div class="p-3 py-5">
+                    <div class="card-header d-flex justify-content-between py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Update</h6>
+                    </div>
+                    <form method="post"enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="form-group">
+                            <label for="exampleInputUsername1">Paragraph1:</label>
+                            <input type="text" class="form-control" placeholder="Paragraph1" name="paragraph1" value="{{data.paragraph1}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputUsername1">Paragraph2:</label>
+                            <input type="text" class="form-control" placeholder="Paragraph2" name="paragraph2" value="{{data.paragraph2}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputUsername1">Paragraph3:</label>
+                            <input type="text" class="form-control" placeholder="Paragraph3" name="paragraph3" value="{{data.paragraph3}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputUsername1">Title:</label>
+                            <input type="text" class="form-control" placeholder="Title" name="title" value="{{data.title}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputMonth1">Month:</label>
+                            <input type="text" class="form-control" placeholder="Month (1-12)" name="month" id="monthInput" value="{{data.month}}">
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="exampleInputDate1">Date:</label>
+                            <input type="number" class="form-control" placeholder="Date (1-31)" name="date" required="" min="1" max="31" value="{{data.date}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputUsername1">By Name:</label>
+                            <input type="text" class="form-control" placeholder="By Name" name="by_name" value="{{data.by_name}}">
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="exampleInputUsername1">Image:</label>
+                            <input type="file" class="form-control" name="image">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputUsername1">Video:</label>
+                            <input type="file" class="form-control" name="video">
+                        </div>
+
+                        
+                        <div class="form-group">
+                            <label for="exampleInputUsername1">Description:</label>
+                            <textarea type="text" class="form-control" placeholder="Description" name="description">{{data.description}}</textarea>
+                        </div>
+
+                        <div class="row">
+                            <button type="submit" class="btn btn-primary mr-2">Edit</button>
+                        </div>
+                </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var monthInput = document.getElementById('monthInput');
+
+        // Add an input event listener to validate the input as the user types
+        monthInput.addEventListener("input", function () {
+            var inputValue = parseInt(monthInput.value, 10);
+
+            if (isNaN(inputValue) || inputValue < 1 || inputValue > 12) {
+                monthInput.setCustomValidity("Please enter a valid month between 1 and 12.");
+            } else {
+                monthInput.setCustomValidity("");
+            }
+        });
+
+        // Optional: You can add a submit event listener to further validate the input when the form is submitted
+        var form = monthInput.closest('form');
+        form.addEventListener("submit", function (event) {
+            var inputValue = parseInt(monthInput.value, 10);
+
+            if (isNaN(inputValue) || inputValue < 1 || inputValue > 12) {
+                event.preventDefault(); // Prevent form submission if the input is invalid
+                monthInput.setCustomValidity("Please enter a valid month between 1 and 12.");
+            }
+        });
+    });
+</script> -->
+{% endblock %}

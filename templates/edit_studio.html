@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<!-- Begin Page Content -->
+<div class="container-fluid mainPage">
+    <div class="container rounded bg-white mt-2 mb-2">
+        <div class="row">
+            <div class="col-md-12 border-right">
+                <div class="p-3 py-5">
+                    <div class="card-header d-flex justify-content-between py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Studio List</h6>
+                    </div>
+                    <form method="post" , enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="form-group">
+                            <label for="exampleInputUsername1">Heading:</label>
+                            <input type="text" class="form-control" placeholder="Heading" name="heading"value="{{data.heading}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputUsername1">Title:</label>
+                            <input type="text" class="form-control" placeholder="Title" name="title" value="{{data.title}}">
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="exampleInputUsername1">Image1:</label>
+                            <input type="file" class="form-control" name="image1" >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputUsername1">Image2:</label>
+                            <input type="file" class="form-control" name="image2" >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputUsername1">Icon:</label>
+                            <input type="file" class="form-control" name="icon"value="{{data.icon}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputUsername1">Icon Title:</label>
+                            <input type="text" class="form-control" name="icon_title" value="{{data.icon_title}}">
+                        </div>
+
+                        
+                        <div class="form-group">
+                            <label for="exampleInputUsername1">Description:</label>
+                            <textarea type="text" class="form-control" placeholder="Description" name="description" >{{data.description}}</textarea>
+                        </div>
+
+                        <div class="row">
+                            <button type="submit" class="btn btn-primary mr-2">Edit Studio</button>
+                        </div>
+                </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

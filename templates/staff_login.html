@@ -1,0 +1,239 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+
+  <style>
+    /*-------25 oct - swapnil - login page------------- */
+
+    .loginContainer {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #000000e0;
+      background-blend-mode: overlay;
+    }
+
+    .loginInner {
+      width: 30%;
+      height: 90%;
+      / margin: 25px; /
+      border-radius: 10px;
+      background-color: #fff;
+    }
+
+    .facebookXing img {
+      width: 15px;
+      vertical-align: middle;
+    }
+
+    .facebookXing {
+      display: flex;
+      margin: 20px 0;
+    }
+
+    .facebookXing a {
+      text-decoration: none;
+    }
+
+    .facebook {
+      background-color: #475993;
+      padding: 5px 10px;
+      border-radius: 5px;
+      color: #fff;
+    }
+
+    .xing {
+      background-color: #00605e;
+      padding: 5px 10px;
+      border-radius: 5px;
+      color: #fff;
+      margin-left: 10px;
+    }
+
+    .loginDetails {
+      width: 76%;
+      padding: 30px 0;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto;
+    }
+
+    .dotor {
+      vertical-align: text-bottom;
+      font-size: 17px;
+      padding: 0 4px;
+    }
+
+    .dotor2 {
+      font-size: 14px;
+    }
+
+    .loginForm .form-control {
+      border: none;
+      border-radius: 0;
+      border-bottom: 2px solid #ccc;
+      padding: 5px 0 0 0;
+    }
+
+    .loginForm .form-check-input:focus {
+      border-color: #ffffff;
+      outline: 0;
+      box-shadow: none;
+    }
+
+    .loginForm .form-control:focus {
+      border-color: #ffffff;
+      outline: 0;
+      box-shadow: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      background: transparent;
+      border-image-slice: 1;
+      border-image: linear-gradient(45deg, #a9394d, rgb(255, 255, 255)) 1;
+    }
+
+    .loginForm .form-control:active {
+      border: none;
+      border-bottom: 2px solid transparent;
+      background: transparent;
+      border-image-slice: 1;
+      border-image: linear-gradient(45deg, #a9394d, rgb(255, 255, 255)) 1;
+    }
+
+    .forgetBtn a {
+      color: #000;
+      text-decoration: none;
+    }
+
+    .loginForm .login_btn a {
+      color: #000;
+      text-decoration: none;
+    }
+
+    .loginForm .login_btn {
+      color: #fff;
+      border: 1px solid #890015;
+      border-radius: 5px;
+      width: 35%;
+      padding: 5px;
+      margin: 15px 20px 15px 0;
+      text-align: center;
+      background: #890015;
+    }
+
+    .loginForm .login_btn:hover {
+      background-image: linear-gradient(45deg, #a9394d, rgb(255, 255, 255));
+    }
+
+    .privacy a {
+      text-decoration: none;
+      color: #a9394d;
+    }
+
+    .privacy {
+      font-size: 14px;
+
+      padding: 20px 0 0 0;
+    }
+
+    .logo_image {
+      text-align: center;
+    }
+
+    .icon_img {
+      position: relative;
+    }
+
+    .icon_img .fi-sr-envelope {
+      position: absolute;
+      top: 8px;
+      color: #5e666e;
+    }
+
+    .icon_img .fi-sr-lock {
+      position: absolute;
+      top: 8px;
+      color: #5e666e;
+    }
+
+    .loginimg img {
+      height: 90vh;
+      width: 100%;
+      object-fit: cover;
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <section class="mainPage">
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    <div>
+      <div class="loginContainer" style="background-image: url({% static 'images/9-6.jpg' %});">
+        <div class="loginInner">
+          <div class="container-fluid">
+
+            <div class="loginDetails">
+              <div>
+                <div class="logo_image">
+                  <img height="50" src="{% static 'images/logoLaw.png' %}" alt="" class="my-2">
+                </div>
+                <h5 class="mt-3">Welcome back! Please login to your account.</h5>
+                <div class="loginForm mt-4">
+                  <form action="" method="post">
+                    {% csrf_token %}
+                    <div class="mb-3 icon_img">
+                      <input type="email" placeholder="Email" name='email' class="form-control ps-4 pb-2"
+                        id="exampleInputEmail1" aria-describedby="emailHelp" required="">
+                      <i class="fi fi-sr-envelope"></i>
+                    </div>
+                    <div class="mb-3 icon_img">
+                      <input type="password" placeholder="Password" name="password" class="form-control ps-4 pb-2"
+                        id="exampleInputPassword1" required="">
+                      <i class="fi fi-sr-lock"></i>
+                    </div>
+                    <div class="d-flex justify-content-end align-items-center">
+                      <div class="forgetBtn">
+                        <a href="{% url 'password_reset' %}">Forgot Password?</a>
+                      </div>
+                    </div>
+                    <div class="text-center">
+                      <button type="submit" class="login_btn">
+                        Login
+                      </button>
+                    </div>
+                    <div class="privacy">
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script src="{% static 'js/custom.js' %}"> </script>
+  <script src="{% static 'js/bootstrap.bundle.min.js' %}"> </script>
+</body>
+</html>

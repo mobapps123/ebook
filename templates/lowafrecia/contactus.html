@@ -1,0 +1,287 @@
+
+{% extends 'lowafrecia/base.html' %}
+{% load static %}
+{% block content %}
+
+
+<style>
+    button.submitbtn {
+        background-color: #97041e;
+        color: white;
+     
+  
+        
+    }
+</style>
+
+<div id="message-popup" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% for data in contact_banner|slice:":1"%}
+<section class="aboutSecBanner"style="background-image:url('{{data.image.url}}')">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{{data.heading}}</h1>
+                <h5>{{data.description}}</h5>
+                <!-- <div class="aboutBannerBtn">
+                    <a href="#"> <button>Read More</button></a>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</section>
+{% endfor %}
+<!-- banner end -->
+<section class="mapSec bg-white">
+    <div class="container">
+        <div class="row">
+            {% for data in getin_touch|slice:":1"%}
+            <div class="col-lg-6 col-md-6 wow slideInLeft pe-0 ">
+                <div class="bannnerleftContent ">
+                    <h5 class="bannerH5">GET IN TOUCH</h5>
+                    <h1 class="bannerh1">{{data.heading}}</h1>
+                    <p class="bannerpara">{{data.description}}</p>
+                    <div class="mapIconParent">
+                        <div class="mapIcon">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                        </div>
+                        <div class="maptext">
+                            <h5>Head Office</h5>
+                            <p>{{data.address}}</p>
+                        </div>
+                    </div>
+                    <div class="mapIconParent">
+                        <div class="mapIcon">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+
+                        </div>
+                        <div class="maptext">
+                            <h5>Email us</h5>
+                            <p>{{data.email}}</p>
+                        </div>
+                    </div>
+                    <div class="mapIconParent">
+                        <div class="mapIcon">
+                            <i class="fa fa-phone-square" aria-hidden="true"></i>
+                        </div>
+                        <div class="maptext">
+                            <h5>Call us</h5>
+                            <p>{{data.call}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <div class="col-lg-6 ps-0">
+                <div class="contactFormdata">
+                    <form class="row g-3" method="POST">
+                        {% csrf_token %}
+                        <div class="col-md-6">
+                            <label for="inputEmail4" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="inputEmail4" placeholder="Enter Your Name" name="name" required="">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="inputPassword4" class="form-label">Company</label>
+                            <input type="text" class="form-control" id="inputPassword4" placeholder="Company" name="company"  required="">
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" for="phone">Phone number</label>
+                                <input type="tel" id="ContactNumberId" class="form-control field change_border"  value="{{data.mobile_number}}" name="mobile_number" minlength="10" maxlength="10" placeholder="Enter Contact Number"  required id="contactNumberInput" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+                            </div>
+                            <span id="phone_number_message" style="color: red; font-weight: bold;"></span>
+                        </div>
+
+                        <!-- <div class="col-md-6">
+                            <label for="inputAddress" class="form-label">Phone</label>
+                            <input type="number" class="form-control" id="inputAddress" placeholder="Phone" name="mobile_number" required="">
+                        </div> -->
+                        <div class="col-md-6">
+                            <label for="inputAddress2" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="inputAddress2" placeholder="Enter Email" name="business_email" required="">
+                        </div>
+                        <div class="col-md-12">
+                            <label for="inputCity" class="form-label">Subject</label>
+                            <input type="text" class="form-control" id="inputCity" placeholder="Write Subject" name="subject"required="">
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <label for="inputState" class="form-label">Message</label>
+                            <textarea class="form-control" placeholder="Write Message" name="message"required=""></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="submitbtn">Submit</button>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- <section class="sendMessageSec"style="background-image:url('{% static 'images/hero-bg.jpg' %}')">
+    <div class="container">
+        <div class="row">
+
+            <h1>Send us a message</h1>
+            <h5>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper
+                mattis, pulvinar dapibus leo.</h5>
+        </div>
+    </div>
+</section> -->
+ 
+<!-- ************************************************ -->
+{% if not request.user.is_authenticated %}
+{% for data in learn|slice:":1"%}
+{% if data.image %}
+<section class="homeCompare" style="background-image:url('{{data.image.url}}')">
+{% endif %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h1>{{data.heading}}</h1>
+                <p>{{data.description}}</p>
+                <div class="SeecourseBtnParent">
+                    <div class="seeCoursebtn mr-3">
+                        <a href="" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal1">See All Books</a>
+                    </div>
+                    <div class="seeCoursebtn">
+                        <a href="{% url 'contact_us' %}">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endfor %}
+{% endif %}
+
+
+
+
+
+{% if not request.user.is_authenticated %}
+<section class="faqSec">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                {% for data in faq|slice:":1"%}
+                <h2 class="mb-4">{{data.heading}}</h2>
+                <!-- <h5 class="lead mb-5">{{data.description}}</h5> -->
+                {% endfor %}
+                <div class="accordion" id="faqAccordion">
+                    {% for data in faq %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading{{data.id}}">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{data.id}}" aria-expanded="false" aria-controls="collapse{{data.id}}">
+                                {{data.question}}
+                            </button>
+                        </h2>
+                        <div id="collapse{{data.id}}" class="accordion-collapse collapse" aria-labelledby="heading{{data.id}}" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">{{data.ans}}</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-lg-5">
+                {% for data in faq|slice:":1"%}
+                <div class="faqImg">
+                    <img src="{{data.image.url}}" alt="">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+
+<script>
+  
+    document.getElementById("myForm").addEventListener("submit", function(event) {
+      // Validate the form
+      if (!validateForm()) {
+        // Prevent form submission if validation fails
+        event.preventDefault();
+      }
+    });
+  
+    function validateForm() {
+      var phone_numberInput = document.getElementById("ContactNumberId");
+      var phoneNumberType = phone_numberInput.getAttribute("type");
+  
+      var ImageInput = document.getElementById("Image");
+  
+      
+      var errorMessages = {
+        phone_numberInput: "Please enter a valid 10-digit contact number.",
+        ImageInput: "Please choose an image."
+      };
+  
+      var isValid = true;
+  
+      
+        // Check if contact number is less than 10 digits
+        if (phoneNumberType === "tel") {
+          var phoneNumber = phone_numberInput.value;
+          var phoneNumberPattern = /^\d{10}$/; // Matches a 10-digit number
+    
+          // Check if the phone number matches the pattern
+          if (!phoneNumberPattern.test(phoneNumber)) {
+            displayErrorMessage("phone_number_message", errorMessages.phone_numberInput);
+            isValid = false;
+          } else {
+            clearErrorMessage("phone_number_message");
+          }
+        }
+    
+  
+      if (ImageInput.value === "") {
+        displayErrorMessage("image_error_message", errorMessages.ImageInput);
+        isValid = false;
+      } else {
+        clearErrorMessage("image_error_message");
+      }
+  
+      return isValid;
+    }
+  
+    function displayErrorMessage(elementId, message) {
+      var errorMessage = document.getElementById(elementId);
+      errorMessage.textContent = message;
+    }
+  
+    function clearErrorMessage(elementId) {
+      var errorMessage = document.getElementById(elementId);
+      errorMessage.textContent = "";
+    }
+  </script>
+
+<!-- for pop up message  -->
+  <script>
+    $(document).ready(function() {
+        // Check if there are messages to display
+        if ($('.messages li').length > 0) {
+            $('#message-popup').modal('show');
+        }
+    });
+</script>
+
+{% endblock %}.

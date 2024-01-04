@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<!-- Begin Page Content -->
+<div class="container-fluid mainPage">
+    <div class="container rounded bg-white mt-2 mb-2">
+        <div class="row">
+            <div class="col-md-12 border-right">
+                <div class="p-3 py-5">
+                    <div class="card-header d-flex justify-content-between py-3">
+                        <h6 class="m-0 font-weight-bold text-primary"> Your Webstore</h6>
+                    </div>
+                    <form method="post"enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="form-group">
+                            <label for="exampleInputUsername1">Heading:</label>
+                            <input type="text" class="form-control" placeholder="Heading" name="heading" requrired="">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputUsername1">Title:</label>
+                            <input type="text" class="form-control" placeholder="Title" name="title" requrired="">
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="exampleInputUsername1">Span:</label>
+                            <input type="text" class="form-control" placeholder="Span" name="span" requrired="">
+                        </div>
+
+               
+                        <div class="form-group">
+                            <label for="exampleInputUsername1">Image:</label>
+                            <input type="file" class="form-control" name="image" requrired="">
+                        </div>
+  
+                        <div class="form-group">
+                            <label for="exampleInputUsername1">Description:</label>
+                            <textarea type="text" class="form-control" placeholder="Description" name="description" requrired=""></textarea>
+                        </div>
+
+                        <div class="row">
+                            <button type="submit" class="btn btn-primary mr-2">Add Your Webstore</button>
+                        </div>
+                </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

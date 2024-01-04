@@ -1,0 +1,867 @@
+{% include 'organizations/organization_header.html' %}
+{% load static %}
+
+<style>
+    .Average {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 200px;
+    }
+
+    .Average_inner {
+        height: 130px;
+        width: 130px;
+        border-radius: 50%;
+        border: 18px solid #ffffff;
+
+        background-color: transparent;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 10px;
+    }
+
+    .Average_inner h5 {
+        color: #ffffff;
+        font-weight: 600;
+        font-size: 16px;
+    }
+
+    .Average_Average {
+        background-color: #646eff;
+        color: #fff;
+        padding: 10px;
+        border-radius: 4px;
+    }
+
+    .Average_Average h6 {
+        color: #fff;
+    }
+
+    div#content-wrapper {
+        margin-left: 18%;
+    }
+
+    .dashboardinner {
+        height: 160px;
+        width: 100%;
+        margin: 10px auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
+        background-color: #fff;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        padding: 20px;
+    }
+
+    .dashDetails {
+        width: 80%;
+        margin: 0px 0px 57px auto;
+        color: #566a7f;
+    }
+
+    .dashDetails a {
+        color: #474747;
+        text-decoration: none;
+    }
+
+    .dashDetails a:hover {
+        color: #000;
+        text-decoration: none;
+    }
+
+    .dashboardinner p {
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .active20 {
+        color: #9d122a !important;
+    }
+
+    .heart {
+        color: rgb(46, 45, 45);
+        cursor: pointer;
+        font-size: 25px;
+    }
+
+    .heart.favorited {
+        color: rgb(244, 26, 63);
+    }
+
+    #results-container {
+        display: none;
+    }
+
+    #no-results {
+        color: red;
+    }
+
+    .active13 {
+        color: #000000 !important;
+    }
+
+    .avatar.avatar-online img {
+        height: 36px !important;
+        width: 36px !important;
+    }
+
+    .searchSideCus input {
+
+        padding: 4px 20px;
+        border-radius: 5px;
+        border: 2px solid #a9394d;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        width: 195px;
+    }
+
+    .searchSideCus input:focus {
+        outline: none;
+    }
+
+    span.app-brand-logo.demo img {
+        width: 150px;
+    }
+
+    #search-container {
+        display: flex;
+        border: 2px solid #a9394d;
+        justify-content: center;
+        border-radius: 5px;
+    }
+
+    #search-bar {
+        width: 500px;
+        padding: 5px 10px 5px 0;
+        border: none;
+        border-radius: 5px;
+    }
+
+    #search-bar:focus {
+        border: none;
+        outline: none;
+    }
+
+    .odysseyimg img {
+        height: 200px;
+        object-fit: cover;
+        /* border-radius: 7px; */
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        width: 200px;
+    }
+
+    .odysseyimg {
+        height: 200px;
+        width: 200px;
+        border-radius: 7px;
+    }
+
+    .History {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .profile_img img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .nav-item ul.dropdown-menu.dropdown-menu-end.text-center.show {
+        width: 300px;
+    }
+
+    .manage_account {
+        color: #3163aa;
+    }
+
+    .sign_outbtn {
+        color: #a9394d;
+        font-weight: 700;
+        margin: 10px 0;
+    }
+
+    .nav-item a:hover {
+        color: #000;
+    }
+
+    .sign_outbtn iconify-icon {
+        vertical-align: middle;
+    }
+
+    .customerAnchr a {
+        color: #677a8c;
+    }
+
+    .customerAnchr {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        width: 200px;
+    }
+
+    aside#layout-menu {
+        height: 100vh;
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+    }
+
+    .dashboard-header {
+        border-radius: 5px;
+        display: flex;
+        justify-content: end;
+        align-items: center;
+        padding: 0px 10px;
+        margin: 10px;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    }
+
+    .dashboardinner span {
+        font-size: 30px;
+    }
+
+    .dashboardinner .reading-time {
+        font-size: 20px;
+    }
+
+    @media (max-width:1200px) {
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .dashDetails {
+            width: 94%;
+            margin: 31px 43px 57px auto;
+        }
+    }
+
+    .graph_items {
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 10px 0;
+    }
+
+    .graph_items1 {
+        background-color: #f5f5f5;
+        padding: 20px;
+
+    }
+
+    .Metric_inner_list span {
+        font-size: 15px;
+    }
+
+    /* chart_first css start here */
+
+    .chart_first {
+        background-color: #272a52;
+        min-height: 242px;
+        min-width: 413px;
+        padding: 20px;
+        position: relative;
+    }
+
+    .chart-series {
+        border-bottom: 1px solid #fdfdfd85;
+    }
+
+    .chart-series p {
+        margin-bottom: 0px;
+        margin-top: 14px;
+        color: #ffffff;
+        font-size: 13px;
+    }
+
+    .chart-series i {
+        color: #ffffff;
+        font-size: 15px;
+    }
+
+    .line_1 {
+        width: 11px;
+        background-color: #24d2fd;
+    }
+
+    .line_2 {
+        width: 11px;
+        background-color: #e4c75c;
+    }
+
+    .chart_line_inner {
+        display: flex;
+        align-items: end;
+    }
+
+    .chart_line_item {
+        margin: 0 20px 0 0;
+    }
+
+    .chart_line_item p {
+        color: #ffffff;
+        font-size: 13px;
+    }
+
+    .chart_line {
+        position: absolute;
+        left: 65px;
+        bottom: 20px;
+        overflow-y: auto;
+        width: 367px;
+    }
+
+    .chart_line::-webkit-scrollbar-thumb {
+        background-color: #ddd;
+    }
+
+    .chart_line::-webkit-scrollbar {
+        height: 5px;
+        border-radius: 5px;
+    }
+
+    .bullet-1 {
+        color: #24d2fd !important;
+    }
+
+    .bullet-2 {
+        color: #e4c75c !important;
+    }
+
+    .chartbox {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .chart_line_item p {
+        margin-bottom: 5px;
+    }
+
+    /* total_read_inner css  */
+    .total_read_inner {
+        background-color: #fff;
+    }
+
+    .total_read_inner table {
+        width: 100%;
+    }
+
+    .total_read_inner table thead tr th,
+    .total_read_inner table tbody tr td {
+        padding: 10px;
+    }
+
+    .total_read_inner table thead {
+        border-bottom: 1px solid #cbcbcb;
+    }
+
+    .open_side {
+        margin-left: 226px;
+    }
+
+    .dashDetails h6 {
+        color: #697a8d;
+    }
+
+    .Metrics {
+        border-top: 1px solid #ccc;
+    }
+
+    .Metric_inner {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: start;
+        align-items: start;
+    }
+
+    .Metric_inner_list {
+        margin: 20px 30px 20px 0;
+        text-align: center;
+        width: 200px;
+    }
+
+    .Metric_inner_list h4 {
+        color: #000;
+        font-weight: 700;
+    }
+
+    #content-wrapper {
+        display: none;
+    }
+
+    .dashheader {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    @media (max-width:1200px) {
+        #content-wrapper {
+            display: block;
+        }
+
+        .profileicon {
+            display: none;
+        }
+    }
+
+    .dashheader span {
+        color: #000;
+        font-weight: 700;
+    }
+
+    .Metric_inner_list a {
+        color: #566a7f;
+    }
+
+    .Metric_inner_list a:hover {
+        color: #566a7f;
+    }
+</style>
+
+<div id="content-wrapper">
+    <div id="content">
+        <div>
+            <nav class="dashboard-header" id="layout-navbar">
+                <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none ">
+                    <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                        <i class="bx bx-menu bx-sm"></i>
+                    </a>
+                </div>
+                <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+                    <ul class="navbar-nav flex-row align-items-center ms-auto">
+                        <!-- Notification -->
+                        <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                            <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
+                                data-bs-toggle="dropdown">
+                                <div class="avatar avatar-online">
+                                    {% if user.profile_pic %}
+                                    <div class="profile_img">
+                                        <img src="{{ user.profile_pic.url }}" alt=""
+                                            class="w-px-40 h-auto rounded-circle">
+                                    </div>
+                                    {% else %}
+                                    <div class="profile_img">
+                                        <img src="{% static 'images/logoLaw.png' %}" alt=""
+                                            class="w-px-40 h-auto rounded-circle">
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end text-center">
+                                {% if user.profile_pic %}
+                                <div class="profile_img">
+                                    <img src="{{ user.profile_pic.url }}" alt="">
+                                </div>
+                                {% else %}
+                                <div class="profile_img">
+                                    <img src="{% static 'images/logoLaw.png' %}" alt="">
+                                </div>
+                                {% endif %}
+                        </li>
+                        <li>
+                            <h6 class="mb-1">{{user.first_name}}</h6>
+                        </li>
+                        <li class="mb-3">{{user.email}}</li>
+                        <li>
+                            <div class="dropdown-divider"></div>
+                        </li>
+                        <li class="sign_outbtn"><a href="{% url 'logout' %}"><iconify-icon
+                                    icon="gridicons:sign-out"></iconify-icon> Sign out</a></li>
+                    </ul>
+                    </li>
+                    <!--/ User -->
+                    </ul>
+                </div>
+                <!-- Search Small Screens -->
+                <div class="navbar-search-wrapper search-input-wrapper  d-none">
+                    <input type="text" class="form-control search-input container-xxl border-0" placeholder="Search..."
+                        aria-label="Search...">
+                    <i class="bx bx-x bx-sm search-toggler cursor-pointer"></i>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<section class="dashDetails graph_items1">
+        <div class="container-fluid">
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <div class="row">
+                <div class="col-12">
+                    <div>
+                        <div class="dashheader mt-1">
+                            <div>
+                                <h4>Good Morning, <span>{{request.user.first_name}} {{request.user.last_name}}</span>
+                                </h4>
+                                <p>User Engagement Metrics: </p>
+                            </div>
+                            <div class="profileicon">
+                                <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+                                    <ul class="navbar-nav flex-row align-items-center ms-auto">
+                                        <!-- Notification -->
+                                        <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                                            <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
+                                                data-bs-toggle="dropdown">
+                                                <div class="avatar avatar-online">
+                                                    {% if user.profile_pic %}
+                                                    <div class="profile_img">
+                                                        <img src="{{ user.profile_pic.url }}" alt=""
+                                                            class="w-px-40 h-auto rounded-circle">
+                                                    </div>
+                                                    {% else %}
+                                                    <div class="profile_img">
+                                                        <img src="{% static 'images/logoLaw.png' %}" alt=""
+                                                            class="w-px-40 h-auto rounded-circle">
+                                                    </div>
+                                                    {% endif %}
+                                                </div>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-end text-center">
+                                                {% if user.profile_pic %}
+                                                <div class="profile_img">
+                                                    <img src="{{ user.profile_pic.url }}" alt="">
+                                                </div>
+                                                {% else %}
+                                                <div class="profile_img">
+                                                    <img src="{% static 'images/logoLaw.png' %}" alt="">
+                                                </div>
+                                                {% endif %}
+                                        </li>
+                                        <li>
+                                            <h6 class="mb-1">{{user.first_name}}</h6>
+                                        </li>
+                                        <li class="mb-3">{{user.email}}</li>
+                                        <li>
+                                            <div class="dropdown-divider"></div>
+                                        </li>
+                                        <li class="sign_outbtn"><a href="{% url 'logout' %}"><iconify-icon
+                                                    icon="gridicons:sign-out"></iconify-icon> Sign out</a></li>
+                                    </ul>
+                                    </li>
+                                    <!--/ User -->
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="Metrics">
+                            <div class="Metric_inner">
+                                <div class="Metric_inner_list">
+                                    <span>Total users</span>
+                                    <h4 class="mb-0">{{total_student}}</h4>
+
+                                </div>
+                                <div class="Metric_inner_list">
+                                    <a href="{% url 'BooksStats' %}">
+                                        <span>Books Stats Details </span>
+                                        <h4 class="mb-0">{{total_books}}</h4>
+                                    </a>
+                                </div>
+                                <div class="Metric_inner_list">
+                                    <a href="{% url 'CorporateBookList' %}">
+                                        <span>Total Books </span>
+                                        <h4 class="mb-0">{{total_books}}/{{all_book}}</h4>
+                                    </a>
+                                </div>
+                                <div class="Metric_inner_list">
+                                    <span>Total Page Views </span>
+                                    <h4 class="mb-0">{{total_page_view}}</h4>
+                                </div>
+                                <div class="Metric_inner_list">
+                                    <span>Total Confirmed Users </span>
+                                    <h4 class="mb-0">{{total_confirmed_students}}</h4>
+                                </div>
+                                <div class="Metric_inner_list">
+                                    <span>Total Unconfirmed Users </span>
+                                    <h4 class="mb-0">{{total_Uncondfirmed_Students}}</h4>
+                                </div>
+                                <div class="Metric_inner_list">
+                                    <span>Total Active (Last 30 Days) </span>
+                                    <h4 class="mb-0">{{ total_active_monthly_users }}</h4>
+                                </div>
+                                <div class="Metric_inner_list">
+                                    <span>Total Active Users (Last 3 Months) </span>
+                                    <h4 class="mb-0">{{total_active_users_last_3_months}}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <div class="graph_items">
+                        <div class="Dash_Graph1">
+                            <h6>Total Confirmed/Unconfirmed: </h6>
+                            <div class="chart_first">
+                                <div class="mb-4">
+                                    <div class="chart-series">
+                                        <div class="d-flex justify-content-between">
+                                            <p><i class="fi fi-sr-bullet"></i></p>
+                                            <div>
+                                                <p><i class="fi fi-sr-bullet bullet-1"></i>{{year}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="chart-series">
+                                        <p><i class="fi fi-sr-bullet"></i></p>
+                                    </div>
+                                    <div class="chart-series">
+                                        <p><i class="fi fi-sr-bullet"></i></p>
+                                    </div>
+                                    <div class="chart-series">
+                                        <p><i class="fi fi-sr-bullet"></i></p>
+                                    </div>
+                                    <div class="chart-series">
+                                        <p><i class="fi fi-sr-bullet"></i></p>
+                                    </div>
+                                    <div class="chart-series">
+                                        <p><i class="fi fi-sr-bullet"></i></p>
+                                    </div>
+                                </div>
+                                <div class="chart_line">
+                                    <div class="chart_line_inner">
+                                        {% for data in users_month_and_year %}
+                                        <div class="chart_line_item">
+                                            <div class="d-flex align-items-end">
+                                                <div class="line_1" style="height: {{data.unconfirmed}}px;"
+                                                    Title=" Total unconfirmed : {{data.unconfirmed}}"></div>
+                                                <div class="line_2" style="height: {{data.confirmed}}px;"
+                                                    Title=" Total confirmed : {{data.confirmed}}"></div>
+                                            </div>
+                                            <div>
+                                                {% if data.month == 1 %}
+                                                <p>Jan</p>
+                                                {% elif data.month == 2 %}
+                                                <p>Feb</p>
+                                                {% elif data.month == 3 %}
+                                                <p>Mar</p>
+                                                {% elif data.month == 4 %}
+                                                <p>Apr</p>
+                                                {% elif data.month == 5 %}
+                                                <p>May</p>
+                                                {% elif data.month == 6 %}
+                                                <p>Jun</p>
+                                                {% elif data.month == 7 %}
+                                                <p>Jul</p>
+                                                {% elif data.month == 8 %}
+                                                <p>Aug</p>
+                                                {% elif data.month == 9 %}
+                                                <p>Sep</p>
+                                                {% elif data.month == 10 %}
+                                                <p>Oct</p>
+                                                {% elif data.month == 11 %}
+                                                <p>Nov</p>
+                                                {% elif data.month == 12 %}
+                                                <p>Dec</p>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6">
+                    <div class="graph_items">
+                        <div class="Dash_Graph1">
+                            <h6>Last 30 days/3 months: </h6>
+                            <div class="chart_first">
+                                <div class="mb-4">
+                                    <div class="chart-series">
+                                        <div class="d-flex justify-content-between">
+                                            <p><i class="fi fi-sr-bullet"></i></p>
+                                            <div>
+                                                <p><i class="fi fi-sr-bullet bullet-1"></i>{{year}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="chart-series">
+                                        <p><i class="fi fi-sr-bullet"></i></p>
+                                    </div>
+                                    <div class="chart-series">
+                                        <p><i class="fi fi-sr-bullet"></i></p>
+                                    </div>
+                                    <div class="chart-series">
+                                        <p><i class="fi fi-sr-bullet"></i></p>
+                                    </div>
+                                    <div class="chart-series">
+                                        <p><i class="fi fi-sr-bullet"></i></p>
+                                    </div>
+                                    <div class="chart-series">
+                                        <p><i class="fi fi-sr-bullet"></i></p>
+                                    </div>
+                                </div>
+                                <div class="chart_line">
+                                    <div class="chart_line_inner">
+                                        {% for data in users_3month_and_30days %}
+                                        <div class="chart_line_item">
+                                            <div class="d-flex align-items-end">
+                                                <div class="line_1" style="height: {{data.total_3month}}px;"
+                                                    title="Last 3 months :{{data.total_3month}}"></div>
+                                                <div class="line_2" style="height: {{data.total_30days}}px;"
+                                                    title="Last 30 days :{{data.total_30days}}"></div>
+                                            </div>
+                                            <div>
+                                                {% if data.month == 1 %}
+                                                <p>Jan</p>
+                                                {% elif data.month == 2 %}
+                                                <p>Feb</p>
+                                                {% elif data.month == 3 %}
+                                                <p>Mar</p>
+                                                {% elif data.month == 4 %}
+                                                <p>Apr</p>
+                                                {% elif data.month == 5 %}
+                                                <p>May</p>
+                                                {% elif data.month == 6 %}
+                                                <p>Jun</p>
+                                                {% elif data.month == 7 %}
+                                                <p>Jul</p>
+                                                {% elif data.month == 8 %}
+                                                <p>Aug</p>
+                                                {% elif data.month == 9 %}
+                                                <p>Sep</p>
+                                                {% elif data.month == 10 %}
+                                                <p>Oct</p>
+                                                {% elif data.month == 11 %}
+                                                <p>Nov</p>
+                                                {% elif data.month == 12 %}
+                                                <p>Dec</p>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <div class="graph_items">
+                        <div class="Dash_Graph1">
+                            <div class="Average_Average">
+                                <div class="Average">
+                                    <div>
+                                        <div class="d-flex justify-content-center">
+                                            <div class="Average_inner">
+                                                <div class="text-center">
+                                                    <h5 class="mb-0">{{total_time_reading}}</h5>
+                                                    <!-- <p class="mb-0">hours per week</p> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="text-center">
+                                            <p>Total Time Spent Reading</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <div class="graph_items">
+                        <div class="Dash_Graph1">
+                            <div class="Average_Average">
+                                <div class="Average">
+                                    <div>
+                                        <div class="d-flex justify-content-center">
+                                            <div class="Average_inner">
+                                                <div class="text-center">
+                                                    <h5 class="mb-0">{{student_avg_time}}</h5>
+                                                    <!-- <p class="mb-0">hours per week</p> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="text-center">
+                                            <p>Total Avg Time Per Session</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12">
+                    <div class="graph_items">
+                        <div class="total_read">
+                            <h6 class="mb-3">Top 10 users based on total hours reading:</h6>
+                            <div class="total_read_inner table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>S.No </th>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                            <th>Email</th>
+                                            <th>Phone Number</th>
+                                            <th>Total Time</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for data in top_students %}
+                                        <tr>
+                                            <td>{{forloop.counter }}</td>
+                                            <td>{{data.user.first_name }}</td>
+                                            <td>{{data.user.last_name }}</td>
+                                            <td>{{data.user.email}}</td>
+                                            <td>{{data.user.phone_number }}</td>
+                                            <td>Hours:{{ data.hours }}, Minutes {{data.minutes}}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+ 
+</section>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#open_side").click(function () {
+            side_bar();
+        });
+
+        function side_bar() {
+            var menulayout = $("#layout-menu");
+            var menubtn = $("#open_side");
+            if (menulayout.css("display") === "none") {
+                menulayout.css("display", "block");
+                menubtn.addClass("open_side");
+            } else {
+                menulayout.css("display", "none");
+                menubtn.removeClass("open_side");
+            }
+        }
+    });
+</script>
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/menu.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'js/dashboards-analytics.js' %}"></script>
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+{% include 'organizations/orga_footer.html' %}

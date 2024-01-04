@@ -1,0 +1,30 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% block content %}
+<div class="mainPage">
+    <h1>Send Book Invitation</h1>
+    <form method="post">
+        {% csrf_token %}
+
+        <label for="book">Select Book:</label>
+        <select name="book" id="book">
+            <!-- Replace this with your book selection logic -->
+            <option value="1">Book 1</option>
+            <option value="2">Book 2</option>
+            <!-- Add more book options as needed -->
+        </select>
+
+        <label for="recipients">Select Recipients:</label>
+        <select name="recipients" id="recipients" multiple>
+            <!-- Replace this with your user selection logic -->
+            <option value="user1">User 1</option>
+            <option value="user2">User 2</option>
+            <!-- Add more user options as needed -->
+        </select>
+
+        <input type="submit" value="Send Invitation">
+    </form>
+</div>
+   
+
+{% endblock %}

@@ -1,0 +1,107 @@
+    
+{% load static %} 
+    <!-- footer -->
+    <footer class="">
+        <div class="footerContent">
+            <div class="container">
+                <div class="row borderFotter">
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="footerLogoContent">
+                            <div class="footerLogo">
+                                {% for data in footer|slice:":1" %}
+                                <img src="{{data.logo.url}}" alt="">
+                            </div>
+                            <p>{{data.description}}</p>
+                            <ul class="footerIconSocial">
+                                <li><a href="{{data.facebook}}"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="{{data.twitter}}"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="{{data.instagram}}"><i class="fa fa-instagram"></i></a></li>
+                            </ul>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="cateforiesContent">
+                            <h5>Categories</h5>
+                            <ul>
+                                {% for data in book_category|slice:":7"%}
+                                <li><a href="#">{{data.category__book_category}}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-sm-6">
+                        <div class="cateforiesContent">
+                            <h5>Useful Link</h5>
+                            <ul>
+                                <li><a href="{% url 'home' %}">Home</a></li>
+                                <li><a href="{% url 'digitalpublishing' %}">Digital Publishing</a></li>
+                                <li><a href="{% url 'ebookstore' %}">Ebook Store</a></li>
+                                <li><a href="{% url 'indybot' %}">Indybot</a></li>
+                                {% if request.user.is_authenticated %}
+                                {% if request.user.is_student %}
+                                    <li><a href="{% url 'Customer_dashboard' %}">Ebook Reader</a></li>
+                                {% else %}
+                                    <li><a href="{% url 'NormalDashboard' %}">Ebook Reader</a></li>
+                                {% endif %}
+                                {% else %}
+                                <li><a href="{% url 'ebookReader' %}">Ebook Reader</a></li>
+                                {% endif %}
+                                <li><a href="{% url 'Blogs' %}">Blogs</a></li>
+                                <li><a href="{% url 'contact_us' %}">Contact Us</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="cateforiesContent">
+                            <h5>Newsletter</h5>
+                            <p>Get exclusive deals by signing up to our Newsletter.</p>
+                            {% if not request.user.is_authenticated %}
+                            <div class="formFooter">
+                                <div class="footerFormButton">
+                                    <button onclick="window.location.href='#'" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal1">SIGN UP</button>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <p class="copyPara">Copyright © 2023, All rights reserved. Powered by lawAfrica.</p>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="listCopy">
+                            <ul>
+                                <li><a href="{% url 'TermConditions' %}">Terms & Conditions
+                                    </a></li>
+                                <li><a href="{% url 'PrivacyPolicys' %}">Privacy Policy</a></li>
+                                <!-- <li><a href="#">Cookie Policy</a></li> -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    
+    <script src="{% static 'lowAferica/js/jquery.min.js' %}">
+    </script>
+    <script src="{% static 'lowAferica/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'lowAferica/js/bootstrap.bundle.min.js' %}"> </script>
+    <script src="{% static 'lowAferica/js/custom.js' %}"> </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var closeButton = document.querySelector("#message-popup .close");
+    
+            closeButton.addEventListener("click", function () {
+                $('#message-popup').modal('hide');
+            });
+        });
+    </script>

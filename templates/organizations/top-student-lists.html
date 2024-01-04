@@ -1,0 +1,334 @@
+{% include 'organizations/organization_header.html' %}
+{% load static %}
+
+<style>
+    div#example1_filter {
+        padding-left: 273px !important;
+    }
+
+    ul.pagination {
+        padding-left: 371px !important;
+    }
+
+    .active-switch {
+        position: relative;
+        display: block;
+        width: 87px;
+        height: 30px;
+        padding: 3px;
+        margin: 0 10px 10px 0;
+        background: linear-gradient(to bottom, #eeeeee, #FFFFFF 25px);
+        background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF 25px);
+        border-radius: 18px;
+        box-shadow: inset 0 -1px white, inset 0 1px 1px rgba(0, 0, 0, 0.05);
+        cursor: pointer;
+        box-sizing: content-box;
+    }
+
+    .active-switch-input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        box-sizing: content-box;
+    }
+
+    .active-switch-label {
+        position: relative;
+        display: block;
+        height: inherit;
+        font-size: 10px;
+        text-transform: uppercase;
+        background: #265ec9;
+        border-radius: inherit;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.15);
+        box-sizing: content-box;
+    }
+
+    .active-switch-label:before,
+    .active-switch-label:after {
+        position: absolute;
+        top: 50%;
+        margin-top: -.5em;
+        line-height: 1;
+        -webkit-transition: inherit;
+        -moz-transition: inherit;
+        -o-transition: inherit;
+        transition: inherit;
+        box-sizing: content-box;
+    }
+
+    .active-switch-label:before {
+        content: attr(data-off);
+        right: 11px;
+        color: #aaaaaa;
+        text-shadow: 0 1px rgba(255, 255, 255, 0.5);
+    }
+
+    .active-switch-label:after {
+        content: attr(data-on);
+        left: 11px;
+        color: #FFFFFF;
+        text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+        opacity: 0;
+    }
+
+    .active-switch-input:checked~.active-switch-label {
+        background: #4691ce;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .active-switch-input:checked~.active-switch-label:before {
+        opacity: 0;
+    }
+
+    .active-switch-input:checked~.active-switch-label:after {
+        opacity: 1;
+    }
+
+    .active-switch-handle {
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 28px;
+        height: 28px;
+        background: linear-gradient(to bottom, #FFFFFF 40%, #f0f0f0);
+        background-image: -webkit-linear-gradient(top, #FFFFFF 40%, #f0f0f0);
+        border-radius: 100%;
+        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .active-switch-handle:before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -6px 0 0 -6px;
+        width: 12px;
+        height: 12px;
+        background: linear-gradient(to bottom, #eeeeee, #FFFFFF);
+        background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF);
+        border-radius: 6px;
+        box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
+    }
+
+    .active-switch-input:checked~.active-switch-handle {
+        left: 61px;
+        box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Transition
+========================== */
+    .active-switch-label,
+    .active-switch-handle {
+        transition: All 0.3s ease;
+        -webkit-transition: All 0.3s ease;
+        -moz-transition: All 0.3s ease;
+        -o-transition: All 0.3s ease;
+    }
+
+    .btnImport a {
+        margin-left: 74px;
+        /* margin-top: 46px; */
+        position: relative;
+        top: 26px;
+        background: #6c061a;
+        color: #ffffff !important;
+        font-size: 15px;
+        padding: 5px 10px;
+        z-index: 999999;
+    }
+
+    .btnImport a:hover {
+        text-decoration: none;
+    }
+
+    .shadow {
+        width: 80%;
+        margin: 10px 0 0 auto;
+    }
+
+    .editicon a {
+        color: #546a7e;
+    }
+
+    .card-header .btn-primary {
+        background-color: #6c061a;
+        border-color: #91011bc7 !important;
+    }
+    .open_side{
+        margin-left: 226px;
+    }
+</style>
+
+<div id="content-wrapper">
+    <div id="content">
+        <div>
+            <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+            id="layout-navbar">
+
+            <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none " id="open_side">
+                <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                    <i class="bx bx-menu bx-sm"></i>
+                </a>
+            </div>
+
+            <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+
+                <!-- Search -->
+                <div class="navbar-nav align-items-center">
+                    <div class="nav-item navbar-search-wrapper mb-0">
+                        <a class="nav-item nav-link search-toggler px-0" href="javascript:void(0);">
+                            <!-- <form method="GET" id="search-form">
+                                <div id="search-container">
+                                    <span><i class="fa fa-search" aria-hidden="true"></i></span>
+                                    <input type="text" id="search-bar" name="searchname" placeholder="Search...">
+                                </div>
+                            </form>-->
+
+                        </a>
+                    </div>
+
+                </div>
+                <!-- /Search -->
+
+                <ul class="navbar-nav flex-row align-items-center ms-auto">
+
+                    <!-- Notification -->
+         
+
+                    <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                        <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
+                            data-bs-toggle="dropdown">
+                            <div class="avatar avatar-online">
+
+                            {% if user.profile_pic %}
+                            <div  class="profile_img">
+                                <img src="{{ user.profile_pic.url }}" alt=""  class="w-px-40 h-auto rounded-circle">
+                            </div>
+                            {% else %}
+                            <div class="profile_img">
+                                <img src="{% static 'images/logoLaw.png' %}" alt=""  class="w-px-40 h-auto rounded-circle">
+                            </div>
+                            {% endif %}
+                            </div>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-end text-center">
+                            {% if user.profile_pic %}
+                            <div  class="profile_img">
+                                <img src="{{ user.profile_pic.url }}" alt="">
+                            </div>
+                            {% else %}
+                            <div class="profile_img">
+                                <img src="{% static 'images/logoLaw.png' %}" alt=""  >
+                            </div>
+                            {% endif %}
+                            </li>
+
+                            <li>
+                                <h6 class="mb-1">{{user.first_name}}</h6>
+                            </li>
+                            <li class="mb-3">{{user.email}}</li>
+                            <li>
+                                <div class="dropdown-divider"></div>
+                            </li>
+                            <li class="sign_outbtn"><a href="{% url 'user_logout' %}"><iconify-icon
+                                        icon="gridicons:sign-out"></iconify-icon> Sign out</a></li>
+
+                            
+                        </ul>
+                    </li>
+                    <!--/ User -->
+                </ul>
+            </div>
+            <!-- Search Small Screens -->
+            <div class="navbar-search-wrapper search-input-wrapper  d-none">
+                <input type="text" class="form-control search-input container-xxl border-0" placeholder="Search..."
+                    aria-label="Search...">
+                <i class="bx bx-x bx-sm search-toggler cursor-pointer"></i>
+            </div>
+
+        </nav>
+    </div>
+</div>
+</div>
+
+
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        <div class="card-header d-flex justify-content-between py-3">
+            <h6 class="m-0 font-weight-bold text-primary"> Top 10 Users</h6>
+        </div>
+        <div class="card-body mt-3">
+            <div class="table-responsive">
+                <table class="table table-striped " id="example1">
+                    <thead>
+                        <tr>
+                            <th>Sr No</th>
+                            <th>Email</th>
+                            <th>Full Name</th>
+                            <th>Phone Number</th>
+                            <th>Total Times </th>
+                            <!-- <th>Action</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in top_students %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{data.user.email}}</td>
+                            <td>{{ data.user.first_name }} {{ data.user.last_name }}</td>
+                            <td>{{ data.user.phone_number }}</td>
+                            <td> Hours:{{ data.hours }}, Minutes {{data.minutes}}</td>
+                            <!-- <td>
+                                <div class="d-flex">
+                                    <div class="edit-child me-3 editicon">
+                                        <a href=""><i
+                                                class="fi fi-sr-file-edit"></i></a>
+                                    </div>
+                                    <div class="edit-child">
+                                        <a href=""
+                                            onclick="return confirm('Are You Sure')"><i class="fi fi-br-trash"></i></a>
+                                    </div>
+                                </div>
+                            </td> -->
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#open_side").click(function () {
+            side_bar();
+        });
+
+        function side_bar() {
+            var menulayout = $("#layout-menu");
+            var menubtn = $("#open_side");
+            if (menulayout.css("display") === "none") {
+                menulayout.css("display", "block");
+                menubtn.addClass("open_side");
+            } else {
+                menulayout.css("display", "none");
+                menubtn.removeClass("open_side");
+            }
+        }
+    });
+</script>
+{% include 'organizations/orga_footer.html' %}

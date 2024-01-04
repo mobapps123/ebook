@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+
+
+<style>
+    
+.form-group.imgprofile img {
+    width: 116px;
+    height: 116px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+</style>
+
+<!-- Begin Page Content -->
+ 
+    <div class="container-fluid mainPage">
+        <div class="container rounded bg-white mt-2 mb-2">
+            <div class="row">
+
+                <div class="col-md-12 border-right">
+                    <div class="p-3 py-5">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4 class="text-center">Edit Terms & Conditions</h4>
+                        </div>
+
+                        <form class="forms-sample" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <div class="form-group imgprofile">
+                                {% if data.image %}
+                                <img src="{{data.image.url}}"
+                                    class="center">
+                                    {% endif %}
+                            </div> 
+
+                            <div class="form-group fileProfileEmployee">
+                                <input type="file" name="image" class="form-control-file"
+                                    id="exampleFormControlFile1" accept="image/*">
+                            </div>
+
+                           
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <textarea class="form-control change_border" placeholder="Enter Description"
+                                        rows="11" style="height: auto;"id="editor"
+                                        name="description">{{data.description}}</textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>           
+{% endblock %}

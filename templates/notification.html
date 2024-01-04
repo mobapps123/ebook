@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<div class="mainPage">
+
+    <h1>Notifications</h1>
+    <ul>
+        {% for notification in notifications %}
+            <li>{{ notification.content }}</li>
+            <form method="post" action="{% url 'toggle_notification' %}">
+                {% csrf_token %}
+                <input type="hidden" name="notification_id" value="{{ notification.id }}">
+                <button type="submit">{% if notification.enabled %}Disable{% else %}Enable{% endif %}</button>
+            </form>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}

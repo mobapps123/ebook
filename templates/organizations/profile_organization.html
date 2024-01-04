@@ -1,0 +1,460 @@
+{% include 'organizations/organization_header.html' %}
+{% load static %}
+
+
+<style>
+    .form-control {
+        display: block;
+        width: 95% !important;
+    }
+
+    .tablecategory {
+        width: 80%;
+        margin: 50px 0 0 auto;
+    }
+
+    .alltabs {
+        width: 79%;
+        margin: 0 0 0 auto;
+    }
+
+    .passwordchange {
+        border-bottom: 2px solid #eee;
+        padding: 19px 0 10px 0;
+        width: 95% !important;
+    }
+
+    .submitButton {
+        background: #910721;
+        border: 0;
+        padding: 5px;
+        width: 10%;
+        border-radius: 5px;
+        color: #fff;
+        margin: 20px 0;
+    }
+
+    .profileimg {
+        width: 80%;
+        margin: 30px 0 0 auto;
+    }
+
+    button#home-tab.active {
+        background: #93011b !important;
+        color: #fff !important;
+    }
+
+    button#profile-tab.active {
+        background: #93011b !important;
+        color: #fff !important;
+    }
+
+    .messages {
+        text-align: center;
+    }
+
+    .messages p {
+        margin-bottom: 0px;
+        color: #fff;
+    }
+    .open_side{
+        margin-left: 226px;
+    }
+</style>
+
+<div id="content-wrapper">
+    <div id="content">
+        <div>
+            <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+                id="layout-navbar">
+
+                <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none " id="open_side">
+                    <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                        <i class="bx bx-menu bx-sm"></i>
+                    </a>
+                </div>
+
+                <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+
+                    <!-- Search -->
+                    <div class="navbar-nav align-items-center">
+                        <div class="nav-item navbar-search-wrapper mb-0">
+                            <a class="nav-item nav-link search-toggler px-0" href="javascript:void(0);">
+
+
+                                <!-- <form method="get" id="search-form">
+                                    <div id="search-container">
+                                        <span><i class="fa fa-search" aria-hidden="true"></i></span>
+                                        <input type="text" id="search-bar" name="searchname" placeholder="Search...">
+                                    </div>
+                                </form> -->
+
+
+
+                            </a>
+                        </div>
+
+                    </div>
+                    <!-- /Search -->
+
+                    <ul class="navbar-nav flex-row align-items-center ms-auto">
+
+
+
+
+
+
+
+
+                        <!-- Notification -->
+
+                        <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                            <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
+                                data-bs-toggle="dropdown">
+                                <div class="avatar avatar-online">
+                                    {% if user.profile_pic %}
+                                    <img src="{{user.profile_pic.url}}" alt class="w-px-40 h-auto rounded-circle">
+                                    {% endif %}
+                                </div>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end text-center">
+                                {% if user.profile_pic %}
+                                <li class="profile_img"><a href="#"><img src="{{user.profile_pic.url}}" alt=""></a>
+                                    {% endif %}
+                                </li>
+
+                                <li>
+                                    <h6 class="mb-1">{{user.first_name}}</h6>
+                                </li>
+                                <li class="mb-3">{{user.email}}</li>
+                                <li>
+                                    <div class="dropdown-divider"></div>
+                                </li>
+                                <li class="sign_outbtn"><a href="{% url 'logout' %}"><iconify-icon
+                                            icon="gridicons:sign-out"></iconify-icon> Sign out</a></li>
+
+
+                            </ul>
+                        </li>
+                        <!--/ User -->
+                    </ul>
+                </div>
+                <!-- Search Small Screens -->
+                <div class="navbar-search-wrapper search-input-wrapper  d-none">
+                    <input type="text" class="form-control search-input container-xxl border-0" placeholder="Search..."
+                        aria-label="Search...">
+                    <i class="bx bx-x bx-sm search-toggler cursor-pointer"></i>
+                </div>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+<!-- new tab code start here -->
+
+<div class="container profileimg">
+
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item active profiletab" role="presentation">
+            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane"
+                type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Profile</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane"
+                type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Change Password</button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab"
+            tabindex="0">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-4 border-right">
+                        <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                            {% if user.profile_pic %}
+                            <img class="rounded-circle mt-5" width="150px" height="150px"
+                                src="{{user.profile_pic.url}}">
+                            {% endif %}
+                            <span class="font-weight-bold">{{user.first_name}}{{user.last_name}}</span><span
+                                class="text-black-50">{{user.email}}</span><span> </span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8 border-right">
+                        <div class="p-3 py-5">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h4 class="text-right">My Profile </h4>
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <input type="text" class="form-control" name="first_name" id="email"
+                                    placeholder="First Name" value={{user.first_name}}>
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <input type="text" class="form-control" name="last_name" id="email"
+                                    placeholder="Last Name" value={{user.last_name}}>
+                            </div>
+
+
+
+
+                            <div class="form-outline mb-4">
+                                <input type="email" class="form-control" name="email" id="email" placeholder="email id"
+                                    value={{request.user.email}}>
+                            </div>
+
+                            {% comment %} <div class="form-outline mb-4">
+                                <input type="text" class="form-control" name="address" id="address"
+                                    placeholder="Address">
+                            </div> {% endcomment %}
+                            <div class="form-outline mb-4">
+                                <input type="text" class="form-control" name="phone_number" id="email"
+                                    placeholder="Contact Number" value={{request.user.phone_number}}>
+                            </div>
+                            <div class="form-outline mb-4">
+                                <input type="file" class="form-control" name="profile_pic" id="email">
+                            </div>
+                            {% comment %} <div class="row mt-3">
+                                <div class="col-md-6"> <input type="text" class="form-control" name="state" id="state"
+                                        placeholder="State" value={{user.state}}></div>
+                                <div class="col-md-6"> <input type="text" class="form-control" name="city" id="city"
+                                        placeholder="City" value={{user.city}}></div>
+                            </div> {% endcomment %}
+                            <div class="mt-5 text-center"><button type="submit" class="btn btn-primary">Save
+                                    Profile</button></div>
+                            <h4 id="error"></h4>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+            <form method="post" action="{% url 'change_password' %}" id="change-password-form" class="passwordchange">
+                {% csrf_token %}
+                <div class="row g-3 align-items-center my-2">
+                    <div class="col-2">
+                        <label for="exampleInputEmail1">Old Password</label>
+                    </div>
+                    <div class="col-6">
+                        <input type="password" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                            placeholder="Old Password" name="old_password" required>
+                    </div>
+                </div>
+                <div class="row g-3 align-items-center my-2">
+                    <div class="col-2">
+                        <label for="exampleInputPassword1">New Password</label>
+                    </div>
+                    <div class="col-6">
+                        <input type="password" class="form-control" id="exampleInputPassword1"
+                            placeholder="New Password" name="new_password" required>
+                    </div>
+                </div>
+                <div class="row g-3 align-items-center my-2">
+                    <div class="col-2">
+                        <label for="exampleInputPassword12">Confirm Password</label>
+                    </div>
+                    <div class="col-6">
+                        <input type="password" class="form-control" id="exampleInputPassword12"
+                            placeholder="Confirm Password" name="confirm_password" required>
+                    </div>
+                </div>
+                <h4 id="error"></h4>
+                <div class="buttonWrapper">
+                    <button type="submit" id="submitButton" class="submitButton pure-button pure-button-primary">
+                        <span>SUBMIT</span>
+
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#open_side").click(function () {
+            side_bar();
+        });
+
+        function side_bar() {
+            var menulayout = $("#layout-menu");
+            var menubtn = $("#open_side");
+            if (menulayout.css("display") === "none") {
+                menulayout.css("display", "block");
+                menubtn.addClass("open_side");
+            } else {
+                menulayout.css("display", "none");
+                menubtn.removeClass("open_side");
+            }
+        }
+    });
+</script>
+
+
+    <!-- {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %} -->
+
+    <!--     
+    <div class="tab-content">
+  
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+      <div id="home" class="container tab-pane active"><br>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-4 border-right">
+                    <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                        {% if user.profile_pic %}
+                        <img class="rounded-circle mt-5" width="150px" height="150px" src="{{user.profile_pic.url}}">
+                        {% endif %}
+                        <span class="font-weight-bold">{{user.first_name}}{{user.last_name}}</span><span
+                            class="text-black-50">{{user.email}}</span><span> </span>
+                    </div>
+                </div>
+
+                <div class="col-md-8 border-right">
+                    <div class="p-3 py-5">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4 class="text-right">My Profile </h4>
+                        </div>
+                      
+                         <div class="form-outline mb-4">
+                            <input type="text" class="form-control" name="first_name" id="email"
+                                placeholder="First Name" value={{user.first_name}}>
+                        </div> 
+
+                        <div class="form-outline mb-4">
+                            <input type="text" class="form-control" name="last_name" id="email"
+                                placeholder="Last Name" value={{user.last_name}}>
+                        </div> 
+
+
+
+
+                        <div class="form-outline mb-4">
+                            <input type="email" class="form-control" name="email" id="email"
+                                placeholder="email id" value={{request.user.email}}>
+                        </div>
+
+                        {% comment %} <div class="form-outline mb-4">
+                            <input type="text" class="form-control" name="address" id="address"
+                                placeholder="Address">
+                        </div> {% endcomment %}
+                        <div class="form-outline mb-4">
+                            <input type="number" class="form-control" name="phone_number" id="email"
+                                placeholder="Contact Number" value={{request.user.phone_number}}>
+                        </div>
+                        <div class="form-outline mb-4">
+                            <input type="file" class="form-control" name="profile_pic" id="email">
+                        </div>
+                        {% comment %} <div class="row mt-3">
+                            <div class="col-md-6"> <input type="text" class="form-control" name="state"
+                                    id="state" placeholder="State" value={{user.state}}></div>
+                            <div class="col-md-6"> <input type="text" class="form-control" name="city"
+                                    id="city" placeholder="City" value={{user.city}}></div>
+                        </div> {% endcomment %}
+                        <div class="mt-5 text-center"><button type="submit" class="btn btn-primary">Save
+                                Profile</button></div>
+                        <h4 id="error"></h4>
+                    </div>
+                </div>
+            </div>
+        </form>
+      </div>
+      <div id="menu1" class="container tab-pane fade"><br>
+
+        <form method="post" action="{% url 'change-password' %}" id="change-password-form" class="passwordchange">
+            {% csrf_token %}
+            <div class="row g-3 align-items-center my-2">
+                <div class="col-2">
+                    <label for="exampleInputEmail1">Old Password</label>
+                </div>
+                <div class="col-6">
+                    <input type="password" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                        placeholder="Old Password" name="old_password" required>
+                </div>
+            </div>
+            <div class="row g-3 align-items-center my-2">
+                <div class="col-2">
+                    <label for="exampleInputPassword1">New Password</label>
+                </div>
+                <div class="col-6">
+                    <input type="password" class="form-control" id="exampleInputPassword1"
+                        placeholder="New Password" name="new_password" required>
+                </div>
+            </div>
+            <div class="row g-3 align-items-center my-2">
+                <div class="col-2">
+                    <label for="exampleInputPassword12">Confirm Password</label>
+                </div>
+                <div class="col-6">
+                    <input type="password" class="form-control" id="exampleInputPassword12"
+                        placeholder="Confirm Password" name="confirm_password" required>
+                </div>
+            </div>
+            <h4 id="error"></h4>
+            <div class="buttonWrapper">
+                <button type="submit" id="submitButton" class="submitButton pure-button pure-button-primary">
+                  <span>SUBMIT</span>
+              
+                </button>
+              </div>
+        </form>
+        
+      </div>
+  
+    </div> -->
+</div>
+
+
+<!-- new tab code end here -->
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function changepass() {
+        var old_pass = document.getElementById('exampleInputEmail1').value;
+        var new_pass = document.getElementById('exampleInputPassword1').value;
+        var confirm_new_pass = document.getElementById('exampleInputPassword12').value;
+        $.ajax({
+            type: "POST",
+            url: "/change-password/",
+            data: {
+                old_pass: old_pass,
+                new_pass: new_pass,
+                confirm_new_pass: confirm_new_pass,
+                csrfmiddlewaretoken:'{{ csrf_token }}'
+            },
+            success: function (data) {
+                alert(data.msg);
+                document.getElementById('error').innerHTML = data.msg;
+            },
+            error: function (data) {
+                alert("An error occurred. Please try again.");
+            }
+        });
+    }
+</script> -->
+{% include 'organizations/orga_footer.html' %}

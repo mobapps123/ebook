@@ -1,0 +1,82 @@
+
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<style>
+div#example1_filter {
+    padding-left: 273px !important;
+}
+ul.pagination {
+    padding-left: 371px !important;
+}
+</style>
+                <!-- Begin Page Content -->
+             <div class="container-fluid mainPage">
+                    <div class="card shadow mb-4">
+                        <div class="card-header d-flex justify-content-between py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Contact Us Details</h6>
+                           <!-- <a href="{% url 'contactus' %}"> <button type="button" class="btn btn-primary">Add Contact Us</button></a> -->
+                        </div>
+
+                        <div class="card-body">
+                        <div class="table-responsive">
+                       <table class="table table-striped" id="example">
+                        <thead>
+                    <tr>
+                        <th>Sr No</th>
+                        <th>Name</th>
+                        <th>Company Name</th>
+                        <th>Business Email</th>
+                        <th>Contact Number</th>
+                        <th>Subject</th>
+                        <th>Message</th>
+                        <th>Action</th>
+                      
+                    
+              </tr> 
+                
+            </thead>
+            <tbody>
+              {% for data in data %}
+                <td>
+
+                    {{forloop.counter}}</a>
+                    </td>
+                   {% comment %} <td>
+                    {% if data.image %}
+                  <img src="{{data.image.url}}" style="height: .6in; width:2cm;"  alt=""> 
+                  {% endif %}
+                 </td>   {% endcomment %}
+                    <td>{{data.name}}</td>
+                    <td>{{data.company}}</td>
+                    <td>{{data.business_email}}</td>
+                    <td>{{data.mobile_number}}</td>
+                    <td>{{data.subject}}</td>
+                    <td>{{data.message}}</td>
+                 </td>
+                <td>
+                  <div class=" d-flex" >
+                    <!-- <div class="edit-cild mr-3">
+                      <a href="#"><i class="icon-edit fas fa-edit"></i> </a>
+                    </div> -->
+                    <div class="edit-child">
+                      <a href="{% url 'contact_delete' data.id %}"onclick="return confirm('Are You Sure')"><i class="icon-edit fas fa-trash"></i></a>
+                    </div>
+                    {% comment %} <td>
+                    <input type="checkbox" checked data-toggle="toggle" data-on="active"
+                                                    data-off="Inactive" data-onstyle="success" data-offstyle="danger">
+                    </td> {% endcomment %}
+                  </div>
+                </td>
+               </tr>
+                {% endfor %}
+            </tbody>
+
+          </table>
+        </div>
+        </div>
+        </div>
+    </div>
+
+{% endblock %}

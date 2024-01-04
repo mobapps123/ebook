@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Contact Us</title>
+    <style>
+    
+
+        .card-item {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            column-gap: 20px;
+            row-gap: 20px;
+            width: 96%;
+            padding: 20px;
+        }
+
+        .cardItem1 {
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+            background-color: #fff;
+            text-align: center;
+        }
+        .cardItem1 a{
+            color: #000;
+            text-decoration: none;
+        }
+        .cardItem1 img{
+            height: 80px;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="mainPage">
+        <div class="manageHead">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card-item">
+                        <div class="cardItem1">
+                            <a href="{% url 'ContactusBanner_details' %}">
+                                <div>
+                                    <img src="{% static 'images/interview.png' %}" alt="">
+                                </div>
+                                <h6>Contact Banner</h6>
+                            </a>
+                        </div>
+                        <div class="cardItem1">
+                            <a href="{% url 'Getintouch_details' %}">
+                                <div>
+                                    <img src="{% static 'images/advertisement.png' %}" alt="">
+                                </div>
+                                <h6>Get In Touch</h6>
+                            </a>
+                        </div>
+                        <div class="cardItem1">
+                            <a href="{% url 'messageus' %}">
+                                <div>
+                                    <img src="{% static 'images\e-book.png' %}" alt="">
+                                </div>
+                                <h6>Send Us Message</h6>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
+{% endblock %}

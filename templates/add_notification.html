@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<style>
+    .btn-group .dropdown-menu {
+        width: 270px !important;
+    }
+
+    .studentdropdown input[type=text] {
+        border: 0;
+        background-color: transparent;
+        cursor: default;
+    }
+
+    .studentdropdown input[type=text]:focus {
+        outline: 0;
+    }
+    .drophover:hover{
+        background-color: #d4d4d4;
+    }
+</style>
+
+<div class="container-fluid mainPage">
+    <div class="container rounded bg-white mt-2 mb-2">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="p-3 py-5">
+                    <div class="card-header d-flex justify-content-between py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Notifications</h6>
+                    </div>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label>Select Recipients:</label>
+                            <div class="btn-group">
+                                <button type="button" class="dropbook dropdown-toggle carsSelect"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    Select
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li class="dropdown drophover">
+                                        <p data-bs-toggle="dropdown" aria-expanded="false"
+                                            class="px-3 mb-0 studentdropdown">
+                                            <input type="text" id="select-all-students" value="All student" readonly>
+                                        </p>
+                                        <ul class="dropdown-menu">
+                                            <p class="px-3 mb-0">
+                                                <input type="checkbox" id="parentCheckbox" class="select-all"
+                                                    name="receiver[]" value="all_students"
+                                                    onchange="checkAllChildren()">
+                                                <label class="mb-0" for="parentCheckbox">All Students</label>
+                                            </p>
+                                            {% for student in students %}
+                                            <li class="px-3">
+                                                <input type="checkbox" id="user{{ student.id }}" name="receiver[]"
+                                                    value="{{ student.email }}"
+                                                    class="individual-checkbox student-checkbox childCheckbox">
+                                                <label class="mb-0" for="user{{ student.id }}">{{ student.email}}</label>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown drophover">
+                                        <p data-bs-toggle="dropdown" aria-expanded="false"
+                                            class="px-3 mb-0 studentdropdown">
+                                            <input type="text" id="select-all-students" value="All Corporates" readonly>
+                                        </p>
+                                        <ul class="dropdown-menu">
+                                            <p class="px-3 mb-0">
+                                                <input type="checkbox" id="parentCheckbox1" class="select-all"
+                                                    name="receiver[]" value="all_corporates"
+                                                    onchange="checkAllChildren1()">
+                                                <label class="mb-0" for="parentCheckbox1">All Corporates</label>
+                                            </p>
+                                            {% for corporate in corporates %}
+                                            <li class="px-3">
+                                                <input type="checkbox" id="user{{ corporate.id }}" name="receiver[]"
+                                                    value="{{ corporate.email }}"
+                                                    class="individual-checkbox corporate-checkbox childCheckbox1">
+                                                <label class="mb-0" for="user{{ corporate.id }}">{{ corporate.email}}</label>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div> <!-- Missing closing tag for the "Select Recipients" form group -->
+
+                        <div class="form-group">
+                            <label for="exampleInputUsername1">Subject:</label>
+                            <textarea type="text" class="form-control" name="subject" placeholder="Subject"
+                                required=""></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputUsername1">Message:</label>
+                            <textarea type="text" class="form-control" name="message" placeholder="Message"></textarea>
+                        </div>
+                        <div class="row">
+                            <button type="submit" class="btn btn-primary mr-2">Send Notifications</button>
+                        </div>
+                    </form>
+
+                    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+                    <script>
+                        $(document).ready(function () {
+                            $("#select-all-students").change(function () {
+                                $(".student-checkbox").prop('checked', $(this).prop("checked"));
+                            });
+
+                            $("#select-all-corporates").change(function () {
+                                $(".corporate-checkbox").prop('checked', $(this).prop("checked"));
+                            });
+
+                            $(".student-checkbox").change(function () {
+                                if (!$(".student-checkbox:not(:checked)").length) {
+                                    $("#select-all-students").prop('checked', true);
+                                } else {
+                                    $("#select-all-students").prop('checked', false);
+                                }
+                            });
+
+                            $(".corporate-checkbox").change(function () {
+                                if (!$(".corporate-checkbox:not(:checked)").length) {
+                                    $("#select-all-corporates").prop('checked', true);
+                                } else {
+                                    $("#select-all-corporates").prop('checked', false);
+                                }
+                            });
+                        });
+                    </script>
+                    <script>
+                        function checkAllChildren() {
+                            const parentCheckbox = document.getElementById('parentCheckbox');
+                            const childCheckboxes = document.getElementsByClassName('childCheckbox');
+
+                            // If the parent checkbox is checked, check all child checkboxes; otherwise, uncheck them
+                            for (let i = 0; i < childCheckboxes.length; i++) {
+                                childCheckboxes[i].checked = parentCheckbox.checked;
+                            }
+                        }
+                    </script>
+                    <script>
+                        function checkAllChildren1() {
+                            const parentCheckbox1 = document.getElementById('parentCheckbox1');
+                            const childCheckboxes = document.getElementsByClassName('childCheckbox1');
+
+                            // If the parent checkbox is checked, check all child checkboxes; otherwise, uncheck them
+                            for (let i = 0; i < childCheckboxes.length; i++) {
+                                childCheckboxes[i].checked = parentCheckbox1.checked;
+                            }
+                        }
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,466 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% load static %}
+<style>
+    .imgsliderhome {
+        height: 70vh;
+    }
+
+    .carousel-item img {
+        height: 100%
+    }
+
+    .slider-main-info-area {
+        position: relative;
+    }
+
+    .slide-text {
+        position: absolute;
+        top: 170px;
+        max-width: 50%;
+    }
+
+    .slide-text h1 {
+        font-size: 35px;
+        font-weight: 700;
+        color: white;
+        text-align: center;
+        margin-bottom: 20px;
+        line-height: 1.7;
+    }
+
+    span.slideheadhome {
+        color: #029fea;
+    }
+
+    .homeslidebtn {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .homeslidebtn button {
+        background: #1c1a1a;
+        color: white;
+        border: none;
+        padding: 15px 35px;
+        font-size: 17px;
+        transition: 0.7s;
+    }
+
+    .homeslidebtn button:hover {
+        background: #1767b3;
+    }
+
+    .homeslideIcon {
+        margin-left: 10px;
+    }
+
+    .homeslideIcon i {
+        transition: 0.7s;
+
+    }
+
+    .homeslidebtn button:hover i {
+        margin-left: 15px;
+    }
+
+    span.carousel-control-prev-icon {
+        background-color: #fbaf43;
+        padding: 20px 20px;
+        border-radius: 50%;
+    }
+
+    span.carousel-control-next-icon {
+        background-color: #fbaf43;
+        padding: 20px 20px;
+        border-radius: 50%;
+    }
+
+    .carousel-control-next,
+    .carousel-control-prev {
+        opacity: 0.6;
+    }
+
+    .toggleall {
+        color: #4e4d4d;
+        font-weight: 600;
+        font-size: 15px;
+        margin-right: 20px;
+        background: white;
+        height: 36px;
+        position: relative;
+        left: 23px;
+        padding: 5px 20px;
+        border-right: 1px solid rgb(0 0 0 / 33%);
+    }
+
+    .searchparent input {
+        height: 36px;
+        border: unset;
+        padding: 5px 20px;
+        width: 450px;
+    }
+
+    .searchparent input:focus {
+        border: unset;
+        outline: unset;
+    }
+
+    .iconseachHome i {
+        background: #029fea;
+        color: white;
+        height: 36px;
+        padding: 5px 20px;
+    }
+
+    section.useprimary {
+        padding: 30px 0px;
+    }
+
+    .imguseprimar {
+        width: 100%;
+    }
+
+    .imguseprimar img {
+        width: 100%;
+    }
+
+    .content h3 {
+        position: relative;
+    }
+
+    .content h3::before {
+        background: black;
+        position: absolute;
+        width: 100px;
+        height: 3px;
+        content: "";
+        bottom: 0px;
+        text-align: 7px;
+        top: 48px;
+    }
+
+    .btnprimarsearch button {
+        margin-top: 20px;
+        border: unset;
+        background: black;
+        color: white;
+        padding: 5px 20px;
+        border-radius: 20px;
+    }
+
+    .featuresec {
+        padding: 50px 0px;
+        background-image: url(images/bgfeature.jpg);
+        background-size: cover;
+        background-blend-mode: overlay;
+        background-color: rgba(0, 0, 0, 0.637);
+    }
+
+    .headfeature {
+        color: white;
+        text-align: center;
+        font-weight: 600;
+        font-size: 30px;
+        margin-bottom: 35px;
+    }
+
+    .imgfeature {
+        height: 260px;
+        width: 100%;
+    }
+
+    .imgfeature img {
+        height: 100%;
+        width: 100%;
+    }
+
+    section.disciplinary {
+        padding: 50px 0px;
+    }
+
+    .head-discipline {
+        color: black;
+        font-weight: 600;
+        font-size: 30px;
+        margin-bottom: 25px;
+        text-align: center;
+    }
+
+    .text-disc {
+        text-align: center;
+        position: relative;
+    }
+
+    p.text-disc::after {
+        content: "";
+        position: absolute;
+        background: black;
+        height: 3px;
+        width: 100px;
+        width: 1;
+        text-align: center;
+        left: 43%;
+        top: 40px;
+    }
+
+    .footerbg {
+        background: #030f20;
+        padding: 50px 0px;
+        margin: 50px 0px 0px 0px;
+    }
+
+    .headfooter h3 {
+        color: white;
+        font-size: 20px;
+        font-weight: 600;
+        padding-bottom: 10px;
+    }
+
+    .headfooter::after {
+        background: #00bcf9;
+        position: absolute;
+        content: "";
+        height: 4px;
+        width: 50px;
+    }
+
+    .headfooter {
+        position: relative;
+    }
+
+    .parafooter p {
+        color: white;
+        margin-top: 25px;
+    }
+
+    .parentlastest {
+        display: flex;
+        margin-top: 25px;
+    }
+
+    .childmarch23 {
+        border: 2px solid white;
+        text-align: center;
+
+        padding: 0px 4px;
+    }
+
+    .childmarch23 p {
+        color: white;
+        font-size: 14px;
+    }
+
+    .comment p {
+        color: white;
+    }
+
+    .comment {
+        margin-left: 20px;
+    }
+
+    .productparent {
+        display: flex;
+        margin-top: 25px;
+        border-bottom: 1px solid #ffffff5c;
+        padding-bottom: 10px;
+    }
+
+    .productimg img {
+        height: 70px;
+        width: 65px;
+    }
+
+    .productcontent {
+        margin-left: 20px;
+    }
+
+    .productcontent p {
+        color: white;
+    }
+
+    .copyrightsec {
+        background: #00bcf9;
+        padding: 20px 0px;
+    }
+
+    .paypalimg img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    .paypalimg {
+        height: 45px;
+        width: 100px;
+    }
+
+    .copycontent {
+        color: #ffffffa3;
+        margin-top: 7px;
+        font-weight: 400;
+        text-align: center;
+        font-size: 15px;
+    }
+
+    .register_box {
+        width: 60%;
+        background: #fff;
+        padding: 28px;
+    }
+
+    .login-form-txt {
+        width: 100%;
+        height: 40px;
+        color: #000;
+        border: 1px solid #797075;
+        border-radius: 5px;
+        outline: none;
+        margin-bottom: 15px;
+        padding: 15px;
+    }
+
+
+    input[type='submit'] {
+        border: none;
+        outline: none;
+        padding: 5px 20px;
+        width: 100px;
+        font-weight: 600;
+        cursor: pointer;
+        border-radius: 5px;
+        background: #797075;
+        color: #fff;
+        text-align: center;
+        padding: 7px 0;
+        font-size: 18px;
+    }
+
+    input[type='submit']:active {
+        opacity: 0.8;
+    }
+
+    .register_box img {
+        width: 122px;
+    }
+
+    .submit_style {
+        display: flex;
+        justify-content: center;
+    }
+
+    .login_style {
+        display: flex;
+        justify-content: center;
+        text-decoration: none;
+    }
+
+    .login_style a {
+        text-decoration: none;
+        border: none;
+        outline: none;
+        padding: 5px 20px;
+        width: 100px;
+        margin-top: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        border-radius: 50px;
+        background: #00bcf9;
+        color: #fff;
+        text-align: center;
+        padding: 7px 0;
+        font-size: 18px;
+    }
+
+    .justify-content-center {
+        display: flex;
+        justify-content: center;
+    }
+
+    .resister_style {
+        display: flex;
+        justify-content: center;
+    }
+
+    
+    .organHead {
+        color: black;
+        position: relative;
+        z-index: 999;
+    }
+
+    .dropbook {
+        background-color: transparent;
+        border-radius: 5px;
+        padding: 6px 15px;
+        margin: 10px 0;
+        color: #000;
+        display: block;
+        border: 1px solid #797075;
+        width: 23%;
+        text-align: start;
+    }
+    .mainPage1{
+        padding-top: 52px;
+    }
+    
+</style>
+
+<div class="container mt-4 mainPage1" >
+    <div class="row ">
+        <div class="col-12">
+            <h4 class="organHead"> Create Corporate</h4>
+        </div>
+    </div>
+    <div class="row ligtBg">
+        <div class="error-message">
+            {% if messages %}
+                {% for message in messages %}
+                    <p class="text-danger">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="register_box oranganForm">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form">
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="institute">Enter Your Institute</label>
+                            <input type="text" name="institute" placeholder="Enter your institute name" required="" class="login-form-txt" />
+                        </div>
+                        <div class="col-12">
+                            <label for="first_name">First Name</label>
+                            <input type="text" name="first_name" placeholder="Enter your first name" required=""
+                            class="login-form-txt" />
+                        </div>
+                    <div class="col-12">
+                        <label for="last_name">Last Name</label>
+                        <input type="text" name="last_name" placeholder="Enter your last name" required=""
+                        class="login-form-txt" />
+                    </div>
+                    <div class="col-12">
+                        <label for="email">Email</label>
+                        <input type="email" name="email"required="" placeholder="Enter your email" class="login-form-txt" />
+                    </div>
+                    <div class="col-12">
+                        <label for="phone_number">Phone Number</label>
+                        <input type="tel" name="phone_number" required="" placeholder="Enter your phone number" class="login-form-txt"
+                        onkeypress="return (event.charCode >= 48 && event.charCode <= 57) && this.value.length < 12"/>
+                    </div>
+                    <div class="col-12">
+                        <label for="password">Password</label>
+                        <input type="password"required="" name="password" placeholder="Enter your password" class="login-form-txt" />
+                    </div>
+                    </div>
+                    <div class="submit_style">
+                        <input type="submit" value="Submit" class="login-form-btn"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

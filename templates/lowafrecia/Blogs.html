@@ -1,0 +1,337 @@
+{% extends 'lowafrecia/base.html' %}
+{% load static %}
+{% block content %}
+
+
+
+{% for data in blog_banner|slice:":1"%}
+<section class="aboutSecBanner" style="background-image: url({{data.banner_image.url}});">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{{data.heading}}</h1>
+                <h5>{{data.description}}</h5>
+                <!-- <div class="aboutBannerBtn">
+                    <a href="#"> <button>Read More</button></a>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</section>
+{% endfor %}
+<!-- banner end -->
+
+
+<section class="epublishingSec">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="epublishingContent">
+                    {% for data in blog_details|slice:":1"%}
+                    <p>{{data.paragraph1}}</p>
+                    <p class="mt-3">{{data.paragraph2}}</p>
+                    <p class="mt-3">{{data.paragraph3}}</p>
+                    {% endfor %}
+                    <!-- -------------------------------------------------------------- -->
+                    {% for data in blog_details%}
+                    <div class="timeLineParent">
+                        <div class="time_Line">
+                            <div class="timeLineImg">
+                                <img src="{{data.image.url}}" alt="">
+                            </div>
+                            <div class="textTimeImg">
+                                <p>{{data.date}}</p>
+                                <hr>
+                                <p>{{data.month}}</p>
+                            </div>
+                        </div>
+                        <div class="contentTimeLine">
+                            <a href="#">
+                                <div class="imgTimeRight">
+                                    <img src="{{data.image.url}}" alt="">
+                                </div>
+                            </a>
+                            <h4>{{data.title}}</h4>
+                            <div class="heartBlogParent">
+                                <div class="heartChildBlog">
+                                    <h6>By{{data.by_name}}</h6>
+                                </div>
+                                <div class="heartChildBlog">
+                                    <h6>eBook Solution</h6>
+                                </div>
+                                <div class="heartChildBlog">
+                                    <h6>0 comment</h6>
+                                </div>
+                                <div class="heartChildBlog" >
+                                    <h6>
+                                        <i onclick="return like('{{data.id}}')" class="fa fa-heart"></i>
+                                        <span id="like{{data.id}}">{{data.like}}</span>
+                                    </h6>
+                                </div>
+                            </div>
+                            <hr>
+                            <p>{{data.description}}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="moreResource">
+                    <h5 class="resouceBox">More Resources</h5>
+                    <div class="listResource">
+                        <a href="#">
+                            <li class="listItemResource"><span><i class=" fa fa-arrow-circle-o-right"></i></span>
+                                Case
+                                Studies</li>
+                        </a>
+                        <a href="#">
+                            <li class="listItemResource"><i class=" fa fa-arrow-circle-o-right"></i></span>
+                                Whitepapers
+                            </li>
+                        </a>
+                        <a href="#">
+                            <li class="listItemResource"><i class=" fa fa-arrow-circle-o-right"></i></span> How To
+                                Guides</li>
+                        </a>
+                        <a href="#">
+                            <li class="listItemResource"><i
+                                    class=" fa fa-arrow-circle-o-right"></i></span>Infographics
+                            </li>
+                        </a>
+                        <a href="#">
+                            <li class="listItemResource"><i class=" fa fa-arrow-circle-o-right"></i></span> Product
+                                Videos</li>
+                        </a>
+                    </div>
+                </div>
+                <div class="blogForm">
+                    <h3>Request a Demo</h3>
+                    <div class="requestDemoBlog">
+                        <small>An enterprise platform that 15 million users trust</small>
+                        <form action="{% url 'RequestAdemo' %}" method="post">
+                            {% csrf_token %}
+                            <input type="text" class="form-control" placeholder="First Name *" name="first_name"required="">
+                            <input type="text" class="form-control" placeholder="Last Name *"name='last_name'required="">
+                            <input type="email" class="form-control" placeholder="Business Email *" name="business_email"required="">
+                            <textarea name="message" id="" placeholder="Message"required="" ></textarea>
+                            <p><small>We respect your privacy. We do not share your information. Please see our
+                                    Privacy Policy.</small></p>
+                            <p class="mt-3"><small>Please complete all required fields.
+                                </small></p>
+                            <div class="blogFormSub">
+                                <button type="submit">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="followBlog">
+                    <h5 class="resouceBox">Follow Us</h5>
+                    {% for data in footer %}
+                    <div class="blogSocialParent">
+                        <a href="{{data.facebook}}">
+                            <div class="blogSocialChild clr1">
+                                <i class="fa fa-facebook" aria-hidden="true"></i>
+                            </div>
+                        </a>
+                        <a href="{{data.twitter}}">
+                            <div class="blogSocialChild clr2">
+                                <i class="fa fa-twitter" aria-hidden="true"></i>
+                            </div>
+                        </a>
+                        {% endfor %}
+                        {% for data in home_banner %}
+                        <a href="{{data.youtube_link}}">
+                            <div class="blogSocialChild clr3">
+                                <i class="fa fa-youtube-play" aria-hidden="true"></i>
+                            </div>
+                        </a>
+                        {% endfor %}
+                        {% for data in footer %}
+                        <a href="{{data.linkedin}}">
+                            <div class="blogSocialChild clr4">
+                                <i class="fa fa-linkedin " aria-hidden="true"></i>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                 
+                </div>
+                <div class="bookBlogVideo">
+                    <h5 class="resouceBox">Books Product Video</h5>
+                    <div class="blogVideoSec">
+                        {% for data in blog_details|slice:":1"%}
+                        {% if data.video %}
+                        <video src="{{data.video.url}}" controls></video>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="recentPost">
+                    <h5 class="resouceBox">Recent Post</h5>
+                    {% for data in recent_blogsdetails %}
+                    <div class="parentRecent">
+                        <div class="recentImg">
+                            <a href="#">
+                                <img src="{{data.image.url}}" alt=""></a>
+                        </div>
+                        <div class="recentContent">
+                            <p><small class="text-muted">{{data.created_at}}</small></p>
+                            <p><a href="#">{{data.title}}</a></p>
+                        </div>
+                        
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="moreResource">
+                    <h5 class="resouceBox">Categories</h5>
+                    <div class="listResource">
+                        <a href="#">
+                            <li class="listItemResource"><span><i class=" fa fa-arrow-circle-o-right"></i></span>
+                                Case
+                                Studies</li>
+                        </a>
+                        <a href="#">
+                            <li class="listItemResource"><i class=" fa fa-arrow-circle-o-right"></i>
+                                Whitepapers
+                            </li>
+                        </a>
+                        <a href="#">
+                            <li class="listItemResource"><i class=" fa fa-arrow-circle-o-right"></i> How To
+                                Guides</li>
+                        </a>
+                        <a href="#">
+                            <li class="listItemResource"><i class=" fa fa-arrow-circle-o-right"></i>Infographics
+                            </li>
+                        </a>
+                        <a href="#">
+                            <li class="listItemResource"><i class=" fa fa-arrow-circle-o-right"></i> Product
+                                Videos</li>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+</section>
+
+
+
+{% if not request.user.is_authenticated %}
+<section class="faqSec">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                {% for data in faq|slice:":1"%}
+                <h2 class="mb-4">{{data.heading}}</h2>
+                <!-- <h5 class="lead mb-5">{{data.description}}</h5> -->
+                {% endfor %}
+                <div class="accordion" id="faqAccordion">
+                    {% for data in faq %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading{{data.id}}">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{data.id}}" aria-expanded="false" aria-controls="collapse{{data.id}}">
+                                {{data.question}}
+                            </button>
+                        </h2>
+                        <div id="collapse{{data.id}}" class="accordion-collapse collapse" aria-labelledby="heading{{data.id}}" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">{{data.ans}}</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-lg-5">
+                {% for data in faq|slice:":1"%}
+                <div class="faqImg">
+                    <img src="{{data.image.url}}" alt="">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+
+<script>
+    function like(id){
+        $.ajax({
+            type: "POST",
+            url: "/like-count-details/",
+            data: {
+                id: id,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function (data) {
+                document.getElementById('like'+id).innerHTML= data.like_count
+
+            }
+        });
+    }
+</script>
+
+
+
+<script>
+  
+    document.getElementById("myForm").addEventListener("submit", function(event) {
+      // Validate the form
+      if (!validateForm()) {
+        // Prevent form submission if validation fails
+        event.preventDefault();
+      }
+    });
+  
+    function validateForm() {
+      var phone_numberInput = document.getElementById("ContactNumberId");
+      var phoneNumberType = phone_numberInput.getAttribute("type");
+  
+      var ImageInput = document.getElementById("Image");
+  
+      
+      var errorMessages = {
+        phone_numberInput: "Please enter a valid 10-digit contact number.",
+        ImageInput: "Please choose an image."
+      };
+  
+      var isValid = true;
+  
+      
+        // Check if contact number is less than 10 digits
+        if (phoneNumberType === "tel") {
+          var phoneNumber = phone_numberInput.value;
+          var phoneNumberPattern = /^\d{10}$/; // Matches a 10-digit number
+    
+          // Check if the phone number matches the pattern
+          if (!phoneNumberPattern.test(phoneNumber)) {
+            displayErrorMessage("phone_number_message", errorMessages.phone_numberInput);
+            isValid = false;
+          } else {
+            clearErrorMessage("phone_number_message");
+          }
+        }
+    
+  
+      if (ImageInput.value === "") {
+        displayErrorMessage("image_error_message", errorMessages.ImageInput);
+        isValid = false;
+      } else {
+        clearErrorMessage("image_error_message");
+      }
+  
+      return isValid;
+    }
+  
+    function displayErrorMessage(elementId, message) {
+      var errorMessage = document.getElementById(elementId);
+      errorMessage.textContent = message;
+    }
+  
+    function clearErrorMessage(elementId) {
+      var errorMessage = document.getElementById(elementId);
+      errorMessage.textContent = "";
+    }
+  </script>
+{% endblock %}

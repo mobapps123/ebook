@@ -1,0 +1,229 @@
+{% extends 'lowafrecia/base.html' %}
+{% load static %}
+{% block content %}
+
+
+<!-- {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %} -->
+
+
+<section class="profileSec">
+    <div class="container">
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <div class="row">
+            <nav class=" profileTab">
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home"
+                        type="button" role="tab" aria-controls="nav-home" aria-selected="true">Profile</button>
+                    <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"
+                        type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Change
+                        Password
+                    </button>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab"
+                    tabindex="0">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="user-admin-profile-img">
+                                    <div class="form-group imgprofile fileProfileEmployee changeimage">
+                                        <label for="exampleFormControlFile1">
+                                            {% if user.profile_pic %}
+                                            <img src="{{user.profile_pic.url}}" class="center"> <span>Change
+                                                Image</span>
+                                            {% else %}
+                                            <img src="{% static 'images/logoLaw.png' %}" alt="">
+                                            <span>Change
+                                                Image</span>
+                                            {% endif %}
+
+                                        </label>
+
+                                        <input type="file" name="profile_pic" class="form-control-file"
+                                            id="exampleFormControlFile1" accept="image/*">
+                                    </div>
+                                    <span id="imggg" style="color: red;"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="user-detail-input-box">
+                                    <div class="row profileFormEmployee">
+                                        <div class="col-md-12 ">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">First Name</label>
+                                                <input type="text" class="form-control" id="exampleInputEmail1"
+                                                    name="first_name" placeholder="First Name" value={{user.first_name}}
+                                                    required="">
+
+                                                <label for="exampleInputEmail1">Last Name</label>
+                                                <input type="text" class="form-control" id="exampleInputEmail1"
+                                                    name="last_name" placeholder="Last Name" value={{user.last_name}}
+                                                    required="">
+
+                                                <input type="hidden" class="form-control" id="exampleInputEmail1"
+                                                    name="{{user.phone_number}}" value="6">
+                                                <input type="hidden" class="form-control" id="exampleInputEmail1"
+                                                    name="profile_pic">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Email</label>
+                                                <input type="email" name="email" class="form-control "
+                                                    id="exampleInputEmail1" placeholder="Enter email here"
+                                                    value="{{user.email}}" required="">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Mobile Number</label>
+                                                <input type="tel" name="phone_number"
+                                                    placeholder="Enter your phone number"
+                                                    class="login-form-txt form-control"
+                                                    onkeypress="return (event.charCode >= 48 && event.charCode <= 57) && this.value.length < 12"
+                                                    value={{request.user.phone_number}} required="">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="card-footer profileBtnEmp">
+                                        <input type="submit" value="Update" class="btn btn-primary">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"
+                    tabindex="0">
+                    <div class="row ">
+                        <div class="mainDiv">
+                            <div class="cardStyle">
+                                <form action="{% url 'user-change-password' %}" method="post" id="change-password-form">
+                                    {% csrf_token %}
+                                    <img src="" id="signupLogo">
+                                    <h2 class="formTitle mb-4">
+                                        Change password
+                                    </h2>
+                                    <div>
+                                        <div class=" row align-items-center">
+                                            <div class="col-lg-3 col-md-12">
+                                                <label class="inputLabel" for="password1">Old password</label>
+                                            </div>
+                                            <div class="col-lg-9 col-md-12">
+                                                <input type="password" id="password1" placeholder=" Old Password"
+                                                    name="old_password" required="">
+                                            </div>
+                                        </div>
+                                        <div class=" row align-items-center">
+                                            <div class="col-lg-3 col-md-12">
+                                                <label class="inputLabel" for="password">New password</label>
+                                            </div>
+                                            <div class="col-lg-9 col-md-12">
+                                                <input type="password" placeholder="New Password" id="password"
+                                                    name="new_password" required="">
+                                            </div>
+                                        </div>
+
+                                        <div class=" row align-items-center">
+                                            <div class="col-lg-3 col-md-12">
+                                                <label class="inputLabel" for="confirmPassword">Confirm password</label>
+                                            </div>
+                                            <div class="col-lg-9 col-md-12">
+                                                <input type="password" id="confirmPassword" name="confirm_password"
+                                                    placeholder="Confirm Password">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="buttonWrapper">
+                                        <button type="submit" id="submitButton"
+                                            class="submitButton pure-button pure-button-primary">
+                                            <span>SUBMIT</span>
+
+                                        </button>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- <div class="tab-pane fade" id="nav-set" role="tabpanel" aria-labelledby="nav-profile-tab"
+                    tabindex="0">
+                    <div class="row ">
+                        <div class="mainDiv">
+                        <h3>hello</h3>
+                          </div>
+                    </div> -->
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Attach an event handler to the form's submit button
+        $("#change-password-form").submit(function (event) {
+            // Prevent the form from submitting by default
+            event.preventDefault();
+
+            // Get values from the form
+            var oldPassword = $("#old_password").val();
+            var newPassword = $("#new_password").val();
+            var confirmPassword = $("#confirm_password").val();
+
+            // Reset any previous error messages
+            $(".error-message").remove();
+
+            // Perform validation
+            var isValid = true;
+
+            if (oldPassword === "") {
+                isValid = false;
+                $("#old_password").after("<span class='error-message'>Old password is required.</span>");
+            }
+
+            if (newPassword === "") {
+                isValid = false;
+                $("#new_password").after("<span class='error-message'>New password is required.</span>");
+            }
+
+            if (confirmPassword === "") {
+                isValid = false;
+                $("#confirm_password").after("<span class='error-message'>Confirm password is required.</span>");
+            } else if (newPassword !== confirmPassword) {
+                isValid = false;
+                $("#confirm_password").after("<span class='error-message'>Passwords do not match.</span>");
+            }
+
+            // If validation passes, submit the form
+            if (isValid) {
+                this.submit();
+            }
+        });
+    });
+</script>
+
+{% endblock %}

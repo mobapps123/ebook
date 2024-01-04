@@ -1,0 +1,265 @@
+{% extends 'lowafrecia/base.html' %}
+{% load static %}
+{% block content %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/epubjs/dist/epub.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.5/jszip.min.js"></script>
+<style>
+    ul.pagination {
+        justify-content: end;
+        margin-top: 10px;
+    }
+
+    .main {
+        width: 1000px;
+    }
+
+    .book {
+        border: 2px solid #767676;
+        border-radius: 5px;
+        margin-bottom: 5px;
+        padding: 5px;
+    }
+
+    .author {
+        background-color: #7878785e;
+        width: 220px;
+        padding: 5px
+    }
+
+    .highlighted {
+        background-color: yellow;
+        font-weight: bold;
+    }
+    .parentResponsible button:hover{
+        color: #fff;
+        background: var(--maroon);
+    }
+    .getstarted{
+            padding: 8px 20px;
+            margin: 0 0 8px 0;
+            border-radius: 50px;
+            color: #040404;
+            font-size: 14px;
+            border: 2px solid var(--maroon);
+            font-weight: 600;
+            background:#fff;
+            
+    }
+    #area button.clicked {
+        background-color: blue;
+        color: white;
+    }
+    .calibrecalibre {
+        height: 807px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        padding-right: 54px !important;
+        box-sizing: border-box;
+        max-width: inherit;
+        column-fill: auto;
+        column-gap: 10px !important;
+        column-width: 540px;
+        background-color: '#DCDCDC';
+    }
+   
+  
+</style>
+
+<section class="BookDetailsBanner">
+    <div class="container">
+        {% for data in book_list %}
+        <div class="row">
+            <div class="col-lg-4  ">
+                <div class="DetailsImgBookBanner">
+                    {% if data.image %}
+                    <img src="{{data.image.url}}" alt="">
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- banner end -->
+<section class="detailsBook">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="progressDetails">
+                    <div class="skill-main">
+                        <div class="skill-wrrap">
+                            <div class="skill-name"></div>
+                            <!-- <div class="skill-bar">
+                                <div class="skill-per"per="{{progress_percent}}%"></div>
+                            </div> -->
+                        </div>
+                    </div>
+                    <div class="parentResponsible">
+                        <p><strong>Responsible</strong> </p>
+                        <p>{{data.author}}</p>
+                    </div>
+                    <div class="parentResponsible">
+                        <p><strong>Last Update</strong> </p>
+                        <p>{{data.updated_at}}</p>
+                    </div>
+                    <div class="parentResponsible">
+                        <p><strong>Completion</strong> </p>
+                        <p> 23 hours </p>
+                    </div>
+                    <div class="parentResponsible">
+                        <p><strong>Category</strong> </p>
+                        <p>{{data.category.book_category}}</p>
+                    </div>
+                    <div class="parentResponsible">
+                        <p><strong>Members</strong> </p>
+                        <p>{{member}}</p>
+                    </div>
+                    
+                </div>
+                <div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <nav class="detailsTab">
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab"
+                        tabindex="0">
+                    </div>
+
+                </div>
+                {% for data in book_list %}
+                <div class="mt-5 pt-4">
+                    <h4>{{data.title}}</h4>
+                    <p>{{data.description|safe}}</p>
+                </div>
+                {% endfor %}
+
+
+            </div>
+        </div>
+        
+       
+        
+    </div>
+    <div class="container-fluid">
+        <div class="pt50">
+            <div class="detailNegliContent" id="pdf-container">
+                <div id="area">
+                    <button @click="prevPage" :class="{ 'clicked': prevButtonClicked }">Previous Page</button>
+                    <button @click="nextPage" :class="{ 'clicked': nextButtonClicked }" style="float: right;">Next Page</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    {% empty %}
+    No Record Found
+    {% endfor %}
+
+
+</section>
+
+<!-- ************************************************ -->
+{% if not request.user.is_authenticated %}
+{% for data in learn|slice:":1"%}
+{% if data.image %}
+<section class="homeCompare" style="background-image:url('{{data.image.url}}')">
+    {% endif %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h1>{{data.heading}}</h1>
+                <p>{{data.description}}</p>
+                <div class="SeecourseBtnParent">
+                    <div class="seeCoursebtn mr-3">
+                        <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal1">See All Books</a>
+                    </div>
+                    <div class="seeCoursebtn">
+                        <a href="{% url 'contact_us' %}">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endfor %}
+{% endif %}
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/epubjs/dist/epub.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script>
+
+<script>
+    // Wait for the document to be ready before initializing medium-zoom
+    document.addEventListener('DOMContentLoaded', function () {
+        // Initialize medium-zoom for the zoomable element
+        const zoomableElement = document.getElementById('pdf-container');
+        mediumZoom(zoomableElement, {
+            background: '#000', // Change the background color as needed
+        });
+    });
+</script>
+<script>
+    var dynamicFilePath = "http://69.49.235.253:8060/media/{{book_obj.book_pdf}}";
+    var book = ePub(dynamicFilePath);
+    var vueInstance = new Vue({
+        el: '#area',
+        data: {
+            prevButtonClicked: false,
+            nextButtonClicked: false,
+            currentPage: 0,
+            totalPage: 0
+        },
+        methods: {
+            prevPage: function () {
+                rendition.prev();
+                this.prevButtonClicked = true;
+                this.nextButtonClicked = false;
+                updateBackgroundColor();
+            },
+            nextPage: function () {
+                rendition.next();
+                this.nextButtonClicked = true;
+                this.prevButtonClicked = false;
+                updateBackgroundColor();
+            },
+            updatePageNumber: function () {
+                this.currentPage = rendition.location.start.displayed.page;
+                this.totalPage = rendition.totalPages;
+            }
+        }
+    });
+
+    book.opened.then(function () {
+        console.log("Book opened successfully!");
+
+        rendition.display();
+        vueInstance.updatePageNumber();
+
+        rendition.on("relocated", function () {
+            vueInstance.updatePageNumber();
+        });
+    }).catch(function (error) {
+        console.error("Error opening the book:", error);
+    });
+
+    var rendition = book.renderTo("area");
+
+    function updateBackgroundColor() {
+        var backgroundColor = '#DCDCDC';
+        var contentContainer = document.querySelector('.epub-container');
+
+        if (contentContainer) {
+            contentContainer.style.backgroundColor = backgroundColor;
+            contentContainer.classList.add("calibrecalibre");
+        }
+    }
+</script>
+
+
+
+{% endblock %}

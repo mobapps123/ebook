@@ -1,0 +1,312 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lawAfrica</title>
+
+    <link href="{% static 'css/bootstrap-icons.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel='stylesheet'
+        href='https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css'>
+
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <!-- dash -->
+    <link rel="stylesheet" href="{% static 'css/boxicons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fontawesome.css'%}">
+    <link rel="stylesheet" href="{% static 'css/flag-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/core.css' %}">
+    <link rel="stylesheet" href="{% static 'css/theme-default.css' %}">
+    <link rel="stylesheet" href="{% static 'css/demo.css' %}">
+    <link rel="stylesheet" href="{% static 'css/typeahead.css' %}">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.0.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
+
+
+
+    <style>
+        .active20 {
+            color: #9d122a !important;
+        }
+
+        .heart {
+            color: rgb(46, 45, 45);
+            cursor: pointer;
+            font-size: 25px;
+        }
+
+        .heart.favorited {
+            color: rgb(244, 26, 63);
+        }
+
+        #results-container {
+            display: none;
+        }
+
+        #no-results {
+            color: red;
+        }
+
+      
+
+        .active13 {
+            color: #000000 !important;
+        }
+
+        .avatar.avatar-online img {
+            height: 36px !important;
+            width: 36px !important;
+        }
+
+        .searchSideCus input {
+
+            padding: 4px 20px;
+            border-radius: 5px;
+            border: 2px solid #a9394d;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            width: 195px;
+        }
+
+        .searchSideCus input:focus {
+            outline: none;
+        }
+
+        span.app-brand-logo.demo img {
+            width: 150px;
+        }
+
+        #search-container {
+            display: flex;
+            border: 2px solid #a9394d;
+            justify-content: center;
+            border-radius: 5px;
+        }
+
+        #search-bar {
+            width: 500px;
+            padding: 5px 10px 5px 0;
+            border: none;
+            border-radius: 5px;
+        }
+
+        #search-bar:focus {
+            border: none;
+            outline: none;
+        }
+
+        .odysseyimg img {
+            height: 200px;
+            object-fit: cover;
+            /* border-radius: 7px; */
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            width: 200px;
+        }
+
+        .odysseyimg {
+            height: 200px;
+            width: 200px;
+            border-radius: 7px;
+        }
+
+        .History {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .profile_img img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .nav-item ul.dropdown-menu.dropdown-menu-end.text-center.show {
+            width: 300px;
+        }
+
+        .manage_account {
+            color: #3163aa;
+        }
+
+        .sign_outbtn {
+            color: #a9394d;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+
+        .nav-item a:hover {
+            color: #000;
+        }
+
+        .sign_outbtn iconify-icon {
+            vertical-align: middle;
+        }
+
+        .customerAnchr a {
+            color: #677a8c;
+        }
+
+        .customerAnchr {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+            width: 200px;
+        }
+
+        aside#layout-menu {
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+        .search2 input[type=search] {
+            border-radius: 5px;
+            padding: 5px;
+            width: 100%;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+        }
+
+        .search2 {
+            position: relative;
+        }
+
+        .search2 i {
+            position: absolute;
+            top: 10px;
+            right: 11px;
+        }
+    </style>
+</head>
+
+
+<body>
+    <div class=" layout-content-navbar  ">
+        <div>
+            <div class="d-flex">
+                <div style="width: 20%;">
+                    <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+
+
+                        <div class="app-brand demo ">
+                            <a href="{% url 'NormalDashboard' %}" class="app-brand-link">
+                                <span class="app-brand-logo demo">
+                                    <img src="{% static 'images/logoLaw.png' %}" alt="">
+                                </span>
+                            </a>
+
+                            <!-- <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
+                            <i class="bx bx-chevron-left bx-sm align-middle"></i>
+                        </a> -->
+                        </div>
+                        <div class="menu-inner-shadow"></div>
+
+
+
+                        <ul class="menu-inner py-1">
+                            <!-- Dashboards -->
+                            <li class="menu-item ">
+                                <a href="{% url 'NormalDashboard' %}" class="menu-link {{active1}}">
+                                    <iconify-icon icon="clarity:dashboard-solid" class="px-2"></iconify-icon>
+                                    <div class="text-truncate" data-i18n="Dashboards">Dashboard</div>
+                                </a>
+                            </li>
+                            <li class="menu-item ">
+                                <a href="{% url 'NormalAllBook' %} " class="menu-link {{active2}}">
+                                    <iconify-icon icon="ion:book" class="px-2"></iconify-icon>
+                                    <div class="text-truncate" data-i18n="Dashboards">All Books</div>
+                                </a>
+                            </li>
+                            <!-- <li class="menu-item ">
+                                <a href="{% url 'StudentsLibrary' %} " class="menu-link {{active16}}">
+                                    <iconify-icon icon="ion:book" class="px-2"></iconify-icon>
+                                    <div class="text-truncate" data-i18n="Dashboards">Library</div>
+                                </a>
+                            </li> -->
+                            <li class="menu-item ">
+                                <a href="{% url 'PopularBooks' %}" class="menu-link {{active3}}">
+                                    <iconify-icon icon="ion:book" class="px-2"></iconify-icon>
+                                    <div class="text-truncate" data-i18n="Dashboards">Most Populor Books</div>
+                                </a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="{% url 'RecentlyView' %} " class="menu-link {{active4}}">
+                                    <iconify-icon icon="mdi:recent" class="px-2"></iconify-icon>
+                                    <div class="text-truncate" data-i18n="Dashboards">Recently Viewed</div>
+                                </a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="{% url 'Favorite' %}" class="menu-link {{active5}} ">
+                                    <iconify-icon icon="material-symbols:favorite" class="px-2"></iconify-icon>
+                                    <div class="text-truncate" data-i18n="Dashboards">Favorites </div>
+                                </a>
+                            </li>
+                          
+                            <li class="menu-item">
+                                <a href="{% url 'Surveys' %}" class="menu-link {{active6}}">
+                                    <iconify-icon icon="heroicons:users-solid" class="px-2"></iconify-icon>
+                                    <div class="text-truncate" data-i18n="Dashboards">Survey</div>
+                                </a>
+                            </li> 
+
+                            <li class="menu-item">
+                                <a href="{% url 'user_logout' %}" class="menu-link">
+                                    <iconify-icon icon="ph:power-fill" class="px-2"></iconify-icon>
+                                    <div class="text-truncate" data-i18n="Dashboards">Log Out </div>
+                                </a>
+                            </li> 
+                        </ul>
+                    </aside>
+                </div>
+            </div>
+</body>
+
+
+
+
+<script src="{% static 'js/helper.js' %}"> </script>
+<script src="{% static 'js/templateCus.js' %}"> </script>
+<script src="{% static 'js/config.js' %}"> </script>
+
+
+<script>
+    document.getElementById("search-form").addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        // Get the user input from the search bar
+        var searchName = document.getElementById("search-bar").value;
+
+        // Check if the searchName matches your criteria (you need to define the matching logic)
+        var matches = searchMatches(searchName); // Implement your matching logic here
+
+        // Show or hide the results container based on matching results
+        var resultsContainer = document.getElementById("results-container");
+        if (matches) {
+            resultsContainer.style.display = "block";
+            document.getElementById("no-results").style.display = "none";
+        } else {
+            resultsContainer.style.display = "block";
+            document.getElementById("no-results").style.display = "block";
+        }
+
+        // You can also populate the search-results div with actual content based on your matching logic
+        var searchResultsDiv = document.getElementById("search-results");
+        if (matches) {
+            searchResultsDiv.innerHTML = "Matched content goes here"; // Replace with your content
+        } else {
+            searchResultsDiv.innerHTML = ""; // Clear the content
+        }
+    });
+
+    function searchMatches(searchTerm) {
+        return false; // Change this to your matching logic
+    }
+
+</script>

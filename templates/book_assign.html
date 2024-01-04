@@ -1,0 +1,340 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    div#example1_filter {
+        padding-left: 273px !important;
+    }
+
+    ul.pagination {
+        padding-left: 371px !important;
+    }
+
+    .active-switch {
+        position: relative;
+        display: block;
+        width: 87px;
+        height: 30px;
+        padding: 3px;
+        margin: 0 10px 10px 0;
+        background: linear-gradient(to bottom, #eeeeee, #FFFFFF 25px);
+        background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF 25px);
+        border-radius: 18px;
+        box-shadow: inset 0 -1px white, inset 0 1px 1px rgba(0, 0, 0, 0.05);
+        cursor: pointer;
+        box-sizing: content-box;
+    }
+
+    .active-switch-input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        box-sizing: content-box;
+    }
+
+    .active-switch-label {
+        position: relative;
+        display: block;
+        height: inherit;
+        font-size: 10px;
+        text-transform: uppercase;
+        background: #eceeef;
+        border-radius: inherit;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.15);
+        box-sizing: content-box;
+    }
+
+    .active-switch-label:before,
+    .active-switch-label:after {
+        position: absolute;
+        top: 50%;
+        margin-top: -.5em;
+        line-height: 1;
+        -webkit-transition: inherit;
+        -moz-transition: inherit;
+        -o-transition: inherit;
+        transition: inherit;
+        box-sizing: content-box;
+    }
+
+    .active-switch-label:before {
+        content: attr(data-off);
+        right: 11px;
+        color: #aaaaaa;
+        text-shadow: 0 1px rgba(255, 255, 255, 0.5);
+    }
+
+    .active-switch-label:after {
+        content: attr(data-on);
+        left: 11px;
+        color: #FFFFFF;
+        text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+        opacity: 0;
+    }
+
+    .active-switch-input:checked~.active-switch-label {
+        background: #767074;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .active-switch-input:checked~.active-switch-label:before {
+        opacity: 0;
+    }
+
+    .active-switch-input:checked~.active-switch-label:after {
+        opacity: 1;
+    }
+
+    .active-switch-handle {
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 28px;
+        height: 28px;
+        background: linear-gradient(to bottom, #FFFFFF 40%, #f0f0f0);
+        background-image: -webkit-linear-gradient(top, #FFFFFF 40%, #f0f0f0);
+        border-radius: 100%;
+        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .active-switch-handle:before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -6px 0 0 -6px;
+        width: 12px;
+        height: 12px;
+        background: linear-gradient(to bottom, #eeeeee, #FFFFFF);
+        background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF);
+        border-radius: 6px;
+        box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
+    }
+
+    .active-switch-input:checked~.active-switch-handle {
+        left: 61px;
+        box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+
+
+    .active-switch-label,
+    .active-switch-handle {
+        transition: All 0.3s ease;
+        -webkit-transition: All 0.3s ease;
+        -moz-transition: All 0.3s ease;
+        -o-transition: All 0.3s ease;
+    }
+
+    .active-switch-input:checked~.active-switch-label {
+        background: #767074 !important;
+        box-shadow: inset 0 1px 2px rgb(0 0 0 / 15%), inset 0 0 3px rgb(0 0 0 / 20%);
+    }
+
+    span.active-switch-label {
+        background-color: #114ebc;
+    }
+
+    .iconView i {
+        color: black;
+        padding: 6px 24px;
+    }
+
+    img {
+        border-radius: 50%;
+    }
+
+    span.active-switch-label {
+        background-color: #910822;
+        color: white;
+    }
+
+    .tableimg {
+        height: 72px;
+        width: 72px;
+        border-radius: 8px;
+        object-fit: cover;
+    }
+
+
+    #category-filter {
+        padding: 5px 10px;
+    }
+ 
+</style>
+
+
+
+
+<!-- Begin Page Content -->
+<div class="container-fluid mainPage">
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    <div class="card shadow mb-4">
+        <div class="card-header d-flex justify-content-between py-3">
+            <h6 class="m-0 font-weight-bold text-primary">All Books</h6>
+        </div>
+
+
+        
+        <div class="card-body">
+            <div class="filter-container">
+                <label for="category-filter">Filter by categories:</label>
+                <select id="category-filter" onchange="filterBooks()">
+                    <option value="all">All Categories</option>
+                    {% for category in select_categories %}
+                    <option data-category="{{ category.book_category }}">{{ category.book_category }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="table-responsive">
+                <form method="post">
+                    {% csrf_token %}
+                    <table class="table table-striped" id="example">
+                        <thead>
+                            <tr>
+                                <th>Sr No</th>
+                                <th><input type="checkbox" id="select-all"> Select Book</th>
+                                <th>Image</th>
+                                <th>Category</th>
+                                <th>Authors</th>
+                                <th>Epub File</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for book in data %}
+                            <tr data-category="{{ book.category.book_category }}">
+                                <td>{{ forloop.counter }}</td>
+                                <!-- Inside the for loop for books -->
+                                <td>
+                                    <input type="checkbox" name="books" value="{{ book.id }}" class="book-checkbox" {% if book.id in saved_books %}checked{% endif %}>
+                                </td>
+
+
+                                <td>
+                                    {% if book.image %}
+                                    <img class="tableimg" src="{{ book.image.url }}" alt="">
+                                    {% endif %}
+                                </td>
+                                <td>{{ book.category.book_category }}</td>
+                                <td>{{ book.author}}</td>
+                                <td>{{ book.book_pdf|truncatewords:1 }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="col-md-6 form-group align-right">
+                        <button type="submit" class="btn btn-primary mt-0">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- End of Page Wrapper -->
+
+
+<script>
+    function Userstatus(id) {
+        if ($("#status" + id).is(":checked")) {
+            Userstatus = "False";
+        } else {
+
+            Userstatus = "True";
+        }
+        $.ajax({
+            type: 'POST',
+            url: '/Admin/active-inactive/',
+            data: {
+                id: id,
+                Userstatus: Userstatus,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+
+            },
+            success: function (data) {
+            }
+        });
+    }
+
+</script>
+
+
+
+<script>
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach((checkbox) => {
+        const bookId = checkbox.getAttribute('data-book-id');
+        const storedState = localStorage.getItem(`checkbox_${bookId}`);
+
+        if (storedState === 'checked') {
+            checkbox.checked = true;
+        }
+        checkbox.addEventListener('change', () => {
+            const isChecked = checkbox.checked;
+            localStorage.setItem(`checkbox_${bookId}`, isChecked ? 'checked' : 'unchecked');
+        });
+    });
+
+</script>
+
+
+<script>
+    function filterBooks() {
+        var categoryFilter = document.getElementById('category-filter').value;
+        var books = document.querySelectorAll('.table-striped tbody tr');
+
+        books.forEach(function (book) {
+            var bookCategory = book.getAttribute('data-category');
+
+            if (categoryFilter === 'all' || categoryFilter === bookCategory) {
+                book.style.display = '';
+            } else {
+                book.style.display = 'none';
+            }
+        });
+    }
+</script>
+
+
+
+
+
+
+
+<script>
+    function handleCheckboxChange() {
+        var checkboxes = document.querySelectorAll('input[name="bookIDs[]"]');
+        var deleteButton = document.getElementById('multipleDeleteBtn');
+
+        // Check if at least one checkbox is checked
+        var atLeastOneChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+
+        // Toggle the visibility of the delete button
+        deleteButton.style.display = atLeastOneChecked ? 'inline-block' : 'none';
+    }
+</script>
+
+<script>
+    // Function to handle "Select All" checkbox
+    function selectAll() {
+        var selectAllCheckbox = document.getElementById('select-all');
+        var bookCheckboxes = document.getElementsByClassName('book-checkbox');
+
+        for (var i = 0; i < bookCheckboxes.length; i++) {
+            bookCheckboxes[i].checked = selectAllCheckbox.checked;
+        }
+    }
+    document.getElementById('select-all').addEventListener('change', selectAll);
+</script>
+
+{% endblock %}

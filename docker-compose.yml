@@ -1,0 +1,8 @@
+version: '3.10'
+
+services:
+  web:
+    image: ebook:0.0.1
+    build: .
+    ports:
+      - "8004:8004" 

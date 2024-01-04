@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draggable Images</title>
+    <style>
+        .uploadContainer {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .uploadtext {
+            font-size: 18px;
+        }
+
+        #imageContainer {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .uploadedImage {
+            position: relative;
+            cursor: grab;
+            margin: 5px;
+        }
+
+        .uploadedImage img {
+            width: 80px;
+            height: 80px;
+        }
+
+        .delete-button {
+            position: absolute;
+            top: -4px;
+            right: 5px;
+            color: rgb(255 255 255);
+            border: none;
+            cursor: pointer;
+            border-radius: 50%;
+            font-size: 11px;
+            background: red;
+            height: 18px;
+            width: 18px;
+            padding: 0px 0px 0px 1px;
+        }
+
+        /* Style the label as a button */
+        .labelUp {
+            height: 100px;
+            width: 300px;
+            display: inline-block;
+            border: 1px solid red;
+            text-align: center;
+        }
+
+        /* Highlight the drop zone */
+        .highlight {
+            border: 2px dashed red;
+        }
+    </style>
+</head>
+<body>
+    <div class="uploadContainer"  ondrop="drop(event)" ondragover="allowDrop(event)" class="highlight">
+        <label class="labelUp" for="fileInput1">
+            <div class="uploadText">
+                <i class="fa fa-cloud-upload"></i>
+                <span>Drag &amp; Drop files here or click to browse</span>
+            </div>
+            <input type="file" class="myFile1" id="fileInput1" multiple style="display: none;">
+        </label>
+    </div>
+    <div id="imageContainer"></div>
+    <script>
+        const imageContainer = document.getElementById('imageContainer');
+
+        // Add an event listener to the file input
+        const fileInput1 = document.getElementById('fileInput1');
+        fileInput1.addEventListener('change', handleFiles);
+
+        // Highlight the drop zone when dragging over
+        imageContainer.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            imageContainer.classList.add('highlight');
+        });
+
+        // Remove highlight when dragging leaves the drop zone
+        imageContainer.addEventListener('dragleave', () => {
+            imageContainer.classList.remove('highlight');
+        });
+
+        // Function to handle file selection
+        function handleFiles() {
+            const files = fileInput1.files;
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+
+                // Create a container div for the image and delete button
+                const imageContainerDiv = document.createElement('div');
+                imageContainerDiv.className = 'uploadedImage';
+
+                // Create the image element
+                const image = document.createElement('img');
+                image.src = URL.createObjectURL(file);
+
+                // Create the delete button
+                const deleteButton = document.createElement('button');
+                deleteButton.innerHTML = 'X';
+                deleteButton.className = 'delete-button';
+
+                // Add a click event listener to the delete button
+                deleteButton.addEventListener('click', function () {
+                    imageContainer.removeChild(imageContainerDiv);
+                });
+
+                // Append the image and delete button to the container div
+                imageContainerDiv.appendChild(image);
+                imageContainerDiv.appendChild(deleteButton);
+
+                // Append the container div to the image container
+                imageContainer.appendChild(imageContainerDiv);
+            }
+        }
+
+        // Allow drop and prevent default behavior
+        function allowDrop(event) {
+            event.preventDefault();
+            imageContainer.classList.remove('highlight');
+        }
+
+        // Handle dropping of images
+        function drop(event) {
+            event.preventDefault();
+            const files = event.dataTransfer.files;
+            imageContainer.classList.remove('highlight');
+            handleFiles(files);
+        }
+    </script>
+</body>
+</html>

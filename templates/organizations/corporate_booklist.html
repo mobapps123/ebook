@@ -1,0 +1,429 @@
+{% include 'organizations/organization_header.html' %}
+{% load static %}
+
+<style>
+   
+
+    .heart {
+        color: rgb(46, 45, 45);
+        cursor: pointer;
+        font-size: 25px;
+    }
+
+    .heart.favorited {
+        color: rgb(244, 26, 63);
+    }
+
+    #results-container {
+        display: none;
+    }
+
+    #no-results {
+        color: red;
+    }
+
+    .active13 {
+        color: #000000 !important;
+    }
+
+    .avatar.avatar-online img {
+        height: 36px !important;
+        width: 36px !important;
+    }
+
+    .searchSideCus input {
+
+        padding: 4px 20px;
+        border-radius: 5px;
+        border: 2px solid #a9394d;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        width: 195px;
+    }
+
+    .searchSideCus input:focus {
+        outline: none;
+    }
+
+    span.app-brand-logo.demo img {
+        width: 150px;
+    }
+
+    #search-container {
+        display: flex;
+        border: 2px solid #a9394d;
+        justify-content: center;
+        border-radius: 5px;
+    }
+
+    #search-bar {
+        width: 500px;
+        padding: 5px 10px 5px 0;
+        border: none;
+        border-radius: 5px;
+    }
+
+    #search-bar:focus {
+        border: none;
+        outline: none;
+    }
+
+    .odysseyimg img {
+        height: 200px;
+        object-fit: cover;
+        /* border-radius: 7px; */
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        width: 200px;
+    }
+
+    .odysseyimg {
+        height: 200px;
+        width: 200px;
+        border-radius: 7px;
+    }
+
+    .History {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .profile_img img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .nav-item ul.dropdown-menu.dropdown-menu-end.text-center.show {
+        width: 300px;
+    }
+
+    .manage_account {
+        color: #3163aa;
+    }
+
+    .sign_outbtn {
+        color: #a9394d;
+        font-weight: 700;
+        margin: 10px 0;
+    }
+
+    .nav-item a:hover {
+        color: #000;
+    }
+
+    .sign_outbtn iconify-icon {
+        vertical-align: middle;
+    }
+
+    .customerAnchr a {
+        color: #677a8c;
+    }
+
+    .customerAnchr {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        width: 200px;
+    }
+
+    .bookSection {
+        width: 80%;
+        margin: 0 0 0 auto;
+        position: absolute;
+        right: 0;
+        top: 73px;
+    }
+
+    #search-container  span i {
+        position: absolute;
+        right: 11px;
+        top: 7px;
+      }
+      .search_cut{
+        background-color: transparent;
+        border: 0;
+        position: absolute;
+        right: 51px;
+        top: 5px;
+      }
+      .search_icon{
+        position: relative;
+      }
+      .search_icon button{
+        border: 0;
+        background-color: #fff;
+      }
+      .open_side{
+        margin-left: 226px;
+      }
+</style>
+
+<div>
+    <div id="content-wrapper">
+        <div id="content">
+
+            <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+                id="layout-navbar">
+
+                <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none " id="open_side">
+                    <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                        <i class="bx bx-menu bx-sm"></i>
+                    </a>
+                </div>
+
+                <div class="navbar-nav-right d-flex align-items-center justify-content-between" id="navbar-collapse">
+
+                    <!-- Search -->
+                    <div class="navbar-nav align-items-center" style="width: 80%;">
+                        <div class="nav-item navbar-search-wrapper mb-0" style="width: 100%;">
+                            <a class="nav-item nav-link search-toggler px-0" href="javascript:void(0);">
+
+
+                                <form method="GET" id="search-form" style="width: 100%;">
+                                    <div class="search_icon">
+                                        
+                                        <!-- <input type="text" id="searchBox" placeholder="Search... "value="{{ request.GET.searchname }}" name="searchname" ><button onclick="search()"><i class="fa fa-search" aria-hidden="true"></i></button> -->
+
+
+                                        <input type="text" id="searchBox" onkeydown="handleKeyPress(event)" style="width: 85%; padding: 6px;" name="searchname" placeholder="Search..." value="{{ request.GET.searchname }}">
+                                        <button onclick="search()"><i class="fa fa-search" aria-hidden="true"></i></button>
+
+
+                                    </div>
+                                </form>
+                            </a>
+                        </div>
+
+                    </div>
+                    <!-- /Search -->
+
+                    <ul class="navbar-nav flex-row align-items-center ms-auto">
+                        <!-- Notification -->
+                   
+                        <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                            <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
+                                data-bs-toggle="dropdown">
+                                <div class="avatar avatar-online">
+                                    {% if user.profile_pic %}
+                                    <img src="{{user.profile_pic.url}}" alt class="w-px-40 h-auto rounded-circle">
+                                    {% else %}
+                                    <img src="{% static 'images/logoLaw.png' %}" alt class="w-px-40 h-auto rounded-circle">
+                                    {% endif %}
+                                </div>
+
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end text-center">
+                                {% if user.profile_pic %}
+                                <li class="profile_img"><a href="#"><img src="{{user.profile_pic.url}}" alt=""></a>
+                                    {% endif %}
+                                </li>
+
+                                <li>
+                                    <h6 class="mb-1">{{user.first_name}}</h6>
+                                </li>
+                                <li class="mb-3">{{user.email}}</li>
+                                <li>
+                                    <div class="dropdown-divider"></div>
+                                </li>
+                                <li class="sign_outbtn"><a href="{% url 'logout' %}"><iconify-icon
+                                            icon="gridicons:sign-out"></iconify-icon> Sign out</a></li>
+                            </ul>
+                        </li>
+                        <!--/ User -->
+                    </ul>
+                </div>
+                <!-- Search Small Screens -->
+                
+
+            </nav>
+            <!-- <section class="container-fluid">
+                <div class="History">
+                    {% for category, books in grouped_books.items %}
+                    <div class="p-3">
+                        <h5 class="pt-3">{{ category }}</h5>
+                        {% for data in books %}
+                        <div class="customerAnchr">
+                            <a href="{% url 'CorporateBookDetail' data.id %}">
+                                <div class="odysseyimg">
+                                    {% if data.image %}
+                                    <img src="{{ data.image.url }}" alt="">
+                                    {% endif %}
+                                </div>
+                            </a>
+                            <div class="d-flex justify-content-between align-items-center p-2">
+                                <div>
+                                    <p class="my-2">{{ data.title|truncatewords:2 }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </section> -->
+            
+
+            <section class="container-fluid bookSection">
+                {% for category, books in grouped_books.items %}
+                <h5 class="pt-3">{{ category}}</h5>
+                <div class="History">
+                    {% for data in books %}
+                    <div class="p-3">
+                        <div class="customerAnchr">
+                            <a href="{% url 'BookDetail' data.id %}">
+                                <div class="odysseyimg">
+                                    {% if data.image %}
+                                    <img src="{{ data.image.url }}" alt="">
+                                    {% endif %}
+                                </div>
+                            </a>
+                            <div class="d-flex justify-content-between align-items-center p-2">
+                                <div>
+                                    <p class="my-2">{{ data.title|truncatewords:1 }}</p>
+                                </div>
+                                <div>
+                                    
+                                </div>
+                                {% if data.readingStatus == "Completed" %}
+                                <p style="color: rgb(4, 3, 66); font-weight: bold;">{{ data.readingStatus }}</p>
+                                {% else %}
+                                <p style="color: rgb(3, 66, 13); font-weight: bold;">{{ data.readingStatus }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+              
+                {% endfor %}
+            </section>
+            
+        </div>
+    </div>
+    
+
+
+    <!-- / Navbar -->
+    <!-- dash -->
+    <script src="{% static 'js/jquery.js' %}"> </script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"> </script>
+    <script src="{% static 'js/menu.js' %}"> </script>
+    <script src="{% static 'js/main.js' %}"> </script>
+    <script src="{% static 'js/dashboards-analytics.js' %}"> </script>
+
+
+
+
+
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#open_side").click(function () {
+                side_bar();
+            });
+    
+            function side_bar() {
+                var menulayout = $("#layout-menu");
+                var menubtn = $("#open_side");
+                if (menulayout.css("display") === "none") {
+                    menulayout.css("display", "block");
+                    menubtn.addClass("open_side");
+                } else {
+                    menulayout.css("display", "none");
+                    menubtn.removeClass("open_side");
+                }
+            }
+        });
+    </script>
+
+
+
+    <!-- Add this script to your HTML template -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- this code working but when i refresh color change -->
+    <script>
+        const hearts = document.querySelectorAll(".heart");
+        hearts.forEach((heart) => {
+            heart.addEventListener("click", () => {
+                const bookId = heart.getAttribute("data-book-id");
+                console.log(`Book ID: ${bookId}`);
+
+                fetch(`/favorite/${bookId}/`, {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": getCookie("csrftoken"), // Include the CSRF token
+                        "Content-Type": "application/json",
+                    },
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.is_favorite) {
+                            heart.classList.add("favorited");
+                            location.reload();
+                        } else {
+                            heart.classList.remove("favorited");
+                            location.reload();
+                        }
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
+            });
+        });
+
+        // Function to get the CSRF token from cookies
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== "") {
+                const cookies = document.cookie.split(";");
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === name + "=") {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+    </script>
+<!-- search -->
+<script>
+    // Set the cursor at the end of the input field when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        var searchBox = document.getElementById('searchBox');
+        searchBox.setSelectionRange(searchBox.value.length, searchBox.value.length);
+    });
+
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            search();
+        }
+    }
+
+    function search() {
+        // Get the value from the search box and perform the search
+        var searchValue = document.getElementById('searchBox').value;
+
+        // Add your search logic here
+    }
+
+    function cancelSearch() {
+        // Clear the search box and perform any additional cancel actions
+        var searchBox = document.getElementById('searchBox');
+        searchBox.value = '';
+        
+        // Add your cancel logic here
+    }
+</script>
+
+
+    </body>
+
+    </html>
+

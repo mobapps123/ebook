@@ -1,0 +1,191 @@
+{% extends 'lowafrecia/base.html' %}
+{% load static %}
+{% block content %}
+
+
+{% for data in about_banner|slice:":1"%}
+<section class="aboutBanner"style="background-image:url('{{data.banner_image.url}}')";>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                <h1>{{data.heading}}</h1>
+                <p>{{data.description}}</p>
+                <div class="aboutBannerBtn">
+                    <a href="#"> <button>Read More</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endfor %}
+
+
+<section class="foundationForSec">
+    <div class="container">
+        <div class="row">
+            {% for data in the_foundation|slice:":1"%}
+            <div class="col-lg-5">
+                <div class="parentFound">
+                    <div class="foundationContent">
+                        <h5>{{data.top_heading}}</h5>
+                        <h1>{{data.heading}}</h1>
+                        <p>{{data.description}}</p>
+                        <div class="FounBtn">
+                            <a href="#"><button>Read More <span><i
+                                            class="fa fa-long-arrow-right"></i></span></button></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="founImg">
+                    <img src="{{data.image.url}}" alt="">
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+<section class="aboutbookSec">
+    <div class="container">
+        <div class="row">
+            {% for data in the_book|slice:":1"%}
+            <div class="col-lg-7">
+                <div class="founImg">
+                    <img src="{{data.image.url}}" alt="">
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="aboutContent">
+                    <h1><span class="theBook">{{data.heading}}</span></h1>
+                    <p> <span class="paraTextMid">{{data.title}}</span>{{data.description}}</p>
+                    <div class="FounBtn">
+                        <a href="#">
+                            <button>Read More <span><i class="fa fa-long-arrow-right"></i></span></button></a>
+                    </div>
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+<section class="owlSec pt-80 pb-80">
+    <div class="container">
+        <div class="row">
+            <div class="owl-carousel">
+                {% for data in our_partner %}
+                <div>
+                    <div class="owlHome">
+                        <img src="{{data.image.url}}" alt="">
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+</section>
+
+
+
+<section id="overview">
+    <!-- Start Chapters List -->
+    <div class="container">
+      <div class="section-title">
+        {% for data in overview|slice:":1"%}
+        <h2>{{data.top_heading}}</h2>
+        <p>{{data.top_description}}</p>
+        {% endfor %}
+        <hr class="left"><i class=" icon fa fa-book"></i><hr class="right">
+      </div>
+      <div class="row">
+        {% for data in overview %}
+        <div class="col-lg-4">
+          <div class="chapters-list">
+            <div class="chapter-list-icon">
+            </div>
+            <div class="chapter-list-text">
+              <h4>{{data.heading}}</h4>
+              <p>{{data.description}}</p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <!-- End Chapters List -->
+
+    <!-- Start Video Preview -->
+     
+    <!-- End App Compatibility -->
+  </section>
+<!-- ************************************************ -->
+
+{% if not request.user.is_authenticated %}
+{% for data in learn|slice:":1"%}
+{% if data.image %}
+<section class="homeCompare" style="background-image:url('{{data.image.url}}')">
+{% endif %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h1>{{data.heading}}</h1>
+                <p>{{data.description}}</p>
+                <div class="SeecourseBtnParent">
+                    <div class="seeCoursebtn mr-3">
+                        <a href="" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal1">See All Books</a>
+                    </div>
+                    <div class="seeCoursebtn">
+                        <a href="{% url 'contact_us' %}">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endfor %}
+{% endif %}
+
+
+
+{% if not request.user.is_authenticated %}
+<section class="faqSec">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                {% for data in faq|slice:":1"%}
+                <h2 class="mb-4">{{data.heading}}</h2>
+                <!-- <h5 class="lead mb-5">{{data.description}}</h5> -->
+                {% endfor %}
+                <div class="accordion" id="faqAccordion">
+                    {% for data in faq %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading{{data.id}}">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{data.id}}" aria-expanded="false" aria-controls="collapse{{data.id}}">
+                                {{data.question}}
+                            </button>
+                        </h2>
+                        <div id="collapse{{data.id}}" class="accordion-collapse collapse" aria-labelledby="heading{{data.id}}" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">{{data.ans}}</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-lg-5">
+                {% for data in faq|slice:":1"%}
+                <div class="faqImg">
+                    <img src="{{data.image.url}}" alt="">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,74 @@
+/*all page responsive css start here(8-6-2021)*/ 
+
+
+
+@media only screen and (max-width: 480px) {
+
+}
+
+
+@media only screen and (min-width:481px) and (max-width: 568px) {
+
+
+}
+
+
+
+@media only screen and (min-width:569px) and (max-width:766px) {
+
+
+
+}
+
+
+
+
+@media only screen and (min-width:767px) and (max-width:768px) {
+
+
+
+
+
+}
+
+
+@media only screen and (min-width:769px) and (max-width:898px) {
+
+
+
+}
+
+
+
+@media only screen and (min-width:899px) and (max-width:992px) {
+
+
+
+
+}
+
+
+
+
+@media only screen and (min-width:993px) and (max-width:1024px) {
+
+
+
+
+}
+
+
+@media only screen and (min-width:1025px) and (max-width:1199px) {
+
+
+}
+
+
+@media only screen and (min-width:1200px) and (max-width:1299px) { 
+
+
+}
+
+
+
+/*all page responsive css end here*/ 

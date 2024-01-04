@@ -1,0 +1,177 @@
+{% include 'organizations/organization_header.html' %}
+{% load static %}
+<style>
+    .shadow {
+        width: 50%;
+        margin: 27px auto 10px 266px;
+    }     
+    .open_side{
+        margin-left: 226px;
+    } 
+</style>
+<div id="content-wrapper">
+    <div id="content">
+        <div>
+            <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+            id="layout-navbar">
+
+            <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none " id="open_side">
+                <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                    <i class="bx bx-menu bx-sm"></i>
+                </a>
+            </div>
+
+            <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+
+                <!-- Search -->
+                <div class="navbar-nav align-items-center">
+                    <div class="nav-item navbar-search-wrapper mb-0">
+                        <a class="nav-item nav-link search-toggler px-0" href="javascript:void(0);">
+                            <!-- <form method="GET" id="search-form">
+                                <div id="search-container">
+                                    <span><i class="fa fa-search" aria-hidden="true"></i></span>
+                                    <input type="text" id="search-bar" name="searchname" placeholder="Search...">
+                                </div>
+                            </form> -->
+
+
+                        </a>
+                    </div>
+
+                </div>
+                <!-- /Search -->
+
+                <ul class="navbar-nav flex-row align-items-center ms-auto">
+
+                    <!-- Notification -->
+         
+
+                    <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                        <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
+                            data-bs-toggle="dropdown">
+                            <div class="avatar avatar-online">
+
+                            {% if user.profile_pic %}
+                            <div  class="profile_img">
+                                <img src="{{ user.profile_pic.url }}" alt=""  class="w-px-40 h-auto rounded-circle">
+                            </div>
+                            {% else %}
+                            <div class="profile_img">
+                                <img src="{% static 'images/logoLaw.png' %}" alt=""  class="w-px-40 h-auto rounded-circle">
+                            </div>
+                            {% endif %}
+                            </div>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-end text-center">
+                            {% if user.profile_pic %}
+                            <div  class="profile_img">
+                                <img src="{{ user.profile_pic.url }}" alt="">
+                            </div>
+                            {% else %}
+                            <div class="profile_img">
+                                <img src="{% static 'images/logoLaw.png' %}" alt=""  >
+                            </div>
+                            {% endif %}
+                            </li>
+
+                            <li>
+                                <h6 class="mb-1">{{user.first_name}}</h6>
+                            </li>
+                            <li class="mb-3">{{user.email}}</li>
+                            <li>
+                                <div class="dropdown-divider"></div>
+                            </li>
+                            <li class="sign_outbtn"><a href="{% url 'logout' %}"><iconify-icon
+                                        icon="gridicons:sign-out"></iconify-icon> Sign out</a></li>
+
+                            
+                        </ul>
+                    </li>
+                    <!--/ User -->
+                </ul>
+            </div>
+            <!-- Search Small Screens -->
+            <div class="navbar-search-wrapper search-input-wrapper  d-none">
+                <input type="text" class="form-control search-input container-xxl border-0" placeholder="Search..."
+                    aria-label="Search...">
+                <i class="bx bx-x bx-sm search-toggler cursor-pointer"></i>
+            </div>
+
+        </nav>
+        </div>
+    </div>
+</div>
+
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <div class="container rounded bg-white shadow">
+        <div class="row">
+            <div class="col-md-12 border-right">
+                <div class="p-3">
+                    <div class="card-header text-center py-3">
+                        <h6 class="m-0 font-weight-bold">Edit User</h6>
+                    </div>
+                    <form method="post"enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="form-group my-3">
+                            <label for="exampleInputUsername1">First Name:</label>
+                            <input type="text" class="form-control" placeholder="Heading" name="first_name" value="{{data.first_name}}">
+                        </div>
+
+
+                        <div class="form-group my-3">
+                            <label for="exampleInputUsername1">Last Name:</label>
+                            <input type="text" class="form-control" placeholder="Title" name="last_name" value="{{data.last_name}}">
+                        </div>
+
+                        <div class="form-group my-3">
+                            <label for="exampleInputUsername1">Email:</label>
+                            <input type="text" class="form-control" placeholder="Email" name="email" value="{{data.email}}">
+                        </div>
+
+                        <div class="form-group my-3">
+                            <label for="exampleInputUsername1">Phone Number:</label>
+                            <input type="tel" class="form-control" name="phone_number" value="{{data.phone_number}}">
+                        </div>
+
+                       
+
+                        
+                        <!-- <div class="form-group">
+                            <label for="exampleInputUsername1">Institute Name:</label>
+                            <textarea type="text" class="form-control" placeholder="Description" name="institute">{{data.institute}}</textarea>
+                        </div> -->
+
+                        <div class="my-3 text-center">
+                            <button type="submit" class="btn btn-primary mr-2">Edit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#open_side").click(function () {
+            side_bar();
+        });
+
+        function side_bar() {
+            var menulayout = $("#layout-menu");
+            var menubtn = $("#open_side");
+            if (menulayout.css("display") === "none") {
+                menulayout.css("display", "block");
+                menubtn.addClass("open_side");
+            } else {
+                menulayout.css("display", "none");
+                menubtn.removeClass("open_side");
+            }
+        }
+    });
+</script>

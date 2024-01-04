@@ -1,0 +1,53 @@
+from django.urls import path
+from django.views import View
+from . import views 
+
+from django.contrib.auth import views as auth_views
+from django.urls import path, include
+urlpatterns = [
+    path('user-login/',views.enduser_login,name='enduser-login'),
+    path('MyProfile/',views.Updateprofile.as_view(),name='profile'),
+    path('change-password/',views.Change_password.as_view(),name='user-change-password'),
+    path('user-logout/',views.user_logout,name='user_logout'),
+    path('',views.HomeView.as_view(),name='home'),
+    path('AboutUs/',views.AboutUs.as_view(),name='aboutus'),
+    path('contact_us/',views.Contact_Us.as_view(),name='contact_us'),
+    path('CollectionAll/',views.CollectionAll.as_view(),name='collectionall'),
+    path('Blogs/',views.BlogsView.as_view(),name='Blogs'),
+    path('Digital-Publishing/',views.DigitalPublishing.as_view(),name='digitalpublishing'),
+    path('Book_Details/<int:id>',views.BookDetails.as_view(),name='BookDetail'),
+    path('update_end_time/<int:id>/', views.UpdateEndTimeView.as_view(), name='update_end_time'),
+    path('update-book-reading-status/<int:id>/', views.UpdateBookReadingStatus.as_view(), name="BookStatus"),
+    path('Student-Dashboard/', views.CustomerDashboard.as_view(), name='Customer_dashboard'),
+    path('most-populor-books/', views.MostPopularBooks.as_view(), name="MostPopulorBooks"),
+    # path('mark_completed/<int:book_id>/', mark_book_as_completed, name='mark_completed'),
+    path('RequestAdemo/',views.RequestAdemo.as_view(),name='RequestAdemo'),
+    path('CollectionDetail/<int:id>',views.CollectionDetails.as_view(),name='collections'),
+    path('NewestBooks/',views.NewestViewAll.as_view(),name='NewestViewAll'),
+    path('TermConditions/',views.TermConditions.as_view(), name='TermConditions'),
+    path('PrivacyPolicy/',views.PrivacyPolicys.as_view(), name='PrivacyPolicys'),
+    path('BooksByCategory/',views.BooksByCategory.as_view(),name='BooksByCategory'),
+    path('like-count-details/',views.Like.as_view(),name='likes'),
+    path('indybot/',views.Indybot.as_view(),name='indybot'),
+    path('notification/',views.Notification.as_view(),name='notification'),
+    path('recently_view/',views.recently_view,name='recently_view'),
+    path('ebookStore/',views.EbookStore.as_view(),name='ebookstore'),
+    path('Student-All-Books/',views.EbookReader.as_view(),name='ebookReader'),
+    path('favorite/<int:book_id>/', views.favorite, name='favorite'),
+    path('favorite_list/', views.favorite_list, name='favorite_list'),
+    path('user-surveys/',views.Usersurveys.as_view(),name='Usersurveys'),
+    path('StudentsLibrary/',views.StudentsLibrary.as_view(),name='StudentsLibrary'),
+    path('BookVisistList/',views.BookVisistList.as_view(),name='BookVisistList'),
+    path('AverageTimeSpent/',views.AverageTimeSpentBookList.as_view(),name='AverageTimeSpent'),
+    ####### student details url start here..
+    path('user-registration/',views.NormalUserRegister.as_view(),name='enduser-register'),
+    path('Dahboard/',views.NormalUserDashboard.as_view(),name='NormalDashboard'),
+    path('AllBooks/',views.NormalUserAllBooks.as_view(),name='NormalAllBook'),
+    path('Favorite/',views.normal_favoritelist,name='Favorite'),
+    path('BooksLists/<int:id>',views.NormalBookDetails.as_view(),name='BookLists'),
+    path('RecentlyView/',views.normalrecentlyView,name='RecentlyView'),
+    path('PopularBooks/',views.NormalUserMostPopularBooks.as_view(),name='PopularBooks'),
+    path('Survey/',views.NormalUsersurveys.as_view(),name='Surveys'),
+    path('Book-Visit-List/',views.NormalUserBookVisistList.as_view(),name='Book-Visit-List'),
+    path('Average-Time-Spent/',views.NormalUserAverageTimeSpent.as_view(),name='Average-Time-Spent'),
+]

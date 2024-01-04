@@ -1,0 +1,190 @@
+
+
+{% extends 'lowafrecia/base.html' %}
+{% load static %}
+{% block content %}
+
+
+<style>
+    ul.pagination {
+        justify-content: end;
+        margin-top: 10px;
+    }
+    .main {
+        width: 1000px;
+    }
+</style>
+<section class="BookDetailsBanner">
+    <div class="container">
+        <div class="row">
+            {% for data in collection|slice:":1" %}
+            <div class="col-lg-4">
+                <div class="DetailsImgBookBanner">
+                    <img src="{{data.books_id.image.url}}" alt="">
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="bookBannerContent">
+                    <h1>{{data.books_id.heading}}</h1>
+                    <p>{{data.books_id.description|safe}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<!-- banner end -->
+<section class="detailsBook">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="progressDetails">
+                    <div class="skill-main">
+                        <div class="skill-wrrap">
+                            <div class="skill-name"></div>
+                            <div class="skill-bar">
+                                <div class="skill-per" per="100"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="parentResponsible">
+                        <p><strong>Responsible</strong> </p>
+                        <p>{{data.books_id.author}}</p>
+                    </div>
+                    <div class="parentResponsible">
+                        <p><strong>Last Update</strong> </p>
+                        <p>{{data.books_id.updated_at}}</p>
+                    </div>
+                    <div class="parentResponsible">
+                        <p><strong>Completion</strong> </p>
+                        <p> 23 hours </p>
+                    </div>
+                    <div class="parentResponsible">
+                        <p><strong>Pages</strong> </p>
+                        <p>{{data.books_id.category.book_category}}</p>
+                    </div>
+                    <div class="parentResponsible">
+                        <p><strong>Members</strong> </p>
+                        <p>{{collection_member}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <nav class="detailsTab">
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
+                            data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home"
+                            aria-selected="true">Library</button>
+                        <!-- <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab"
+                            data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile"
+                            aria-selected="false">Reviews</button> -->
+                    </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
+                        aria-labelledby="nav-home-tab" tabindex="0">
+                        <div class="contentLibrary">
+                            <p>document <span class=" doc1">1</span></p>
+                            <div class="contentLibraryParent">
+                                <div class="d-flex">
+                                    <p> <strong>Orderd by:</strong> </p>
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            Book List
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#">Newest Books</a></li>
+                                            <li><a class="dropdown-item" href="#">Most popular books</a></li>
+                                            <li><a class="dropdown-item" href="#">My book collection</a></li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                                <!-- <form method="GET">
+                                    <div class="detailsSearch">
+                                        <input type="search" name="searchname"placeholder="search..">
+                                    </div>
+                                </form> -->
+                            </div>
+                        </div>
+                        <div class="row pt50">
+                            <div class="col-lg-6">
+                                <div class="detailsImgNegli">
+                                    <img src="{{data.books_id.image.url}}" alt="">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="detailNegliContent" id="pdf-container">
+                                    <embed src="{{data.books_id.book_pdf.url}}#toolbar=0" type="application/pdf" width="100%"
+                                        height="500px" />
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"
+                        tabindex="0">
+                        <div class="reviewContent">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    No Data Found
+    {% endfor %}
+    <div class="container">
+        <div class="row">
+            <nav aria-label="Blog Pagination">
+                <ul class="pagination">
+                    {% if page_object.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_object.previous_page_number }}">Previous</a>
+                        </li>
+                    {% endif %}
+                    <li class="page-item">
+                        <span class="page-link">{{ page_object.number }}</span>
+                    </li>
+                    <li class="page-item">
+                        {% if page_object.has_next %}
+                            <a class="page-link" href="?page={{ page_object.next_page_number }}">Next</a>
+                        {% endif %}
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</section>
+<!-- ************************************************ -->
+{% if not request.user.is_authenticated %}
+{% for data in learn|slice:":1"%}
+{% if data.image %}
+<section class="homeCompare" style="background-image:url('{{data.image.url}}')">
+{% endif %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h1>{{data.heading}}</h1>
+                <p>{{data.description}}</p>
+                <div class="SeecourseBtnParent">
+                    <div class="seeCoursebtn mr-3">
+                        <a href="" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal1">See All Books</a>
+                    </div>
+                    <div class="seeCoursebtn">
+                        <a href="{% url 'contact_us' %}">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endfor %}
+{% endif %}
+
+
+{% endblock %}

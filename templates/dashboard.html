@@ -1,0 +1,1162 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Begin Page Content -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lawAfrica</title>
+    <link href="{% static 'css/bootstrap-icons.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'css/boxicons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fontawesome.css' %}">
+    <link rel="stylesheet" href="{% static 'css/flag-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/core.css' %}">
+    <link rel="stylesheet" href="{% static 'css/theme-default.css' %}">
+    <link rel="stylesheet" href="{% static 'css/demo.css' %}">
+    <link rel="stylesheet" href="{% static 'css/perfect-scrollbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/typeahead.css' %}">
+    <link rel="stylesheet" href="{% static 'css/apex-charts.css' %}">
+    <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+    <link rel='stylesheet'
+        href='https://cdn-uicons.flaticon.com/2.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel='stylesheet'
+        href='https://cdn-uicons.flaticon.com/2.0.0/uicons-solid-straight/css/uicons-solid-straight.css'>
+    <link rel='stylesheet'
+        href='https://cdn-uicons.flaticon.com/2.0.0/uicons-bold-straight/css/uicons-bold-straight.css'>
+    <link rel='stylesheet'
+        href='https://cdn-uicons.flaticon.com/2.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+    <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
+    <style>
+        .dashheader span {
+            color: #000;
+            font-weight: 700;
+        }
+
+        .Metrics {
+            border-top: 1px solid #ccc;
+        }
+
+        .Metric_inner {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .Metric_inner_list {
+            margin: 20px 20px 20px 0;
+            text-align: center;
+        }
+
+        .Metric_inner_list h4 {
+            color: #000;
+            font-weight: 700;
+        }
+
+        .Metric_inner_list small {
+            color: #dd3545;
+            font-weight: 600;
+        }
+
+        .corporate_account {
+            /* min-width: 286px; */
+            background-color: #272a52;
+            padding: 20px;
+            color: #fff;
+            height: 271px;
+        }
+
+        .corporate_account h6 {
+            color: #fff;
+        }
+
+        .progress {
+            height: 6px !important;
+        }
+
+        .progress-bar {
+            background-color: #24d3fe;
+        }
+
+        /* chart_first css start here */
+        .chart_first {
+            background-color: #272a52;
+            min-height: 242px;
+            min-width: 413px;
+            padding: 20px;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .chart-series {
+            border-bottom: 1px solid #ffffff2d;
+        }
+
+        .chart-series p {
+            margin-bottom: 0px;
+            margin-top: 14px;
+            color: #fff;
+            font-size: 13px;
+        }
+
+        .line_1 {
+            width: 11px;
+            background-color: #24d2fd;
+        }
+
+        .line_2 {
+            width: 11px;
+            background-color: #e4c75c;
+        }
+
+        .chart_line_inner {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+        }
+
+        .chart_line_item {
+            margin: 0 20px 0 0;
+        }
+
+        .chart_line_item p {
+            color: #fff;
+            font-size: 13px;
+        }
+
+        .chart_line {
+            position: absolute;
+            left: 65px;
+            bottom: 9px;
+        }
+
+        .bullet-1 {
+            color: #24d2fd;
+        }
+
+        .bullet-2 {
+            color: #e4c75c;
+        }
+
+        .chartbox {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        /* css start here */
+        .chart_second .dropdown button {
+            border: 0;
+            background-color: #d8d8d8;
+            color: #fff;
+            border-radius: 10px;
+            padding: 5px 10px;
+        }
+
+        .chart-series1 p {
+            margin-bottom: 0px;
+            margin-top: 14px;
+            color: #989898;
+            font-size: 13px;
+        }
+
+        .line_3 {
+            background-color: #59cefd;
+            width: 20px;
+        }
+
+        .Month_col_inner {
+            display: flex;
+            align-items: end;
+            height: 194px;
+        }
+
+        .Month_col {
+            position: absolute;
+            left: 19px;
+        }
+
+        .Month_col_items {
+            margin-right: 30px;
+        }
+
+        .Month_col_items p {
+            font-size: 13px;
+            margin-top: 10px;
+        }
+
+        .chart_second h5 {
+            color: #000;
+            font-weight: 700;
+        }
+
+        /* Average css start here */
+        .Average {
+            /* margin: 30px 20px; */
+            display: flex;
+            /* justify-content: space-between; */
+            justify-content: center;
+            align-items: start;
+        }
+
+        .Average_inner {
+            height: 130px;
+            width: 130px;
+            border-radius: 50%;
+            border: 18px solid #ffffff;
+            /* border: 18px solid #59cefd; */
+            background-color: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 10px;
+        }
+
+        .Average_inner h5 {
+            color: #141c61;
+            font-weight: 700;
+        }
+
+        .Average_Average {
+            background-color: #646eff;
+            color: #fff;
+            padding: 10px;
+        }
+
+        .Average_Average h6 {
+            color: #fff;
+        }
+
+        /* for company table css*/
+        .company_table {
+            background-color: #fff;
+            margin: 20px 0px;
+            height: 199px;
+            overflow: auto;
+        }
+
+        .company_table::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .company_table::-webkit-scrollbar-thumb {
+            background: #ddd;
+        }
+
+
+        .company_table .tableCheck {
+            min-width: 40px;
+        }
+
+        .company_table td {
+            padding: 10px 20px 10px 0;
+        }
+
+        .company_table p {
+            margin-bottom: 0px;
+            font-size: 14px;
+        }
+
+        .company_table thead {
+            margin: 10px 0;
+        }
+
+        .table_image img {
+            height: 40px;
+            width: 40px;
+            border-radius: 5px;
+            margin: 0px 10px 0 0;
+        }
+
+        .company_table .border_t {
+            border-top: 1px solid #858796;
+            padding-bottom: 10px;
+        }
+
+        .company_table th {
+            padding-bottom: 15px;
+            font-size: 13px;
+        }
+
+        .company_table table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .perc_company {
+            display: flex;
+            justify-content: space-between;
+            width: 118px;
+        }
+
+        .company_table .BrandonP {
+            color: #000;
+            font-weight: 500;
+        }
+
+        .company_table .bar_color {
+            color: #127e4b;
+        }
+
+        .company_table .progress_btn {
+            color: #daa853;
+            background: #fff2d8;
+            padding: 3px 0px 4px;
+            border-radius: 20px;
+            width: 93px;
+            text-align: center;
+        }
+
+        /* table for user css here */
+        .user_table {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 10px 20px;
+            margin: 20px 0;
+            font-size: 13px;
+        }
+
+        .user_table h6 {
+            font-weight: 700;
+        }
+
+        .addnewBTN {
+            background-color: #ebedef;
+            color: #45505f;
+            padding: 3px 10px;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        .user_table table {
+            width: 100%;
+        }
+
+        .card_items {
+            margin: 20px 0 20px 20px;
+        }
+
+        .user_table td {
+            padding: 10px 20px 10px 0;
+        }
+
+        .user_table .border_t1 {
+            border-top: 1px solid #bec1c7;
+            padding-bottom: 10px;
+        }
+
+        .user_table th {
+            padding-bottom: 10px;
+        }
+
+        .published {
+            background-image: linear-gradient(180deg, #3d99f3, #70b7fb);
+            height: 140px;
+            width: 232px;
+            border-radius: 7px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            margin-bottom: 20px;
+            font-weight: 700;
+            margin-right: 15px;
+        }
+
+        .submissions {
+            background-image: linear-gradient(180deg, #ecc035, #fdde78);
+            height: 140px;
+            width: 232px;
+            border-radius: 7px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            margin-bottom: 20px;
+            font-weight: 700;
+            margin-right: 15px;
+        }
+
+        .approval {
+            background-image: linear-gradient(180deg, #d93565, #ee6790);
+            height: 140px;
+            width: 232px;
+            border-radius: 7px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-weight: 700;
+            margin-right: 15px;
+        }
+
+        /* traffic css start here */
+        .traffic {
+            border: 1px solid #e9ebee;
+            width: 100%;
+            margin: 20px 0px;
+            background-color: #f7f7f8;
+        }
+
+        .Adoption {
+            padding: 10px;
+            border-bottom: 1px solid #e9ebee;
+        }
+
+        .Adoption_inner {
+            background-color: #fff;
+            padding: 20px;
+        }
+
+        .reading_time {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e9eaec;
+            padding-bottom: 15px;
+        }
+
+        .readingT_inner {
+            border-left: 3px solid #2792fc;
+            padding: 0 20px;
+        }
+
+        .Adoption_details {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .Adoption_inner_2 {
+            width: 50%;
+            background-color: #fff;
+            padding: 0px 20px 20px 20px;
+        }
+
+        .Adoption_inner_2_item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .Adoption_inner_2_item .progress {
+            margin-top: 0px;
+            flex: 75%;
+            margin-left: 10px;
+        }
+
+        .weeksM {
+            margin: 10px 0;
+            flex: 25%;
+        }
+
+        .Dash_Graph1 {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .registeredscroll {
+            height: 240px;
+            overflow: auto;
+        }
+
+        .registeredscroll::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .registeredscroll::-webkit-scrollbar-thumb {
+            background: #ddd;
+        }
+
+        .column1 {
+            width: 65%;
+        }
+
+        .column2 {
+            width: 35%;
+        }
+        .GrowthH{
+            height: 298px;
+        }
+
+        @media (max-width: 992px) {
+            .column1 {
+                width: 100% !important;
+            }
+
+            .column2 {
+                width: 100% !important;
+            }
+
+            .card_items {
+                margin: 20px 0 20px 20px;
+                display: flex;
+                flex-wrap: wrap;
+            }
+        }
+        .dashheader {
+            z-index: 999;
+            position: relative;
+            width: 80%;
+        }
+        .chart_second_inner {
+            height: 200px;
+            overflow-y: auto;
+            padding-right: 10px;
+          }
+          .viewbtn{
+            background: transparent;
+            border: 1px solid #fff;
+            border-radius: 10px;
+            padding: 5px 20px;
+            color: #fff;
+          }
+          .viewbtn:hover{
+            background: #fff;
+            color: #000;
+          }
+
+          .messages{
+            text-align: center;
+        }
+        .messages p{
+            margin-bottom: 0px;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    
+    <!-- Content -->
+    <div class="mt-4">
+        <div class="container-fluid">
+            {% if messages %}
+            <div class="messages">
+              {% for message in messages %}
+              <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</p>
+              {% endfor %}
+            </div>
+            {% endif %}
+            <div class="row">
+                <div class="col-12">
+                    <div>
+                        <div class="dashheader mt-1">
+                            <h4>Good Morning, <span>{{request.user.first_name}} {{request.user.last_name}}</span></h4>
+                            <p>User Engagement Metrics: </p>
+                        </div>
+                        <div class="Metrics">
+                            <div class="Metric_inner">
+                                <div class="Metric_inner_list">
+                                    <span>Total users</span>
+                                    <h4 class="mb-0">{{total_user}}</h4>
+                                    <small></small>
+                                </div>
+                                <div class="Metric_inner_list">
+                                    <span>Active users </span>
+                                    <h4 class="mb-0">{{active_users}}</h4>
+                                    <small></small>
+                                </div>
+                                <div class="Metric_inner_list">
+                                    <span>User growth rate </span>
+                                    <h4 class="mb-0">{{user_growth_rate}}%</h4>
+                                    <small></small>
+                                </div>
+                                <div class="Metric_inner_list">
+                                    <span>Av. Time Spent on Portal </span>
+                                    <h4 class="mb-0">{{users_avg_time}}</h4>
+                                    <small></small>
+                                </div>
+                                <div class="Metric_inner_list">
+                                    <span>Conversion rate </span>
+                                    <h4 class="mb-0">{{conversion_rate}}%</h4>
+                                    <small></small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="column1">
+                    <div class="Dash_Graph1">
+                        <h6>Active Users: </h6>
+                        <div class="chart_first">
+                            <div class="mb-4">
+                                <div class="chart-series">
+                                    <div class="d-flex justify-content-between">
+                                        <p><i class="fi fi-sr-bullet"></i></p>
+                                        <div>
+                                            <p><i class="fi fi-sr-bullet bullet-1"></i>{{year}} </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="chart-series">
+                                    <p><i class="fi fi-sr-bullet"></i></p>
+                                </div>
+                                <div class="chart-series">
+                                    <p><i class="fi fi-sr-bullet"></i></p>
+                                </div>
+                                <div class="chart-series">
+                                    <p><i class="fi fi-sr-bullet"></i></p>
+                                </div>
+                                <div class="chart-series">
+                                    <p><i class="fi fi-sr-bullet"></i></p>
+                                </div>
+                                <div class="chart-series">
+                                    <p><i class="fi fi-sr-bullet"></i></p>
+                                </div>
+                            </div>
+                            <div class="chart_line">
+                                <div class="chart_line_inner">
+                                    {% for data in users_by_month_year %}
+                                    <div class="chart_line_item">
+                                        <div class="d-flex align-items-end">
+                                            <div class="line_1" style="height: {{ data.total_users }}px;"
+                                                title="Total Users: {{ data.total_users }}"></div>
+                                            <div class="line_2" style="height: {{ data.activated_users }}px;"
+                                                title="Activated Users: {{ data.activated_users }}"></div>
+                                        </div>
+                                        <div>
+                                            {% if data.month == 1 %}
+                                            <p>Jan</p>
+                                            {% elif data.month == 2 %}
+                                            <p>Feb</p>
+                                            {% elif data.month == 3 %}
+                                            <p>Mar</p>
+                                            {% elif data.month == 4 %}
+                                            <p>Apr</p>
+                                            {% elif data.month == 5 %}
+                                            <p>May</p>
+                                            {% elif data.month == 6 %}
+                                            <p>Jun</p>
+                                            {% elif data.month == 7 %}
+                                            <p>Jul</p>
+                                            {% elif data.month == 8 %}
+                                            <p>Aug</p>
+                                            {% elif data.month == 9 %}
+                                            <p>Sep</p>
+                                            {% elif data.month == 10 %}
+                                            <p>Oct</p>
+                                            {% elif data.month == 11 %}
+                                            <p>Nov</p>
+                                            {% elif data.month == 12 %}
+                                            <p>Dec</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="Dash_Graph1">
+                        <h6>Top 10 institutions based on total hours reading :- </h6>
+                        <div class="company_table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>S.No.</th>
+                                        <th>NAME OF INSTITUTION</th>
+                                        <th>HOURS</th>
+                                        <th>TOTAL BOOKS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for data in top_institutions %}
+                                    <tr class="border_t">
+                                        <td>{{forloop.counter}}</td>
+
+                                        <td>
+                                            <div class="d-flex align-items-center">
+
+                                                <div>
+                                                    <p>{{data.institute_name}}</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <p>{{ data.users_avg_time}}</p>
+                                        </td>
+                                        <td class="p-0">
+                                            <p>{{data.books_count}}</p>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="user_table">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0">Content Metrics:</h6>
+                            <a href="{% url 'Create_organizations' %}" class="addnewBTN"><i class="fi fi-rr-user-add"></i> Add Corporate</a>
+                        </div>
+                        <div>
+                            <p>{{total_user}} registered users</p>
+                        </div>
+                        <div class="registeredscroll">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>S.No.</th>
+                                        <th>NAME OF INSTITUTION</th>
+                                        <th>BOOKS</th>
+                                        <th>ACTIVE USERS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for d in content_metrics|slice:":10" %}
+                                    <tr class="border_t1">
+                                        <td>{{forloop.counter}}</td>
+                                        <td>{{d.institute}}</td>
+                                        <td><b><a href="/Admin/BookAssign/{{d.id}}" >{{d.total_book}}</a></b></td>
+                                        <td>{{d.activate_user}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="traffic">
+                        <div class="Adoption">
+                            <h6 class="mb-0">Usage and Adoption Metrics:</h6>
+                        </div>
+                        <div class="Adoption_inner">
+                            <div class="reading_time">
+                                <div class="readingT_inner">
+                                    <p class="mb-0">Total page views</p>
+                                    <h6>{{total_visit}}</h6>
+                                </div>
+                                <div class="readingT_inner">
+                                    <p class="mb-0">Reading Time</p>
+                                    <h6>{{total_time_admin_dashboard}}</h6>
+                                </div>
+                                <div class="readingT_inner">
+                                    <p class="mb-0">Feature Adoption Rates</p>
+                                    <h6>2</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="Adoption_details">
+                            <div class="Adoption_inner_2">
+                                {% for day, data in sorted_weekly_metrics.items %}
+                                <div class="Adoption_inner_2_item">
+                                    <p class="weeksM">{{ data.day_name }}</p>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar"
+                                            style="width: {{ data.visit_count }}%"
+                                            aria-valuenow="{{ data.visit_count }}%" aria-valuemin="0"
+                                            aria-valuemax="{{ data.visit_count }}%"></div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="Adoption_inner_2">
+                                <div>
+                                    <div class="chartbox justify-content-between">
+                                        <p class="mb-0">Corporate</p>
+                                        <p class="mb-0">{{ corporate_percentage }}%</p>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar"
+                                            style="width: {{ corporate_percentage }}%;"
+                                            aria-valuenow="{{ corporate_percentage }}" aria-valuemin="0"
+                                            aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <div class="chartbox justify-content-between">
+                                        <p class="mb-0">Non-Corporate</p>
+                                        <p class="mb-0">{{ non_corporate_percentage }}%</p>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar"
+                                            style="width: {{ non_corporate_percentage }}%;"
+                                            aria-valuenow="{{ non_corporate_percentage }}" aria-valuemin="0"
+                                            aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column2">
+                    <div class="Dash_Graph1">
+                        <h6>Total Users by Account: </h6>
+                        <div class="corporate_account">
+                            <div class="w-100">
+                                <h6>Progress Details:-</h6>
+                                <div class="mt-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <p class="mb-0">Total Users</p>
+                                        <p class="mb-0">{{ total_user }} users</p>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" style="width: {{ total_user }}%;"
+                                            aria-valuenow="{{ total_user }}" aria-valuemin="0" aria-valuemax="100">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <p class="mb-0">Corporate Users</p>
+                                        <p class="mb-0">{{ corporate_users }} users</p>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar"
+                                            style="width: {{ corporate_users }}%;" aria-valuenow="{{ corporate_users }}"
+                                            aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <p class="mb-0">Non-Corporate Users</p>
+                                        <p class="mb-0">{{ non_corporate_users }} users</p>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar"
+                                            style="width: {{ non_corporate_users }}%;"
+                                            aria-valuenow="{{ non_corporate_users }}" aria-valuemin="0"
+                                            aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                <div class="text-center mt-4">
+                                    <a href="{% url 'Detail_organizations' %}"><button class="viewbtn">View Corporate Users</button></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="Dash_Graph1 GrowthH">
+                        <h6 class="mb-2">User Growth Rate:</h6>
+                        <div class="chart_second">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5>User Growth:</h5>
+                                <div class="dropdown">
+                                    <h6>Monthly</h6>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        {% comment %} <li><a class="dropdown-item" href="#">Week Wise</a></li> {% endcomment %}
+                                        <li><a class="dropdown-item" href="#">Month Wise</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="chart_second_inner mb-4">
+                                <div>
+                                    {% for data in users_by_month_year %}
+                                    {% if data.month == 1  %}
+                                    <div class="mt-2">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <p class="mb-0">January</p>
+                                            <p class="mb-0"> {{data.total_users}} Users</p>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar"
+                                                style="width: {{data.total_users}}%;" aria-valuenow="20"
+                                                aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                    {% elif data.month == 2 %}
+                                    <div class="mt-2">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <p class="mb-0">February</p>
+                                            <p class="mb-0"> {{data.total_users}} Users</p>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar"
+                                                style="width: {{data.total_users}}%;" aria-valuenow="20"
+                                                aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                    {% elif data.month == 3 %}
+                                    <div class="mt-2">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <p class="mb-0">March</p>
+                                            <p class="mb-0"> {{data.total_users}} Users</p>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar"
+                                                style="width: {{data.total_users}}%;" aria-valuenow="20"
+                                                aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                    {% elif data.month == 4 %}
+                                    <div class="mt-2">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <p class="mb-0">April</p>
+                                            <p class="mb-0"> {{data.total_users}} Users</p>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar"
+                                                style="width: {{data.total_users}}%;" aria-valuenow="20"
+                                                aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                    {% elif data.month == 5 %}
+                                    <div class="mt-2">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <p class="mb-0">May</p>
+                                            <p class="mb-0"> {{data.total_users}} Users</p>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar"
+                                                style="width: {{data.total_users}}%;" aria-valuenow="20"
+                                                aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                    {% elif data.month == 6 %}
+                                    <div class="mt-2">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <p class="mb-0">June</p>
+                                            <p class="mb-0"> {{data.total_users}} Users</p>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar"
+                                                style="width: {{data.total_users}}%;" aria-valuenow="20"
+                                                aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                    {% elif data.month == 7 %}
+                                    <div class="mt-2">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <p class="mb-0">July</p>
+                                            <p class="mb-0"> {{data.total_users}} Users</p>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar"
+                                                style="width: {{data.total_users}}%;" aria-valuenow="20"
+                                                aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                    {% elif data.month == 8 %}
+                                    <div class="mt-2">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <p class="mb-0">August</p>
+                                            <p class="mb-0"> {{data.total_users}} Users</p>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar"
+                                                style="width: {{data.total_users}}%;" aria-valuenow="20"
+                                                aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                    {% elif data.month == 9 %}
+                                    <div class="mt-2">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <p class="mb-0">September</p>
+                                            <p class="mb-0"> {{data.total_users}} Users</p>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar"
+                                                style="width: {{data.total_users}}%;" aria-valuenow="20"
+                                                aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                    {% elif data.month == 10 %}
+                                    <div class="mt-2">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <p class="mb-0">October</p>
+                                            <p class="mb-0"> {{data.total_users}} Users</p>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar"
+                                                style="width: {{data.total_users}}%;" aria-valuenow="20"
+                                                aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                    {% elif data.month == 11 %}
+                                    <div class="mt-2">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <p class="mb-0">November</p>
+                                            <p class="mb-0"> {{data.total_users}} Users</p>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar"
+                                                style="width: {{data.total_users}}%;" aria-valuenow="20"
+                                                aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                    {% elif data.month == 12 %}
+                                    <div class="mt-2">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <p class="mb-0">December</p>
+                                            <p class="mb-0"> {{data.total_users}} Users</p>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar"
+                                                style="width: {{data.total_users}}%;" aria-valuenow="20"
+                                                aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="Dash_Graph1">
+                        <h6>Average time spent on the portal per session:</h6>
+                        <div class="Average_Average">
+                            <h6 class="text-center">Average time spent on the portal per session</h6>
+                            <div class="Average">
+                                <div>
+                                    <div class="Average_inner">
+                                        <div class="text-center">
+                                            <h5 class="mb-0">{{total_avg_h}}</h5>
+                                            <p class="mb-0">hours</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-center">
+                                        <h6>Hours</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card_items">
+                        <div class="published">
+                            <div class="text-center">
+                                <p class="mb-0">Total Published Ebooks</p>
+                                <span>{{total_book}}</span>
+                            </div>
+            
+             
+                        </div>
+                        <div class="submissions">
+                            <div class="text-center">
+                            <p class="mb-0">Total Surveys Submissions</p>
+                            <span>{{totol_servey}}</span>
+                            </div>
+                        </div>
+                        <div class="approval">
+                            <p class="mb-0">Content approval rates </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% comment %} <div class="container-fluid mainPage">
+        <div class="card shadow mb-4">
+            <div class="card-header d-flex justify-content-between py-3">
+                <h6 class="m-0 font-weight-bold text-primary"> Top 10 Institutions</h6>
+            </div>
+            <div class="card-body mt-3">
+                <div class="table-responsive">
+                    <table class="table table-striped" id="exampl1">
+                        <thead>
+                            <tr>
+                                <th>Sr No</th>
+                                <th>Institutions</th>
+                                <th>Total Times </th>
+
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for data in top_institutions %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{data.institute}}</td>
+                                <td>
+                                    Hours:{{ data.hours}},
+                                    Minutes:{{ data.minutes}}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div> {% endcomment %}
+    </div>
+    </div>
+    </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+        var myConfig = {
+            type: "bar",
+            "background-color": "#272a52",
+            "height": "50%",
+            "bar-space": 0.1,
+            plotarea: {
+                adjustLayout: true
+            },
+            scaleX: {
+                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+            },
+            scaleY: {
+                labels: ["1M", "0.8M", "0.6M", "0.4M", "0.2M", "0M"]
+            },
+            series: [
+                {
+                    values: [
+                        {% for entry in users_by_month_year %}
+                            "{{ entry.total_users }}",
+                {% endfor %}
+                    ],
+        backgroundColor: "#24d2fd",
+            "bar-width": "40%"
+                },
+        {
+            values: [
+                {% for entry in users_by_month_year %}
+        "{{ entry.activated_users }}",
+            {% endfor %}
+                    ],
+        backgroundColor: "#e4c75c",
+            "bar-width": "40%"
+                }
+            ],
+        };
+        zingchart.render({
+            id: 'myChart',
+            data: myConfig,
+            height: "100%",
+            width: "100%"
+        });
+    </script>
+    <script src="{% static 'js/helper.js' %}"> </script>
+    <script src="{% static 'js/templateCus.js' %}"> </script>
+    <script src="{% static 'js/config.js' %}"> </script>
+    <script src="{% static 'js/jquery.js' %}"> </script>
+    <script src="{% static 'js/popper.js' %}"> </script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"> </script>
+    <script src="{% static 'js/perfect-scrollbar.js' %}"> </script>
+    <script src="{% static 'js/hammer.js' %}"> </script>
+    <script src="{% static 'js/i18n.js' %}"> </script>
+    <script src="{% static 'js/typeahead.js' %}"> </script>
+    <script src="{% static 'js/menu.js' %}"> </script>
+    <script src="{% static 'js/apexcharts.js' %}"> </script>
+    <script src="{% static 'js/main.js' %}"> </script>
+    <script src="{% static 'js/dashboards-analytics.js' %}"> </script>
+
+</body>
+
+</html>
+
+{% endblock %}

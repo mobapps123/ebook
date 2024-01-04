@@ -1,0 +1,105 @@
+
+{% load static %}
+<style>
+    footer.sticky-footer{
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 20px;
+        background-color: whitesmoke;
+        color: #566a7f;
+    }
+</style>
+<!-- Footer -->
+    <footer class="sticky-footer">
+        <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+                <span>Copyright &copy; Your Website 2023</span>
+            </div>
+        </div>
+    </footer>
+<!-- End of Footer -->
+
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="{% static 'js/checkout.js' %}"></script>
+
+    <script src="{% static 'js/sb-admin-2.js' %}"></script>
+    <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+    <!-- <script src="{% static 'js/demo/bootstrap.min.js' %}"> </script> -->
+    <script src="{% static 'js/demo/jquery.js' %}"> </script>
+
+  
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <!-- <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script> -->
+
+    <!-- Core plugin JavaScript-->
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script> 
+    <!-- Custom scripts for all pages-->
+    <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+    <!-- Page level plugins -->
+    <script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
+    <!-- Page level custom scripts -->
+    <script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
+    <script src="{% static 'js/demo/chart-pie-demo.js' %}"></script>
+    
+<script src="{% static 'js/helper.js' %}"> </script>
+<script src="{% static 'js/templateCus.js' %}"> </script>
+<script src="{% static 'js/config.js' %}"> </script>
+
+
+
+    <!-- Core plugin JavaScript-->
+   
+    <!-- Custom scripts for all pages-->
+    <!-- Page level plugins -->
+  
+ 
+    <!-- Page level custom scripts -->
+ 
+
+          
+<!-- active inactive code start here -->
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/12.0.0/classic/ckeditor.js"></script>
+
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    ClassicEditor
+        .create(document.querySelector('#editor'))
+        .catch(error => {
+            console.error(error);
+        });
+</script>
+
+  <script>
+    $(document).ready(function() {
+      $('#example').DataTable( {
+          dom: 'Bfrtip',
+          buttons: [
+                'excel',
+          ]
+      } );
+  } );
+  </script>
+
+
+
+  <script>
+    $(document).ready(function () {
+        // Check if there are messages to display
+        if ($('.messages li').length > 0) {
+            $('#message-popup').modal('show');
+        }
+    });
+</script>

@@ -1,0 +1,252 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<style>
+  .tablecategory {
+    width: 80%;
+    margin: 10px 0 0 auto;
+  }
+
+  .dropscroll {
+    height: 159px;
+    overflow-y: auto;
+  }
+
+  .dropscroll::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  .dropbtn {
+    border: 0;
+    background-color: cadetblue;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 10px;
+  }
+
+  
+  .dropscroll::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+
+
+  .dropscroll::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+  .mainPage1 {
+    padding-top: 100px !important;
+    padding-bottom: 20px;
+    width: 62%;
+    margin: 0;
+}
+.Permission_btn {
+  border: 1px solid #d1d3e1;
+  border-radius: 5px;
+  background-color: transparent;
+  padding: 5px 12px;
+  color: #858995;
+}
+.btn-primary1 {
+  color: #fff;
+  background-color: #890015;
+  border-color: #890015;
+  height: 34px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+</style>
+<!-- Begin Page Content -->
+
+
+<div class="container-fluid mainPage1">
+  <div class="messages" >
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+  <div class="container-fluid">
+    <div class="container rounded bg-white mt-2 mb-2">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="p-3 pb-4 pt-5">
+            <div class="d-flex justify-content-center align-items-center mb-3">
+              <h4 class="text-center">Add Staff</h4>
+            </div>
+            <form method="post" , enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-group">
+                    <label for="exampleInputUsername1">Enter Name:</label>
+                    <input type="text" class="form-control" placeholder="Enter First Name" name="first_name"
+                      required >
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-group">
+                    <label for="exampleInputUsername1">Last Name:</label>
+                    <input type="text" class="form-control" placeholder="Enter Last Name" name="last_name" required>
+                  </div>
+                </div>
+                
+                <div class="col-12">
+                  <div class="form-group">
+                    <label for="exampleInputUsername1">Phone Number:</label>
+                    <input type="text" class="form-control" placeholder=" Enter Phone Number" name="phone_number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) && this.value.length < 12" required>
+                  </div>
+
+                </div>
+                <div class="col-12">
+                  <div class="form-group">
+                    <label for="exampleInputUsername1">Email:</label>
+                    <input type="email" class="form-control" name="email" placeholder="Enter Email" required>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                  <label for="exampleInputUsername1">Password:</label>
+                  <input type="password" class="form-control" placeholder=" Enter Password" name="password"
+                    required>
+                </div>
+              </div>
+          
+
+          <!-- <div class="d-flex justify-content-between"> -->
+            <div class="dropdown">
+              <button class="Permission_btn dropdown-toggle" type="button" id="dropdownMenuButton1"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Select Permission
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                
+                  <div class="dropdown-item">
+                    <input type="checkbox" id="vehicle12" name="permissions_checkbox" value="dashboard" {% if staff_menu.dashboard %}checked {% endif %}>
+                    <label for="vehicle12">Dashboard</label>
+                  </div>
+
+                  <div class="dropdown-item">
+                    <input type="checkbox" id="vehicle3" name="permissions_checkbox" value="details_book" {% if staff_menu.details_book %}checked {% endif %}>
+                    <label for="vehicle3">Books Details</label>
+                  </div>
+                  
+                  <div class="dropdown-item">
+                    <input type="checkbox" id="vehicle3" name="permissions_checkbox" value="organization_details" {% if staff_menu.organization_details %}checked {% endif %}>
+                    <label for="vehicle3">Manage Corporates</label>
+                  </div>
+
+
+                  <!-- <div class="dropdown-item">
+                    <input type="checkbox" id="vehicle3" name="permissions_checkbox" value="manage_home" {% if staff_menu.manage_home %}checked{% endif %}>
+                    <label for="vehicle3">Manage Home</label>
+                  </div>
+
+                  <div class="dropdown-item">
+                    <input type="checkbox" id="vehicle3" name="permissions_checkbox" value="manage_contact" {% if staff_menu.manage_contact %}checked{% endif %}>
+                    <label for="vehicle3">Manage Contact</label>
+                  </div> -->
+
+                  <div class="dropdown-item">
+                    <input type="checkbox" id="vehicle3" name="permissions_checkbox" value="manage_category" {% if staff_menu.manage_category %}checked{% endif %}>
+                    <label for="vehicle3">Manage Category</label>
+                  </div>
+
+                  <div class="dropdown-item">
+                    <input type="checkbox" id="vehicle3" name="permissions_checkbox" value="manage_collection" {% if staff_menu.manage_collection %}checked{% endif %}>
+                    <label for="vehicle3">Manage Collection</label>
+                  </div>
+
+
+                  <!-- <div class="dropdown-item">
+                    <input type="checkbox" id="vehicle3" name="permissions_checkbox" value="digital_publishing" {% if staff_menu.digital_publishing %}checked{% endif %}>
+                    <label for="vehicle3">Manage Digital Publishing</label>
+                  </div> -->
+
+
+                  <!-- <div class="dropdown-item">
+                    <input type="checkbox" id="vehicle3" name="permissions_checkbox" value="ebook_store" {% if staff_menu.ebook_store %}checked {% endif %}>
+                    <label for="vehicle3">Manage Ebook Store</label>
+                  </div> -->
+
+                  <!-- <div class="dropdown-item">
+                    <input type="checkbox" id="vehicle3" name="permissions_checkbox" value="ebook_reader" {% if staff_menu.ebook_reader %}checked {% endif %}>
+                    <label for="vehicle3">Manage Ebook Reader</label>
+                  </div> -->
+
+
+                  <!-- <div class="dropdown-item">
+                    <input type="checkbox" id="vehicle3" name="permissions_checkbox" value="indybot" {% if staff_menu.indybot %}checked {% endif %}>
+                    <label for="vehicle3">Manage indybot</label>
+                  </div> -->
+
+                  <div class="dropdown-item">
+                    <input type="checkbox" id="vehicle3" name="permissions_checkbox" value="notifications" {% if staff_menu.notifications %}checked{% endif %}>
+                    <label for="vehicle3">Manage Notifications</label>
+                  </div>
+
+                  <div class="dropdown-item">
+                    <input type="checkbox" id="vehicle3" name="permissions_checkbox" value="manage_staff" {% if staff_menu.manage_staff %}checked{% endif %}>
+                    <label for="vehicle3">Manage Staffs </label>
+                  </div>
+
+                  <div class="dropdown-item">
+                    <input type="checkbox" id="vehicle3" name="permissions_checkbox" value="manage_blogs" {% if staff_menu.manage_blogs %}checked{% endif %}>
+                    <label for="vehicle3">Manage Blogs </label>
+                  </div>
+
+                  <div class="dropdown-item">
+                    <input type="checkbox" id="vehicle3" name="permissions_checkbox" value="user_details" {% if staff_menu.user_details %}checked{% endif %}>
+                    <label for="vehicle3">Manage Users</label>
+                  </div>
+
+                  <div class="dropdown-item">
+                    <input type="checkbox" id="vehicle3" name="permissions_checkbox" value="manage_cms" {% if staff_menu.manage_cms %}checked{% endif %}>
+                    <label for="vehicle3">Manage CMS</label>
+                  </div>
+              </div>
+            </div>
+
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary1">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+    // Handle checkbox selection and update the field value
+    $('.dropdown-checkbox .dropdown-item input[type="checkbox"]').change(function () {
+      var checkbox = $(this);
+      var checkboxValue = checkbox.val();
+      var checkboxChecked = checkbox.is(':checked');
+      var dropdownItem = checkbox.closest('.dropdown-item');
+      var dropdownLink = dropdownItem.attr('href');
+
+      // Update the URL in the dropdown item
+      if (checkboxChecked) {
+        dropdownItem.attr('href', checkboxValue);
+      } else {
+        dropdownItem.attr('href', '#');
+      }
+    });
+  });
+
+  $('#columnsListDropDown li label').click(function (e) {
+    e.stopPropagation();
+  })
+</script>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+
+<style>
+  div#example1_filter {
+    padding-left: 273px !important;
+  }
+
+  ul.pagination {
+    padding-left: 371px !important;
+  }
+</style>
+
+
+
+
+{% if messages %}
+<ul class="messages">
+  {% for message in messages %}
+  <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+<!-- Begin Page Content -->
+<div class="container-fluid mainPage">
+  <div class="card shadow mb-4">
+    <div class="card-header d-flex justify-content-between py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Category Details</h6>
+      <a href="{% url 'add_category' %}"> <button type="button" class="btn btn-primary"> Create Category</button></a>
+    </div>
+
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-striped" id="example">
+          <thead>
+            <tr>
+              <th>Sr No</th>
+              <th>Category Name</th>
+              <th>Create Date</th>
+              <th>Update Date</th>
+              <th>Action</th>
+              {% comment %} <th>Status</th> {% endcomment %}
+
+            </tr>
+          </thead>
+          <tbody>
+            {% for data in data %}
+            <td>
+              {{forloop.counter}}</a>
+            </td>
+            {% comment %} <td>
+              {% if data.image %}
+              <img src="{{data.image.url}}" style="height: .6in; width:2cm;" alt="">
+              {% endif %}
+            </td> {% endcomment %}
+            <td>{{data.book_category}}</td>
+            <td>{{data.created_at}}</td>
+            <td>{{data.updated_at}}</td>
+
+            </td>
+            <td>
+              <div class=" d-flex">
+                <div class="edit-cild mr-3">
+                  <a href="{% url 'category_edit' data.id %}"><i class="icon-edit fas fa-edit"></i> </a>
+                </div>
+                <div class="edit-child">
+                  <a href="{% url 'category_delete' data.id %}" onclick="return confirm('Are You Sure')"><i
+                      class="icon-edit fas fa-trash"></i></a>
+                </div>
+                {% comment %}
+            <td>
+              <input type="checkbox" checked data-toggle="toggle" data-on="active" data-off="Inactive"
+                data-onstyle="success" data-offstyle="danger">
+            </td> {% endcomment %}
+      </div>
+      </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+
+      </table>
+    </div>
+  </div>
+</div>
+</div>
+
+{% endblock %}

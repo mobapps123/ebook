@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<style>
+.mainPage1 {
+    padding-top: 93px;
+    width: 62%;
+    margin: 10px;
+}
+</style>
+<!-- Begin Page Content -->
+<div class="container-fluid mainPage1">
+  <div class="container rounded bg-white mt-2 mb-2">
+    <div class="row">
+
+      <div class="col-md-12">
+        <div class="p-3 py-5">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="text-center">Edit Category</h4>
+          </div>
+
+          <form class="forms-sample" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {% comment %} <label for="cars">Select Projects</label>
+            <select name="user" id="emp">
+              <option>select project</option>
+              {% for u in data %}
+              <option>{{u.project_name}}</option>
+              {% endfor %}
+            </select>
+            <br><br><br> {% endcomment %}
+
+
+
+            <div class="form-group">
+              <label for="exampleInputUsername1">Category:</label>
+              <input type="text" class="form-control" id="heading" name="book_category" value="{{data.book_category}}">
+            </div>
+
+            <div class="form-group">
+              <label for="exampleInputUsername1">created_at:</label>
+              <input type="text" class="form-control" id="heading" name="created_at"
+                value="{{data.created_at|date:'Y-m-d'}}">
+            </div>
+
+            <div class="form-group">
+              <label for="exampleInputUsername1">updated_at:</label>
+              <input type="text" class="form-control" id="heading" name="updated_at"
+                value="{{data.updated_at|date:'Y-m-d'}}">
+            </div>
+
+
+
+            <div class="row">
+              <button type="submit" class="btn btn-primary mr-2">Edit</button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /.container-fluid -->
+
+<!-- End of Main Content -->
+{% endblock %}

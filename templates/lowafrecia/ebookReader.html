@@ -1,0 +1,176 @@
+{% extends 'lowafrecia/base.html' %}
+{% load static %}
+{% block content %}
+
+
+
+<style>
+    ul.pagination {
+        justify-content: end;
+        margin-top: 10px;
+    }
+</style>
+
+{% for data in ebook_reader|slice:":1"%}
+<section class="aboutSecBanner" style="background-image: url({{data.image.url}})">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{{data.heading}}</h1>
+                <h5>{{data.description}}</h5>
+                <div class="aboutBannerBtn">
+                    <a href="#"> <button>Read More</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endfor %}
+
+<!-- banner end -->
+<section class="ebookRead">
+    <div class="container">
+        <div class="row">
+            <form method="GET">
+                <div class="searchBook">
+                    <input type="search" id="searchInput" name="searchname" placeholder="Search...">
+                    <ul id="searchList">
+                        <li data-search="Story">Story</li>
+                        <li data-search="History">History</li>
+                        <li data-search="Science">Science</li>
+                        <li data-search="Multimedia">Multimedia</li>
+                    </ul>
+                    <div id="notFound" style="display: none;">Data not found</div>
+                </div>
+            </form>
+        </div>
+        <div class="row">
+            {% for data in all_book %}
+            <div class="col-lg-4 readerCardGap">
+                <a href="{% url 'BookDetail' data.id %}">
+                    <div class="bookReadeCard">
+                        <div class="readImg"><img src="{{data.image.url}}" alt=""></div>
+                        <div class="contentReader">
+                            <div class="parentRating">
+
+                                <div>
+                                    <h5>{{data.category.book_category}}</h5>
+                                    <p>{{data.title}}</p>
+    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% empty %}
+            No Record Found
+            {% endfor %}
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <nav aria-label="Book Pagination">
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                        </li>
+                    {% endif %}
+                    <li class="page-item">
+                        <span class="page-link">{{ page_obj.number }}</span>
+                    </li>
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav> 
+        </div>
+    </div>
+</section>
+
+
+<!-- <script>
+    const searchInput = document.getElementById('searchInput');
+    const searchList = document.getElementById('searchList');
+    searchInput.addEventListener('focus', function () {
+        searchList.style.display = 'block';
+    });
+
+    // Handle clicks on list items
+    searchList.addEventListener('click', function (e) {
+        if (e.target.tagName === 'LI') {
+            // Handle the click on list items here
+            const selectedItem = e.target;
+            searchInput.value = selectedItem.textContent; // Set the input value to the selected item
+            searchList.style.display = 'none'; // Hide the list
+        }
+    });
+    document.addEventListener('click', function (e) {
+        if (e.target !== searchInput && e.target !== searchList) {
+            searchList.style.display = 'none';
+        }
+    });
+    searchList.addEventListener('click', function (e) {
+        e.stopPropagation();
+    });
+</script> -->
+
+
+<script>
+    const searchInput = document.getElementById('searchInput');
+    const searchList = document.getElementById('searchList');
+    const notFound = document.getElementById('notFound');
+
+    searchInput.addEventListener('focus', function () {
+        searchList.style.display = 'block';
+    });
+
+    // Handle clicks on list items
+    searchList.addEventListener('click', function (e) {
+        if (e.target.tagName === 'LI') {
+            // Handle the click on list items here
+            const selectedItem = e.target;
+            searchInput.value = selectedItem.textContent; // Set the input value to the selected item
+            searchList.style.display = 'none'; // Hide the list
+            notFound.style.display = 'none'; // Hide the "Data not found" message
+        }
+    });
+
+    document.addEventListener('click', function (e) {
+        if (e.target !== searchInput && e.target !== searchList) {
+            searchList.style.display = 'none';
+            notFound.style.display = 'none'; // Hide the "Data not found" message
+        }
+    });
+
+    searchList.addEventListener('click', function (e) {
+        e.stopPropagation();
+    });
+
+    searchInput.addEventListener('input', function () {
+        const searchTerm = searchInput.value.toLowerCase();
+        const items = searchList.getElementsByTagName('li');
+        let found = false;
+
+        for (const item of items) {
+            const text = item.textContent.toLowerCase();
+            if (text.includes(searchTerm)) {
+                item.style.display = 'block';
+                found = true;
+            } else {
+                item.style.display = 'none';
+            }
+        }
+
+        if (!found) {
+            notFound.style.display = 'block'; // Display the "Data not found" message
+        } else {
+            notFound.style.display = 'none'; // Hide the "Data not found" message
+        }
+    });
+</script>
+
+{% endblock %}
