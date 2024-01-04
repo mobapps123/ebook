@@ -13,11 +13,10 @@ RUN pip install --upgrade pip setuptools
 COPY requirements.txt .
 # RUN pip install poetry
 # RUN pip install django_cleanup
-RUN pip install import_export
+# RUN pip install import_export
 RUN pip install -r requirements.txt
 
 # Copy the rest of the application files
 COPY . .
-
 EXPOSE 8004
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8004"]

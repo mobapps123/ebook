@@ -56,3 +56,5 @@ pdf2image==1.16.3
 dateutils==0.6.12
 ebooklib==0.18.0
 django-import-export==3.3.5
+python-dotenv==1.0.0
+django_cleanup==8.0.0
