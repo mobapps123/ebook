@@ -95,28 +95,28 @@ WSGI_APPLICATION = 'ebook.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 
-# DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#    }
-# }
-
-DATABASES = { 
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'defaultdb',
-        'USER': 'doadmin',
-        'PASSWORD': 'AVNS_ieBm6s0ByUPR19C8hnS',
-        'HOST': 'db-mysql-nyc3-22159-do-user-13482643-0.c.db.ondigitalocean.com',
-        'PORT': '25060',
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-            'charset': 'utf8mb4',
-            'isolation_level': 'read committed',
-        },
-    }
+DATABASES = {
+   'default': {
+       'ENGINE': 'django.db.backends.sqlite3',
+       'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+   }
 }
+
+# DATABASES = { 
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'defaultdb',
+#         'USER': 'doadmin',
+#         'PASSWORD': 'AVNS_ieBm6s0ByUPR19C8hnS',
+#         'HOST': 'db-mysql-nyc3-22159-do-user-13482643-0.c.db.ondigitalocean.com',
+#         'PORT': '25060',
+#         'OPTIONS': {
+#             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+#             'charset': 'utf8mb4',
+#             'isolation_level': 'read committed',
+#         },
+#     }
+# }
 
 
 # Password validation
