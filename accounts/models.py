@@ -8,8 +8,6 @@ class Home(models.Model):
     image = models.FileField(null=True,blank=True)
     youtube_link = models.URLField(null=True,blank=True)
 
-
-
 class HowDoesebooks(models.Model):
     top_heading = models.CharField(max_length=255,null=True,blank=True)
     heading = models.CharField(max_length=255,null=True,blank=True)
