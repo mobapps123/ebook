@@ -162,6 +162,8 @@ def per_week_average_time_spent():
 
     # Return a default value if there are no sessions
     return 0, 0
+
+
 def reading_time():
     total_duration = BookVisit.objects.filter().aggregate(
     total_duration=Sum(F('end_time') - F('start_time'))
@@ -178,6 +180,7 @@ def reading_time():
         total_time_admin_dashboard = f"Hours: {hours}, Minutes: {minutes}"
         return total_time_admin_dashboard
 from django.db.models import DurationField
+
 
 
 def dashboard(request):
@@ -206,7 +209,7 @@ def dashboard(request):
     )
     user_growth_rate = 0
     if active_users > 0:
-        user_growth_rate = round(((new_users_last_month - 0) / active_users) * 100)
+        user_growth_rate = round(((new_users_last_month - 0) / active_users) * 100, 2)
     total_user = users.count()
     total_contactus = ContactUs.objects.all().count()
     total_book = Books.objects.filter(is_active=True).count()
@@ -306,6 +309,13 @@ def dashboard(request):
             return render(request, 'dashboard.html', {**context})
         elif hasattr(request.user, 'is_organization') and request.user.is_organization:
             return redirect('Dashboardorgani')
+        elif hasattr(request.user, 'is_student') and request.user.is_student:
+            return redirect('Customer_dashboard')
+        elif hasattr(request.user, 'is_enduser') and request.user.is_enduser:
+            return redirect('NormalDashboard')
+    else:
+        return redirect('login')
+
 
 
 ######### login views start here ########
@@ -315,7 +325,8 @@ def login(request):
             return redirect('dashboard')
         elif hasattr(request.user, 'is_organization') and request.user.is_organization:
             return redirect('Dashboardorgani')
-
+        elif hasattr(request.user, 'is_student') and request.user.is_student:
+            return redirect('Customer_dashboard')
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -335,8 +346,6 @@ def login(request):
             messages.error(request, 'Invalid Email or Password')
 
     return render(request, 'admin_login.html')
-
-
 
 
 class ProfileView(View):
@@ -501,25 +510,28 @@ class ChangePassword(View):
 
 ################# admin logout views ##########
 def logout_view(request):
-    if request.user.is_superuser:
-        logout(request)
-        return redirect('login')
-    elif request.user.is_staff:
-        logout(request)
-        return redirect('stafflogin')
-    elif request.user.is_organization:
-        user_id = request.user.id
-        user = User.objects.get(id=user_id)
-        user_login_time = ManageLoginTime.objects.filter(users=user).last()
-        logout_time = datetime.now().strftime('%H:%M:%S')
-        user_login_time.login_end_time = logout_time
-        user_login_time.save()
-        logout(request)
-        return redirect('login')
+    if request.user.is_authenticated:
+        if request.user.is_superuser:
+            logout(request)
+            return redirect('login')
+        elif request.user.is_staff:
+            logout(request)
+            return redirect('stafflogin')
+        elif hasattr(request.user, 'is_organization') and request.user.is_organization:
+            user_id = request.user.id
+            user = User.objects.get(id=user_id)
+            user_login_time = ManageLoginTime.objects.filter(users=user).last()
+            logout_time = datetime.now().strftime('%H:%M:%S')
+            user_login_time.login_end_time = logout_time
+            user_login_time.save()
+            logout(request)
+            return redirect('login')
+        else:
+            logout(request)
+            return redirect('login')
     else:
-        logout(request)
+        # Handle the case where the user is not authenticated (AnonymousUser)
         return redirect('login')
-
 
 
 ################## add organizations views #######
@@ -547,7 +559,8 @@ class Add_Organizations(View):
 ######## Details organization views ########
 class Details_User(View):
     def get(self, request):
-        data = User.objects.all().exclude(is_superuser=True).exclude(is_staff=True)
+        data = User.objects.all().exclude(is_admin=True)
+        print(data,'data')
         filter_corporate = User.objects.filter(is_organization=True)
         filter_non_corporate = User.objects.filter(is_organization=False)
         active = User.objects.filter(is_active=True)
@@ -706,7 +719,6 @@ class Details_Book(View):
 
 class ActivateAccountView(View):
     def get(self, request, id):
-        print('hello ajay')
         user = User.objects.get(id=id)
         user.is_active = True
         user.save()
@@ -3165,6 +3177,7 @@ def average_time_spent():
 
         return overall_average_hours, overall_average_minutes
     return 0, 0 
+
 def average_time_spent_admin_dashboard():
     # Get all user sessions
     all_login_times = ManageLoginTime.objects.filter(
@@ -3200,21 +3213,26 @@ def average_time_spent_admin_dashboard():
         return overall_average_hours, overall_average_minutes
     return 0, 0 
 
+
+
 class OrganizationsDashboard(View):
     def get(self, request):
         if request.user.is_authenticated:
-            if request.user.is_superuser:
-                return redirect('dashboard')
+                if request.user.is_superuser:
+                    return redirect('dashboard')
+                elif hasattr(request.user, 'is_student') and request.user.is_student:
+                    return redirect('Customer_dashboard')
+                elif hasattr(request.user, 'is_enduser') and request.user.is_enduser:
+                    return redirect('NormalDashboard')
         if request.user.is_organization:
             user_id = request.user.id       
             institute = request.user.institute     
             total_student = User.objects.filter(added_user=user_id, institute= institute).count()
-
             total_unconfirmed = User.objects.filter(added_user=user_id, is_student=False, institute=institute).count()
             total_confirmed = User.objects.filter(added_user=user_id, is_student=True, institute= institute ).count()
             ##### confirmed & unconfirmed graph 
             year = current_year = datetime.now().year
-            print(year,'year')
+            
             all_months_years = User.objects.annotate(
             month=ExtractMonth('created_at'),
             year=ExtractYear('created_at')
@@ -3261,7 +3279,7 @@ class OrganizationsDashboard(View):
             ).distinct().count()
 
             # year = current_year = datetime.now().year
-            # print(year,'year')
+            
 
             users_3month_and_30days = User.objects.annotate(
             month=ExtractMonth('created_at'),
@@ -3274,10 +3292,7 @@ class OrganizationsDashboard(View):
             total_30days=Coalesce(Count('id', filter=Q(added_user=request.user.id,is_student=True,
             institute = request.user.institute,last_login__gte=last_30_days_start), distinct=True), Value(0))
             )
-            # print(users_3month_and_30days,'all_user_30days_3months')
-
-
-
+            
             h , m = average_time_spent()
             student_avg_time = f"Hours: {h}, Minutes: {m}"
             top_students = BookVisit.objects.filter(
@@ -3316,6 +3331,10 @@ class OrganizationsDashboard(View):
                 'users_3month_and_30days':users_3month_and_30days
                 
             }
+            # if request.user.is_authenticated:
+            #     if request.user.is_superuser:
+            #         return redirect('dashboard')
+            #     elif hasattr(request.user, 'is_organization') and request.user.is_organization:
             return render(request, 'organizations/organization_dashboard.html',context )
 
 
@@ -3471,7 +3490,7 @@ class StudentsUpload(View):
                 stu.is_active = False
                 stu.save()
                 student_id = stu.id
-                print("student_email",student_email)
+               
                 if student_email:
                     subject = "Congratulations!"
                     link = f"http://64.227.157.173:8002/Admin/students_registration/{student_id}"
@@ -3545,7 +3564,7 @@ class StudentsRegister(View):
         user = User.objects.get(id=id)
         user.save()
         added_user = user.added_user if user.added_user else None
-        print(added_user, 'added_user_id')
+        
         email = user.email
         first_name = user.first_name
         last_name = user.last_name

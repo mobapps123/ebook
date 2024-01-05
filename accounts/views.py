@@ -24,8 +24,8 @@ from django.db.models.functions import Coalesce
 from django.db.models import F, ExpressionWrapper, fields,Value
 import pdf2image
 from django.core.mail import send_mail
-
 from itertools import groupby
+
 # Create your views here.
 class HomeView(View):
     def get(self, request):
@@ -44,22 +44,29 @@ class HomeView(View):
         footer = Footer.objects.all()
         book_category = Books.objects.values('category__book_category').annotate(book_count=models.Count('id')).order_by('-book_count')[:7]
         visit_count = User.objects.filter(is_superuser=False).count()
-
-
         popular_books = BookVisit.objects.values('books__title', 'books__image', 'books__category__book_category', 'books__created_at','books__updated_at','books_id').annotate(total_visits=Sum('visit_count')).order_by('-total_visits')[:3]
         for book in popular_books:
             book['book_url'] = reverse('BookDetail', kwargs={'id': book['books_id']})
+            books_category = BookVisit.objects.filter().order_by('-visit_count')[:3]
+        if request.user.is_authenticated:
+            if request.user.is_student:
+                return render(request, 'lowafrecia/home.html', {'book_category': book_category, 'home_banner': home_banner, 'how_does': how_does, 'ebook_exp': ebook_exp, 'our_service': our_service, 'our_partner': our_partner,
+                'studio': studio, 'my_collection': my_collection, 'newest_books': newest_books, 'learn': learn,'footer': footer, 'active': 'active12', 'visit_count': visit_count, 'user_visit': user_visit, 'faq': faq, 'books_category': books_category, 'popular_books': popular_books})
+            elif hasattr(request.user, 'is_organization') and request.user.is_organization:
+                return redirect('Dashboardorgani')
+            elif hasattr(request.user, 'is_superuser') and request.user.is_superuser:
+                return redirect('dashboard')
+            else:
+                return render(request, 'lowafrecia/home.html', {'book_category': book_category, 'home_banner': home_banner, 'how_does': how_does, 'ebook_exp': ebook_exp, 'our_service': our_service, 'our_partner': our_partner,
+                'studio': studio, 'my_collection': my_collection, 'newest_books': newest_books, 'learn': learn, 'footer': footer, 'active': 'active12', 'visit_count': visit_count, 'user_visit': user_visit, 'faq': faq, 'books_category': books_category, 'popular_books': popular_books})
+        else:
+            return render(request, 'lowafrecia/home.html', {'book_category': book_category, 'home_banner': home_banner, 'how_does': how_does, 'ebook_exp': ebook_exp, 'our_service': our_service, 'our_partner': our_partner,'studio': studio, 'my_collection': my_collection, 'newest_books': newest_books, 'learn': learn,'footer': footer, 'active': 'active12', 'visit_count': visit_count, 'user_visit': user_visit, 'faq': faq, 'books_category': books_category, 'popular_books': popular_books})
+        
+        
 
 
-        books_category = BookVisit.objects.filter().order_by('-visit_count')[:3]
-        return render(request,'lowafrecia/home.html',{'book_category':book_category,'home_banner': home_banner,'how_does': how_does,'ebook_exp': ebook_exp,'our_service': our_service,'our_partner': our_partner,
-        'studio': studio,'my_collection': my_collection,'newest_books': newest_books,'learn': learn,
-        'footer': footer,'active': 'active12','visit_count':visit_count,'user_visit':user_visit,'faq':faq,'books_category':books_category,'popular_books':popular_books})
-    def post(self, request):
-        email = request.POST.get('email')
-        RequestDemo.objects.create(email=email)
-        messages.success(request,'Demo Informations Send Successfully')
-        return redirect('home')
+        
+        
 
 
 
@@ -517,54 +524,65 @@ def recently_view(request):
 from collections import defaultdict
 class CustomerDashboard(View):
     def get(self, request):
-        user = request.user
-        fav_count = Favorite.objects.filter(user=request.user, ).count()
-        unique_book_visit_count = BookVisit.objects.filter(user=request.user, institute_name=request.user.institute).values('user', 'books').distinct().count()
-        total_time = 0
-        book_visits = BookVisit.objects.filter(user=request.user)
-        total_time_per_book = defaultdict(int)
-        for visit in book_visits:
-            # Calculate time difference if start_time and end_time are present
-            if visit.start_time and visit.end_time:
-                time_difference = visit.end_time - visit.start_time
-                total_time_per_book[visit.books_id] += time_difference.total_seconds()
+        if request.user.is_authenticated:
+            user = request.user
+            fav_count = Favorite.objects.filter(user=request.user, ).count()
+            unique_book_visit_count = BookVisit.objects.filter(user=request.user, institute_name=request.user.institute).values('user', 'books').distinct().count()
+            total_time = 0
+            book_visits = BookVisit.objects.filter(user=request.user)
+            total_time_per_book = defaultdict(int)
+            for visit in book_visits:
+                # Calculate time difference if start_time and end_time are present
+                if visit.start_time and visit.end_time:
+                    time_difference = visit.end_time - visit.start_time
+                    total_time_per_book[visit.books_id] += time_difference.total_seconds()
 
-        formatted_times_per_book = {}
-        # Convert total_time to hours and minutes for each book
-        for book_id, total_time in total_time_per_book.items():
-            hours, remainder = divmod(total_time, 3600)
-            minutes = remainder / 60
+            formatted_times_per_book = {}
+            # Convert total_time to hours and minutes for each book
+            for book_id, total_time in total_time_per_book.items():
+                hours, remainder = divmod(total_time, 3600)
+                minutes = remainder / 60
 
-            # Format the time for each book
-            if hours >= 1:
-                formatted_time = "{:.0f} hours {:.0f} minutes".format(hours, minutes)
+                # Format the time for each book
+                if hours >= 1:
+                    formatted_time = "{:.0f} hours {:.0f} minutes".format(hours, minutes)
+                else:
+                    formatted_time = "{:.2f} minutes".format(minutes).rstrip('0').rstrip('.')
+
+                formatted_times_per_book[book_id] = formatted_time
+
+            total_book = len(formatted_times_per_book)
+
+            # Check if total_book is greater than zero before calculating avg_reading_time
+            if total_book > 0:
+                total_minutes = sum(float(duration.split()[0]) for duration in formatted_times_per_book.values())
+                avg_reading_time = total_minutes / total_book
+
+                hours, minutes = divmod(avg_reading_time, 60)
+                if hours >= 1:
+                    formatted_time = "{:.0f} hours {:.0f} minutes".format(hours, minutes)
+                else:
+                    formatted_time = "{:.2f} minutes".format(minutes).rstrip('0').rstrip('.')
             else:
-                formatted_time = "{:.2f} minutes".format(minutes).rstrip('0').rstrip('.')
-
-            formatted_times_per_book[book_id] = formatted_time
-
-        total_book = len(formatted_times_per_book)
-
-        # Check if total_book is greater than zero before calculating avg_reading_time
-        if total_book > 0:
-            total_minutes = sum(float(duration.split()[0]) for duration in formatted_times_per_book.values())
-            avg_reading_time = total_minutes / total_book
-
-            hours, minutes = divmod(avg_reading_time, 60)
-            if hours >= 1:
-                formatted_time = "{:.0f} hours {:.0f} minutes".format(hours, minutes)
+                formatted_time = 0
+            if request.user.is_authenticated:
+                if request.user.is_student:
+                    return render(request, 'lowafrecia/Front_Dashboard.html', {'book_visit_count': unique_book_visit_count, 'active11': 'active20', 'formatted_duration_str': formatted_time, 'fav_count': fav_count})
+                elif hasattr(request.user, 'is_enduser') and request.user.is_enduser:
+                    return redirect('NormalDashboard')
+                elif hasattr(request.user, 'is_organization') and request.user.is_organization:
+                    return redirect('Dashboardorgani')
+                elif hasattr(request.user, 'is_superuser') and request.user.is_superuser:
+                    return redirect('dashboard')
             else:
-                formatted_time = "{:.2f} minutes".format(minutes).rstrip('0').rstrip('.')
+                return redirect('enduser-login')
         else:
-            formatted_time = 0
-        return render(request, 'lowafrecia/Front_Dashboard.html', {'book_visit_count': unique_book_visit_count, 'active11': 'active20', 'formatted_duration_str': formatted_time,'fav_count':fav_count})
-
+            return redirect('enduser-login')      
 
 
 class BookVisistList(View):
     def get(self,request):
         recently_viewed = Recently_Viewed.objects.filter(user=request.user).order_by('-id')
-
     # Apply search filter if 'st' is not None
         unique_book_ids = []
         unique_recently_viewed = []
@@ -797,132 +815,76 @@ class EndUserRegister(View):
 
 
 
-### enduser login views 
+
+
+
+
+
+
 def enduser_login(request):
+    if request.user.is_authenticated:
+        if request.user.is_student:
+            return redirect('Customer_dashboard')
+        elif hasattr(request.user, 'is_enduser') and request.user.is_enduser:
+            return redirect('NormalDashboard')
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
         user = authenticate(request=request, email=email, password=password)
         if user is not None:
-            user_agent = get_user_agent(request)
-            browser_name = user_agent.browser.family
+            if hasattr(user, 'is_superuser') and user.is_superuser:
+                dj_login(request, user)
+                return redirect('dashboard')
+            elif hasattr(user, 'is_organization') and user.is_organization:
+                login_time = datetime.now().strftime('%H:%M:%S')
+                ManageLoginTime.objects.create(users=user, login_start_time=login_time)
+                dj_login(request, user)
+                return redirect('Dashboardorgani')
             try:
-                user_visit, created = UserVisit.objects.get_or_create(user=user)
-                user_visit.browser_name = browser_name
-                user_visit.visit_count += 1
-                user_visit.save()
-            except Exception as e:
-                return redirect('home')
-            if user.is_superuser:
-                messages.warning(request, 'Superusers are not allowed to log in here.')
-            else:
-                try:
-                    dj_login(request, user)
-                    login_time = datetime.now().strftime('%H:%M:%S')
+                dj_login(request, user)
+                login_time = datetime.now().strftime('%H:%M:%S')
+                messages.success(request, 'Your account has been activated. You can now log in.')
 
-                    ManageLoginTime.objects.create(users=user, login_start_time=login_time,institute=user.institute)
+                if user.is_student:
+                    ManageLoginTime.objects.create(users=user, login_start_time=login_time, institute=user.institute)
                     return redirect('Customer_dashboard')
-                except Exception as e:
-                   
-                    messages.error(request, 'An error occurred during login.')
-                    return redirect('home')
-        else:
-            messages.warning(request, 'Invalid Email or Password')
-    return redirect('home')
-  
-
-def enduser_login(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        user = authenticate(request=request, email=email, password=password)
-        if user is not None:
-            user_agent = get_user_agent(request)
-            browser_name = user_agent.browser.family
-            try:
-                user_visit, created = UserVisit.objects.get_or_create(user=user)
-                user_visit.browser_name = browser_name
-                user_visit.visit_count += 1
-                user_visit.save()
+                else:
+                    ManageLoginTime.objects.create(users=user, login_start_time=login_time)
+                    return redirect('NormalDashboard')
             except Exception as e:
+                messages.error(request, 'An error occurred during login.')
                 return redirect('home')
-            if user.is_superuser or user.is_organization:
-                messages.warning(request, 'Superusers and organization are not allowed to log in here.')
-            else:
-                try:
-                    dj_login(request, user)
-                    login_time = datetime.now().strftime('%H:%M:%S')
-                    messages.success(request, 'Your account has been activated. You can now log in.')
-                    if user.is_student:
-                        ManageLoginTime.objects.create(users=user, login_start_time=login_time,institute=user.institute)
-                        # messages.success(request,'Login successfully!!')
-                        return redirect('Customer_dashboard')
-                    else:
-                        ManageLoginTime.objects.create(users=user, login_start_time=login_time)
-                        # messages.success(request,'Login successfully!!')
-                        return redirect('NormalDashboard')
-                except Exception as e:
-                    
-                    messages.error(request, 'An error occurred during login.')
-                    return redirect('home')
+        elif user:
+            messages.warning(request, 'Superusers and organizations are not allowed to log in here.')
         else:
-            messages.warning(request, 'Pls check your email and active your account ')
+            messages.warning(request, 'Please check your email and activate your account.')
     return redirect('home')
 
 
-# a
-# def enduser_login(request):
-#     if request.method == 'POST':
-#         email = request.POST.get('email')
-#         password = request.POST.get('password')
-#         user = authenticate(request=request, email=email, password=password)
-#         if user is not None:
-#             user_agent = get_user_agent(request)
-#             browser_name = user_agent.browser.family
-#             
-#             if user.is_superuser:
-#                 messages.warning(request, 'Superusers are not allowed to log in here.')
-#             else:
-#                 dj_login(request, user)
-#                 messages.success(request, 'Login Successfully!..')
-#                 return redirect('home')
-#         else:
-#             messages.warning(request, 'Invalid Email or Password')
-#     return redirect('home')
-
-
-# def enduser_login(request):
-#     if request.method == 'POST':
-#         email = request.POST.get('email')
-#         passwords = request.POST.get('password')
-#         
-#         user = authenticate(request=request, email=email, password=passwords)
-#        
-#         
-#         if user is not None:
-#           
-#             if User.objects.filter(email=email):
-#              
-#                 dj_login(request, user)
-#                 messages.success(request,'Login Successfully!..')
-#                 return redirect('home')
-#             else:
-#                 messages.warning(request, 'You Are Not Admin User')
-#         else:
-#             messages.warning(request, 'Invalid Email or Password')
-#     return redirect('home')
 
 
 ###### logout  views start here ##
+# def user_logout(request):
+#     user = ManageLoginTime.objects.filter(users=request.user.id).last()
+#     user.login_end_time = datetime.now().strftime('%H:%M:%S')
+#     user.save()
+#     logout(request)
+#     messages.success(request, "Logged Out Successfully..!!")
+#     return redirect('home')
+
 def user_logout(request):
-    user = ManageLoginTime.objects.filter(users=request.user.id).last()
-    user.login_end_time = datetime.now().strftime('%H:%M:%S')
-    user.save()
+    # Get the last login time record for the user
+    user_login_time = ManageLoginTime.objects.filter(users=request.user.id).last()
+
+    if user_login_time:
+        # Update the login end time if a valid record exists
+        user_login_time.login_end_time = datetime.now().strftime('%H:%M:%S')
+        user_login_time.save()
+
+    # Perform the logout
     logout(request)
     messages.success(request, "Logged Out Successfully..!!")
     return redirect('home')
-
-
 
 class Updateprofile(View):
     def get(self, request):
@@ -1146,47 +1108,68 @@ class ActivateAccountView(View):
 
 class NormalUserDashboard(View):
     def get(self, request):
-        user = request.user
-        fav_count = Favorite.objects.filter(user=request.user, ).count()
-        unique_book_visit_count = BookVisit.objects.filter(user=request.user, institute_name=request.user.institute).values('user', 'books').distinct().count()
-        total_time = 0
-        book_visits = BookVisit.objects.filter(user=request.user)
-        total_time_per_book = defaultdict(int)
-        for visit in book_visits:
-            # Calculate time difference if start_time and end_time are present
-            if visit.start_time and visit.end_time:
-                time_difference = visit.end_time - visit.start_time
-                total_time_per_book[visit.books_id] += time_difference.total_seconds()
+        if request.user.is_authenticated:
+            if request.user.is_student:
+                return redirect('Customer_dashboard')
+            elif hasattr(request.user, 'is_organization') and request.user.is_organization:
+                return redirect('Dashboardorgani')
+            elif hasattr(request.user, 'is_superuser') and request.user.is_superuser:
+                    return redirect('dashboard')
+            user = request.user
+            fav_count = Favorite.objects.filter(user=request.user).count()
+            unique_book_visit_count = BookVisit.objects.filter(user=request.user, institute_name=request.user.institute).values('user', 'books').distinct().count()
+            total_time = 0
+            book_visits = BookVisit.objects.filter(user=request.user)
+            total_time_per_book = defaultdict(int)
+            for visit in book_visits:
+                # Calculate time difference if start_time and end_time are present
+                if visit.start_time and visit.end_time:
+                    time_difference = visit.end_time - visit.start_time
+                    total_time_per_book[visit.books_id] += time_difference.total_seconds()
 
-        formatted_times_per_book = {}
-        # Convert total_time to hours and minutes for each book
-        for book_id, total_time in total_time_per_book.items():
-            hours, remainder = divmod(total_time, 3600)
-            minutes = remainder / 60
+            formatted_times_per_book = {}
+            # Convert total_time to hours and minutes for each book
+            for book_id, total_time in total_time_per_book.items():
+                hours, remainder = divmod(total_time, 3600)
+                minutes = remainder / 60
 
-            # Format the time for each book
-            if hours >= 1:
-                formatted_time = "{:.0f} hours {:.0f} minutes".format(hours, minutes)
+                # Format the time for each book
+                if hours >= 1:
+                    formatted_time = "{:.0f} hours {:.0f} minutes".format(hours, minutes)
+                else:
+                    formatted_time = "{:.2f} minutes".format(minutes).rstrip('0').rstrip('.')
+
+                formatted_times_per_book[book_id] = formatted_time
+
+            total_book = len(formatted_times_per_book)
+
+            # Check if total_book is greater than zero before calculating avg_reading_time
+            if total_book > 0:
+                total_minutes = sum(float(duration.split()[0]) for duration in formatted_times_per_book.values())
+                avg_reading_time = total_minutes / total_book
+
+                hours, minutes = divmod(avg_reading_time, 60)
+                if hours >= 1:
+                    formatted_time = "{:.0f} hours {:.0f} minutes".format(hours, minutes)
+                else:
+                    formatted_time = "{:.2f} minutes".format(minutes).rstrip('0').rstrip('.')
             else:
-                formatted_time = "{:.2f} minutes".format(minutes).rstrip('0').rstrip('.')
-
-            formatted_times_per_book[book_id] = formatted_time
-
-        total_book = len(formatted_times_per_book)
-
-        # Check if total_book is greater than zero before calculating avg_reading_time
-        if total_book > 0:
-            total_minutes = sum(float(duration.split()[0]) for duration in formatted_times_per_book.values())
-            avg_reading_time = total_minutes / total_book
-
-            hours, minutes = divmod(avg_reading_time, 60)
-            if hours >= 1:
-                formatted_time = "{:.0f} hours {:.0f} minutes".format(hours, minutes)
+                    formatted_time = 0
+            if request.user.is_authenticated:
+                if request.user.is_enduser:
+                    return render(request,'NormalUser/Dashboard.html',{'book_visit_count': unique_book_visit_count, 'active1': 'active20', 'formatted_duration_str': formatted_time,'fav_count':fav_count})
+                elif hasattr(request.user, 'is_student') and request.user.is_student:
+                    return redirect('Customer_dashboard')
             else:
-                formatted_time = "{:.2f} minutes".format(minutes).rstrip('0').rstrip('.')
+                return redirect('enduser-login')
+        
         else:
-            formatted_time = 0
-        return render(request,'NormalUser/Dashboard.html',{'book_visit_count': unique_book_visit_count, 'active1': 'active20', 'formatted_duration_str': formatted_time,'fav_count':fav_count})
+            return redirect('enduser-login')    
+
+
+
+
+        
     
 
 class NormalUserAllBooks(View):
